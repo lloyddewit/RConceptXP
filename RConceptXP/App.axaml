@@ -1,10 +1,31 @@
-<Application xmlns="https://github.com/avaloniaui"
+<Application x:Class="RConceptXP.App"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="RConceptXP.App"
+             xmlns:local="using:RConceptXP"
+             xmlns:generation="using:ActiproSoftware.UI.Avalonia.Themes.Generation"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
+    <Application.Resources>
+        <SolidColorBrush x:Key="BackgroundTextBlock">#eef5fe</SolidColorBrush>
+    </Application.Resources>
+
     <Application.Styles>
-        <FluentTheme />
+
+        <actipro:ModernTheme>
+            <actipro:ModernTheme.Definition>
+                <generation:ThemeDefinition
+                    BaseFontSize="11"
+                    ButtonAppearanceKind="Solid"
+                    EditAppearanceKind="Soft"
+                    UserInterfaceDensity="Compact"
+                    />
+            </actipro:ModernTheme.Definition>
+        </actipro:ModernTheme>
+
+        <StyleInclude Source="/Styles/AppDefault.axaml" />
+
     </Application.Styles>
+
 </Application>

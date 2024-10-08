@@ -1,0 +1,138 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="RConceptXP.Views.Boxplot"
+        Title="Boxplot"
+        Width="420"
+        Height="500"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+
+    <StackPanel Margin="11">
+
+        <!-- Radio buttons -->
+        <UniformGrid Columns="3" Margin="0 0 0 0">
+            <RadioButton 
+                Content="Boxplot"
+                Classes="accent"
+                GroupName="BoxplotType" 
+                HorizontalAlignment="Right" 
+                />
+            <RadioButton 
+                Content="Jitter Plot" 
+                Classes="accent"
+                GroupName="BoxplotType" 
+                HorizontalAlignment="Center"
+                />
+            <RadioButton 
+                Content="Violin Plot" 
+                Classes="accent"
+                GroupName="BoxplotType" 
+                HorizontalAlignment="Left"
+                />
+        </UniformGrid>
+
+        <!-- Main area -->
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                        <StackPanel>
+                            <TextBlock Text="Data Frame:"/>
+                            <ComboBox  Classes="accent" />
+                            <TextBlock Classes="accent" Height="80" Margin="0 5 0 0" Background="{StaticResource BackgroundTextBlock}"/>
+                            <Button Classes="accent" Content="Plot Options" Margin="0 5 0 0"/>
+                        </StackPanel>
+                        <StackPanel Margin="10 0 0 0">
+                            <SplitButton Classes="accent" Content="Add" Margin="0 50 0 0">
+                                <SplitButton.Flyout>
+                                    <MenuFlyout Placement="Bottom">
+                                        <MenuItem Header="Add Selected"/>
+                                        <MenuItem Header="Add All"/>
+                                        <Separator/>
+                                        <MenuItem Header="Help"/>
+                                    </MenuFlyout>
+                                </SplitButton.Flyout>
+                            </SplitButton>
+                            <Button Classes="accent" Content="Data Options" Margin="0 30 0 0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Margin="0 10 0 0">
+                    <CheckBox Classes="accent" Content="Horizontal Plot"/>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox Classes="accent" Content="Group to Connect"/>
+                        <ComboBox Classes="theme-soft accent" Margin="10 0 0 0" Width="70"/>
+                    </StackPanel>
+                    <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
+                        <CheckBox Classes="accent" Content="Width"/>
+                        <NumericUpDown Classes="theme-soft accent" Margin="5 0 0 0" Minimum="0" Width="60"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Margin="50 20 0 0">
+                <Button Classes="accent" Content="Multiple Variables"/>
+                <TextBlock Classes="accent" Height="60" Margin="0 5 0 0" Background="{StaticResource BackgroundTextBlock}"/>
+                <TextBlock Text="Factor (Optional):" Margin="0 10 0 0"/>
+                <TextBox Classes="theme-soft accent" Width="100" HorizontalAlignment="Left" Margin="0 5 0 0"/>
+                <TextBlock Text="Second Factor (Optional):" Margin="0 5 0 0"/>
+                <TextBox Classes="theme-soft accent" Width="100" HorizontalAlignment="Left" Margin="0 5 0 0"/>
+                <CheckBox Classes="accent" Content="Variable Width" Margin="0 5 0 0"/>
+                <CheckBox Classes="accent" Content="Tufte Boxplots" Margin="0 5 0 0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Add points -->
+        <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+            <CheckBox Classes="accent" Content="Add Points"/>
+            <TextBlock Text="Jitter:" Margin="10 0 0 0" VerticalAlignment="Center"/>
+            <NumericUpDown Classes="theme-soft accent" Increment="0.01" Margin="5 0 0 0" Minimum="0" Width="60"/>
+            <TextBlock Text="Transparency:" Margin="10 0 0 0" VerticalAlignment="Center"/>
+            <NumericUpDown Classes="theme-soft accent" Increment="0.01" Margin="5 0 0 0" Maximum="1" Minimum="0" Width="60"/>
+        </StackPanel>
+
+        <!-- Legend -->
+        <TextBlock Text="Facet By:" Margin="140 5 0 0"/>
+        <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
+            <CheckBox Classes="accent" Content="Legend"/>
+            <ComboBox Classes="theme-soft accent" Margin="5 0 0 0" VerticalAlignment="Center" Width="70"/>
+            <TextBox Classes="theme-soft accent" Margin="5 0 0 0" Height="25" Width="90"/>
+            <ComboBox Classes="theme-soft accent" Margin="5 " Width="70"/>
+        </StackPanel>
+
+        <!-- Save graph -->
+        <StackPanel Orientation="Horizontal">
+            <CheckBox Classes="accent" Content="Save Graph"/>
+            <ComboBox Classes="theme-soft accent" Width="220" Margin="5 0 0 0" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Comment -->
+        <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+            <CheckBox Classes="accent" Content="Comment"/>
+            <TextBox Classes="theme-soft accent" Width="227" Margin="5 0 0 0"/>
+        </StackPanel>
+
+        <!-- Standard dialog buttons -->
+        <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+            <SplitButton Classes="accent" Content="OK">
+                <SplitButton.Flyout>
+                    <MenuFlyout Placement="Bottom">
+                        <MenuItem Header="OK and Close"/>
+                        <MenuItem Header="OK and Keep"/>
+                    </MenuFlyout>
+                </SplitButton.Flyout>
+            </SplitButton>
+            <Button Classes="accent" Content="Reset" Margin="10 5 0 0"/>
+            <Button Classes="accent" Content="Close" Margin="10 5 0 0"/>
+            <Button Classes="accent" Content="Help" Margin="10 5 0 0"/>
+            <SplitButton Classes="accent" Click="OnToScriptClick" Content="To Script" Margin="30 5 0 0">
+                <SplitButton.Flyout>
+                    <MenuFlyout Placement="Bottom">
+                        <MenuItem Header="To Script and Close"/>
+                        <MenuItem Header="To Script and Keep"/>
+                    </MenuFlyout>
+                </SplitButton.Flyout>
+            </SplitButton>
+        </StackPanel>
+    </StackPanel>
+</Window>
+
