@@ -1,6 +1,8 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="RConceptXP.Views.Boxplot"
+        xmlns:vm="clr-namespace:RConceptXP.ViewModels"
+        x:DataType="vm:BoxplotViewModel"
         Title="Boxplot"
         Width="420"
         Height="500"
@@ -61,7 +63,7 @@
                     <CheckBox Classes="accent" Content="Horizontal Plot"/>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox Classes="accent" Content="Group to Connect"/>
-                        <ComboBox Classes="theme-soft accent" Margin="10 0 0 0" Width="70"/>
+                        <ComboBox Classes="theme-soft accent" IsVisible="{Binding IsGroupToConnectVisible}" Margin="10 0 0 0" Width="70"/>
                     </StackPanel>
                     <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
                         <CheckBox Classes="accent" Content="Width"/>
