@@ -12,24 +12,27 @@
     <StackPanel Margin="11">
 
         <!-- Radio buttons -->
-        <UniformGrid Columns="3" Margin="0 0 0 0">
+        <UniformGrid Columns="3">
             <RadioButton 
-                Content="Boxplot"
                 Classes="accent"
+                Content="Boxplot"
                 GroupName="BoxplotType" 
                 HorizontalAlignment="Right" 
+                IsChecked="True"
                 />
             <RadioButton 
-                Content="Jitter Plot" 
                 Classes="accent"
+                Content="Jitter Plot" 
                 GroupName="BoxplotType" 
                 HorizontalAlignment="Center"
+                Name="isJitter"
                 />
             <RadioButton 
-                Content="Violin Plot" 
                 Classes="accent"
+                Content="Violin Plot" 
                 GroupName="BoxplotType" 
                 HorizontalAlignment="Left"
+                Name="isViolin"
                 />
         </UniformGrid>
 
@@ -42,14 +45,30 @@
                             <TextBlock Text="Data Frame:"/>
                             <ComboBox  Classes="accent" />
                             <TextBlock Classes="accent" Height="80" Margin="0 5 0 0" Background="{StaticResource BackgroundTextBlock}"/>
-                            <Button Classes="accent" Content="Plot Options" Margin="0 5 0 0"/>
+                            <SplitButton Classes="accent" Content="Plot Options">
+                                <SplitButton.Flyout>
+                                    <MenuFlyout>
+                                        <MenuItem Header="Plot Options"/>
+                                        <MenuItem Header="Boxplot Options"/>
+                                        <MenuItem Header="Jitter Options" IsEnabled="{Binding #isJitter.IsChecked}"/>
+                                        <MenuItem Header="Summary Options"/>
+                                        <MenuItem
+                                            Header="Tufte Options" >
+                                            <MenuItem.IsEnabled>
+                                                
+                                            </MenuItem.IsEnabled>
+                                        </MenuItem>
+                                        <MenuItem Header="Violin Options" IsEnabled="{Binding #isTufte.IsChecked}"/>
+                                    </MenuFlyout>
+                                </SplitButton.Flyout>
+                            </SplitButton>
                         </StackPanel>
                         <StackPanel Margin="10 0 0 0">
                             <SplitButton Classes="accent" Content="Add" Margin="0 50 0 0">
                                 <SplitButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
-                                        <MenuItem Header="Add Selected"/>
-                                        <MenuItem Header="Add All"/>
+                                        <MenuItem Header="Add Selected" IsEnabled="False"/>
+                                        <MenuItem Header="Add All" IsEnabled="False"/>
                                         <Separator/>
                                         <MenuItem Header="Help"/>
                                     </MenuFlyout>
@@ -61,9 +80,17 @@
                 </StackPanel>
                 <StackPanel Margin="0 10 0 0">
                     <CheckBox Classes="accent" Content="Horizontal Plot"/>
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox Classes="accent" Content="Group to Connect"/>
-                        <ComboBox Classes="theme-soft accent" IsVisible="{Binding IsGroupToConnectVisible}" Margin="10 0 0 0" Width="70"/>
+                    <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
+                        <CheckBox 
+                            Classes="accent" 
+                            Content="Group to Connect"
+                            Name="groupToConnect"
+                            />
+                        <ComboBox 
+                            Classes="theme-soft accent" 
+                            IsVisible="{Binding #groupToConnect.IsChecked}" 
+                            Margin="10 0 0 0" Width="70"
+                            />
                     </StackPanel>
                     <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
                         <CheckBox Classes="accent" Content="Width"/>
@@ -72,15 +99,62 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Margin="50 20 0 0">
-                <Button Classes="accent" Content="Multiple Variables"/>
-                <TextBlock Classes="accent" Height="60" Margin="0 5 0 0" Background="{StaticResource BackgroundTextBlock}"/>
+                <TextBlock Text="Variable(s):"/>
+                <UniformGrid Columns="2">
+                    <RadioButton
+                        Classes="accent"
+                        Content="Single"
+                        GroupName="VariablesType"
+                        Name="singleOption"
+                        IsChecked="True"
+                        />
+                    <RadioButton
+                        Content="Multiple"
+                        Classes="accent"
+                        GroupName="VariablesType"
+                        Name="multipleOption"
+                        />
+                </UniformGrid>
+                <TextBox
+                    Classes="accent"
+                    Margin="0 5 0 0"
+                    IsVisible="{Binding #singleOption.IsChecked}"
+                    />
+                <TextBox
+                    Classes="accent"
+                    Height="70"
+                    Margin="0 5 0 0"
+                    IsVisible="{Binding IsChecked, ElementName=multipleOption}"
+                    />
+                <!--<TextBlock Classes="accent" Height="60" Margin="0 5 0 0" Background="{StaticResource BackgroundTextBlock}" -->
                 <TextBlock Text="Factor (Optional):" Margin="0 10 0 0"/>
                 <TextBox Classes="theme-soft accent" Width="100" HorizontalAlignment="Left" Margin="0 5 0 0"/>
                 <TextBlock Text="Second Factor (Optional):" Margin="0 5 0 0"/>
                 <TextBox Classes="theme-soft accent" Width="100" HorizontalAlignment="Left" Margin="0 5 0 0"/>
                 <CheckBox Classes="accent" Content="Variable Width" Margin="0 5 0 0"/>
-                <CheckBox Classes="accent" Content="Tufte Boxplots" Margin="0 5 0 0"/>
+                <CheckBox 
+                    Classes="accent" 
+                    Content="Tufte Boxplots" 
+                    Margin="0 5 0 0"
+                    Name="isTufte"
+                    />
             </StackPanel>
+        </StackPanel>
+
+        <!-- Add boxplot -->
+        <StackPanel IsVisible="{Binding #isJitter.IsChecked}" Margin="0 5 0 0" Orientation="Horizontal">
+            <CheckBox Classes="accent" Content="Add Boxplot" Name="addBoxplot"/>
+            <TextBlock IsVisible="{Binding #addBoxplot.IsChecked}" Text="Width:" Margin="10 5 0 0"/>
+            <NumericUpDown 
+                Classes="theme-soft accent" 
+                FormatString="0.00"
+                Increment="0.01"
+                IsVisible="{Binding #addBoxplot.IsChecked}"
+                Margin="5 0 0 0" 
+                Maximum="1" 
+                Minimum="0" 
+                Value="0.5"
+                Width="60"/>
         </StackPanel>
 
         <!-- Add points -->
