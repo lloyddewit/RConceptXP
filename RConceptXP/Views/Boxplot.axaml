@@ -19,6 +19,7 @@
                 GroupName="BoxplotType" 
                 HorizontalAlignment="Right" 
                 IsChecked="True"
+                Name="isBoxplot"
                 />
             <RadioButton 
                 Classes="accent"
@@ -55,10 +56,13 @@
                                         <MenuItem
                                             Header="Tufte Options" >
                                             <MenuItem.IsEnabled>
-                                                
+                                                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                                    <Binding Path="#isBoxplot.IsChecked" />
+                                                    <Binding Path="#isTufte.IsChecked" />
+                                                </MultiBinding>
                                             </MenuItem.IsEnabled>
                                         </MenuItem>
-                                        <MenuItem Header="Violin Options" IsEnabled="{Binding #isTufte.IsChecked}"/>
+                                        <MenuItem Header="Violin Options" IsEnabled="{Binding #isViolin.IsChecked}"/>
                                     </MenuFlyout>
                                 </SplitButton.Flyout>
                             </SplitButton>
@@ -93,8 +97,18 @@
                             />
                     </StackPanel>
                     <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
-                        <CheckBox Classes="accent" Content="Width"/>
-                        <NumericUpDown Classes="theme-soft accent" Margin="5 0 0 0" Minimum="0" Width="60"/>
+                        <CheckBox 
+                            Classes="accent" 
+                            Content="Width"
+                            Name="isWidth"
+                            />
+                        <NumericUpDown 
+                            Classes="theme-soft accent" 
+                            IsVisible="{Binding #isWidth.IsChecked}"
+                            Margin="5 0 0 0" 
+                            Minimum="0" 
+                            Width="60"
+                            />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -159,32 +173,84 @@
 
         <!-- Add points -->
         <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
-            <CheckBox Classes="accent" Content="Add Points"/>
-            <TextBlock Text="Jitter:" Margin="10 0 0 0" VerticalAlignment="Center"/>
-            <NumericUpDown Classes="theme-soft accent" Increment="0.01" Margin="5 0 0 0" Minimum="0" Width="60"/>
-            <TextBlock Text="Transparency:" Margin="10 0 0 0" VerticalAlignment="Center"/>
-            <NumericUpDown Classes="theme-soft accent" Increment="0.01" Margin="5 0 0 0" Maximum="1" Minimum="0" Width="60"/>
+            <CheckBox 
+                Classes="accent" 
+                Content="Add Points"
+                Name="isAddPoints"
+                />
+            <StackPanel Orientation="Horizontal" IsVisible="{Binding #isAddPoints.IsChecked}" >
+                <TextBlock Text="Jitter:" Margin="10 0 0 0" VerticalAlignment="Center"/>
+                <NumericUpDown Classes="theme-soft accent" Increment="0.01" Margin="5 0 0 0" Minimum="0" Width="60"/>
+                <TextBlock Text="Transparency:" Margin="10 0 0 0" VerticalAlignment="Center"/>
+                <NumericUpDown Classes="theme-soft accent" Increment="0.01" Margin="5 0 0 0" Maximum="1" Minimum="0" Width="60"/>
+            </StackPanel>
         </StackPanel>
 
-        <!-- Legend -->
-        <TextBlock Text="Facet By:" Margin="140 5 0 0"/>
-        <StackPanel Orientation="Horizontal" Margin="0 0 0 0">
-            <CheckBox Classes="accent" Content="Legend"/>
-            <ComboBox Classes="theme-soft accent" Margin="5 0 0 0" VerticalAlignment="Center" Width="70"/>
-            <TextBox Classes="theme-soft accent" Margin="5 0 0 0" Height="25" Width="90"/>
-            <ComboBox Classes="theme-soft accent" Margin="5 " Width="70"/>
-        </StackPanel>
+        <!-- Legend and Facet By -->
+        <Grid ColumnDefinitions="Auto,130, Auto, Auto" 
+              RowDefinitions="Auto Auto">
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Facet By:"/>
+            <CheckBox 
+                Classes="accent" 
+                Content="Legend" 
+                Grid.Column="0" 
+                Grid.Row="1" 
+                Name="isLegend"
+                />
+            <!-- IsVisible="{Binding #isLegend.IsChecked}" -->
+            <ComboBox
+                Classes="theme-soft accent"
+                Grid.Column="1"
+                Grid.Row="1"
+                IsVisible="{Binding #isLegend.IsChecked}"
+                />
+            <TextBox 
+                Classes="theme-soft accent" 
+                Grid.Row="1" 
+                Grid.Column="2" 
+                Height="25" 
+                Margin="0 5 0 0"
+                Width="90"
+                />
+            <ComboBox 
+                Classes="theme-soft accent" 
+                Grid.Row="1" 
+                Grid.Column="3" 
+                Margin="5 5 0 0"
+                Width="70"/>
+        </Grid>
 
         <!-- Save graph -->
         <StackPanel Orientation="Horizontal">
-            <CheckBox Classes="accent" Content="Save Graph"/>
-            <ComboBox Classes="theme-soft accent" Width="220" Margin="5 0 0 0" VerticalAlignment="Center"/>
+            <CheckBox 
+                Classes="accent" 
+                Content="Save Graph" 
+                Margin="0 5 0 0"
+                Name="isSaveGraph"
+                />
+            <ComboBox 
+                Classes="theme-soft accent"
+                IsVisible="{Binding #isSaveGraph.IsChecked}"
+                Margin="5 0 0 0" 
+                VerticalAlignment="Center"
+                Width="220" 
+                />
         </StackPanel>
 
         <!-- Comment -->
         <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
-            <CheckBox Classes="accent" Content="Comment"/>
-            <TextBox Classes="theme-soft accent" Width="227" Margin="5 0 0 0"/>
+            <CheckBox 
+                Classes="accent" 
+                Content="Comment" 
+                IsChecked="true"
+                Name="isComment"
+                />
+            <TextBox 
+                Classes="theme-soft accent" 
+                IsVisible="{Binding #isComment.IsChecked}"
+                Margin="5 0 0 0"
+                Width="227" 
+                />
         </StackPanel>
 
         <!-- Standard dialog buttons -->

@@ -5,6 +5,7 @@ namespace RConceptXP.Views;
 
 public partial class Boxplot : Window
 {
+    public bool IsCheckedToDo = true;
     public Boxplot()
     {
         InitializeComponent();
