@@ -294,16 +294,17 @@
                 Margin="0 5 0 0"
                 Name="isSaveGraph"
                 />
-            <ComboBox 
+            <AutoCompleteBox
+                ItemsSource="{Binding SavedGraphNames}"
                 Classes="theme-soft accent"
                 IsVisible="{Binding #isSaveGraph.IsChecked}"
-                Margin="5 5 0 0" 
-                SelectedIndex="0"
+                Margin="5 5 0 0"
+                Name="SaveGraphAutoCompleteBox"
+                Text="{Binding GraphName}"
                 VerticalAlignment="Center"
                 Width="220"
                 >
-                <ComboBoxItem>last_graph</ComboBoxItem>
-            </ComboBox>
+            </AutoCompleteBox>
         </StackPanel>
 
         <!-- Comment -->
