@@ -22,21 +22,41 @@ public partial class BoxplotViewModel : ObservableObject
     [ObservableProperty]
     private bool isGroupToConnectVisible; // Property to control ComboBox visibility
 
-    public RelayCommand OnFactorTextBoxGotFocusCommand { get; }
+    public RelayCommand SetColumnNamesAllCommand { get; }
+    public RelayCommand SetColumnNamesFactorCommand { get; }
+    public RelayCommand SetColumnNamesNonFactorCommand { get; }
+
+    // todo hardcoded column names for testing
+    private static readonly List<string> ColumnNamesAll = new List<string> { "village", "field", "size", "fert", "variety", "yield", "fertgrp" };
+    private static readonly List<string> ColumnNamesFactor = new List<string> { "village", "variety", "fertgrp" };
+    private static readonly List<string> ColumnNamesNonFactor = new List<string> { "field", "size", "fert", "yield" };
+
 
     public BoxplotViewModel()
     {
-        ColumnNames = new List<string> { "field", "size", "fert", "yield" }; // Initialize list of data frame column names
+        ColumnNames = ColumnNamesNonFactor; // Initialize list of data frame column names
         GraphName = "plot1"; // Initialize selected group to connect
         GraphNames = new List<string> { "box_plot", "jitter", "violin" }; // Initialize list of groups to connect
         IsGroupToConnectVisible = false; // Initialize visibility state
-        OnFactorTextBoxGotFocusCommand = new RelayCommand(OnFactorTextBoxGotFocus);
+        SetColumnNamesAllCommand = new RelayCommand(SetColumnNamesAll);
+        SetColumnNamesFactorCommand = new RelayCommand(SetColumnNamesFactor);
+        SetColumnNamesNonFactorCommand = new RelayCommand(SetColumnNamesNonFactor);
     }
 
-    private void OnFactorTextBoxGotFocus()
+    private void SetColumnNamesAll()
     {
-        // Update the ColumnNames list
-        ColumnNames = new List<string> { "village", "field", "size", "fert", "variety", "yield", "fertgrp" };
+        ColumnNames = new List<string>(ColumnNamesFactor);
+        ColumnNames.AddRange(ColumnNamesNonFactor);
     }
-    
+
+    private void SetColumnNamesFactor()
+    {
+        ColumnNames = ColumnNamesFactor;
+    }
+
+    private void SetColumnNamesNonFactor()
+    {
+        ColumnNames = ColumnNamesNonFactor;
+    }
+
 }

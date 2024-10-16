@@ -1,4 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
+        xmlns:i="using:Avalonia.Xaml.Interactivity"
+        xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="RConceptXP.Views.Boxplot"
         xmlns:vm="clr-namespace:RConceptXP.ViewModels"
@@ -160,24 +162,68 @@
                 <TextBox
                     Classes="accent"
                     Margin="0 5 0 0"
+                    Name="singleVariableTextBox"
                     IsVisible="{Binding #singleOption.IsChecked}"
-                    />
+                    >
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior
+                            EventName="GotFocus"
+                            SourceObject="{Binding #singleVariableTextBox}">
+                            <ia:InvokeCommandAction
+                                Command="{Binding SetColumnNamesNonFactorCommand}"/>
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
                 <TextBox
                     Classes="accent"
                     Height="70"
                     Margin="0 5 0 0"
+                    Name="multipleVariableTextBox"
                     IsVisible="{Binding IsChecked, ElementName=multipleOption}"
-                    />
-                <!--<TextBlock Classes="accent" Height="60" Margin="0 5 0 0" Background="{StaticResource BackgroundTextBlock}" -->
+                    >
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior
+                            EventName="GotFocus"
+                            SourceObject="{Binding #multipleVariableTextBox}">
+                            <ia:InvokeCommandAction
+                                Command="{Binding SetColumnNamesNonFactorCommand}"/>
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
                 <TextBlock Text="Factor (Optional):" Margin="0 10 0 0"/>
-                <TextBox Classes="theme-soft accent" Width="100" HorizontalAlignment="Left" Margin="0 5 0 0"/>
+                <TextBox 
+                    Classes="theme-soft accent" 
+                    HorizontalAlignment="Left" 
+                    Margin="0 5 0 0"
+                    Name="factorTextBox"
+                    Width="100" 
+                    >
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior
+                            EventName="GotFocus"
+                            SourceObject="{Binding #factorTextBox}">
+                            <ia:InvokeCommandAction
+                                Command="{Binding SetColumnNamesAllCommand}"/>
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
                 <TextBlock Text="Second Factor (Optional):" Margin="0 5 0 0"/>
                 <TextBox
                     Classes="theme-soft accent"
                     HorizontalAlignment="Left"
                     Margin="0 5 0 0"
+                    Name="secondFactorTextBox"
                     Width="100"
-                    />
+                    >
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior
+                            EventName="GotFocus"
+                            SourceObject="{Binding #secondFactorTextBox}">
+                            <ia:InvokeCommandAction
+                                Command="{Binding SetColumnNamesFactorCommand}"/>
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
                 <CheckBox
                     Classes="accent"
                     Content="Variable Width"
@@ -285,8 +331,18 @@
                 Grid.Column="2" 
                 Height="25" 
                 Margin="0 5 0 0"
+                Name="facetByTextBox"
                 Width="90"
-                />
+                >
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior
+                            EventName="GotFocus"
+                            SourceObject="{Binding #facetByTextBox}">
+                            <ia:InvokeCommandAction
+                                Command="{Binding SetColumnNamesFactorCommand}"/>
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
             <ComboBox 
                 Classes="theme-soft accent" 
                 Grid.Row="1" 
