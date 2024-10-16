@@ -13,7 +13,7 @@ public partial class Boxplot : Window
         InitializeComponent();
         DataContext = new BoxplotViewModel();
 
-        AutoCompleteBox saveGraphComboBox = this.FindControl<AutoCompleteBox>("SaveGraphAutoCompleteBox") ?? throw new Exception("Cannot find save graph auto-complete box by name");
+        AutoCompleteBox saveGraphAutoComplete = this.FindControl<AutoCompleteBox>("SaveGraphAutoCompleteBox") ?? throw new Exception("Cannot find save graph auto-complete box by name");
         //todo saveGraphComboBox.SelectedIndex = 0;
     }
 
