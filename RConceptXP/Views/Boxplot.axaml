@@ -163,6 +163,7 @@
                     Classes="accent"
                     Margin="0 5 0 0"
                     Name="singleVariableTextBox"
+                    IsReadOnly="True"
                     IsVisible="{Binding #singleOption.IsChecked}"
                     >
                     <i:Interaction.Behaviors>
@@ -170,7 +171,8 @@
                             EventName="GotFocus"
                             SourceObject="{Binding #singleVariableTextBox}">
                             <ia:InvokeCommandAction
-                                Command="{Binding SetColumnNamesNonFactorCommand}"/>
+                                Command="{Binding SingleVariableGotFocusCommand}"
+                                CommandParameter="{Binding ElementName=singleVariableTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
@@ -179,6 +181,7 @@
                     Height="70"
                     Margin="0 5 0 0"
                     Name="multipleVariableTextBox"
+                    IsReadOnly="True"
                     IsVisible="{Binding IsChecked, ElementName=multipleOption}"
                     >
                     <i:Interaction.Behaviors>
@@ -186,7 +189,8 @@
                             EventName="GotFocus"
                             SourceObject="{Binding #multipleVariableTextBox}">
                             <ia:InvokeCommandAction
-                                Command="{Binding SetColumnNamesNonFactorCommand}"/>
+                                Command="{Binding MultipleVariableGotFocusCommand}"
+                                CommandParameter="{Binding ElementName=multipleVariableTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
@@ -194,6 +198,7 @@
                 <TextBox 
                     Classes="theme-soft accent" 
                     HorizontalAlignment="Left" 
+                    IsReadOnly="True"
                     Margin="0 5 0 0"
                     Name="factorTextBox"
                     Width="100" 
@@ -203,7 +208,8 @@
                             EventName="GotFocus"
                             SourceObject="{Binding #factorTextBox}">
                             <ia:InvokeCommandAction
-                                Command="{Binding SetColumnNamesAllCommand}"/>
+                                Command="{Binding FactorGotFocusCommand}"
+                                CommandParameter="{Binding ElementName=factorTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
@@ -211,6 +217,7 @@
                 <TextBox
                     Classes="theme-soft accent"
                     HorizontalAlignment="Left"
+                    IsReadOnly="True"
                     Margin="0 5 0 0"
                     Name="secondFactorTextBox"
                     Width="100"
@@ -220,7 +227,8 @@
                             EventName="GotFocus"
                             SourceObject="{Binding #secondFactorTextBox}">
                             <ia:InvokeCommandAction
-                                Command="{Binding SetColumnNamesFactorCommand}"/>
+                                Command="{Binding SecondFactorGotFocusCommand}"
+                                CommandParameter="{Binding ElementName=secondFactorTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
@@ -330,6 +338,7 @@
                 Grid.Row="1" 
                 Grid.Column="2" 
                 Height="25" 
+                IsReadOnly="True"
                 Margin="0 5 0 0"
                 Name="facetByTextBox"
                 Width="90"
@@ -339,7 +348,8 @@
                             EventName="GotFocus"
                             SourceObject="{Binding #facetByTextBox}">
                             <ia:InvokeCommandAction
-                                Command="{Binding SetColumnNamesFactorCommand}"/>
+                                Command="{Binding FacetByGotFocusCommand}"
+                                CommandParameter="{Binding ElementName=facetByTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
