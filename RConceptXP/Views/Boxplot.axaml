@@ -83,7 +83,8 @@
                         </StackPanel>
                         <StackPanel Margin="10 0 0 0">
                             <SplitButton 
-                                Classes="accent" 
+                                Classes="accent"
+                                Command="{Binding OnSelectorAddClickCommand}"
                                 Content="Add" 
                                 IsEnabled="{Binding !!ColumnNames.Count}"
                                 Margin="0 50 0 0">
@@ -429,7 +430,6 @@
             <Button Classes="accent" Content="Help" HorizontalAlignment="Left" Width="60"/>
             <SplitButton 
                 Classes="accent" 
-                Click="OnToScriptClick" 
                 Content="To Script" 
                 HorizontalAlignment="Right"
                 IsEnabled="False"

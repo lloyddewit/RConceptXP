@@ -29,13 +29,17 @@ public partial class BoxplotViewModel : ObservableObject
     public RelayCommand<TextBox> FactorGotFocusCommand { get; }
     public RelayCommand<TextBox> SecondFactorGotFocusCommand { get; }
     public RelayCommand<TextBox> FacetByGotFocusCommand { get; }
+    public RelayCommand OnSelectorAddClickCommand { get; }
+
 
     // todo hardcoded column names for testing
     private static readonly List<string> ColumnNamesAll = new List<string> { "village", "field", "size", "fert", "variety", "yield", "fertgrp" };
     private static readonly List<string> ColumnNamesFactor = new List<string> { "village", "variety", "fertgrp" };
     private static readonly List<string> ColumnNamesNonFactor = new List<string> { "field", "size", "fert", "yield" };
 
-    public BoxplotViewModel()
+    private SelectorMediator selectorMediator;
+
+    public BoxplotViewModel(Boxplot boxplot)
     {
         ColumnNames = ColumnNamesNonFactor; // Initialize list of data frame column names
         GraphName = "plot1"; // Initialize selected group to connect
@@ -46,6 +50,20 @@ public partial class BoxplotViewModel : ObservableObject
         FactorGotFocusCommand = new RelayCommand<TextBox>(FactorGotFocus);
         SecondFactorGotFocusCommand = new RelayCommand<TextBox>(SecondFactorGotFocus);
         FacetByGotFocusCommand = new RelayCommand<TextBox>(FacetByGotFocus);
+
+
+        List<TextBox> receivers = new List<TextBox>
+        {
+            boxplot.FindControl<TextBox>("singleVariableTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name"),
+            boxplot.FindControl<TextBox>("multipleVariableTextBox") ?? throw new Exception("Cannot find multipleVariableTextBox by name"),
+            boxplot.FindControl<TextBox>("factorTextBox") ?? throw new Exception("Cannot find factorTextBox by name"),
+            boxplot.FindControl<TextBox>("secondFactorTextBox") ?? throw new Exception("Cannot find secondFactorTextBox by name"),
+            boxplot.FindControl<TextBox>("facetByTextBox") ?? throw new Exception("Cannot find facetByTextBox by name")
+        };
+
+        selectorMediator = new SelectorMediator(receivers);
+
+        OnSelectorAddClickCommand = new RelayCommand(OnSelectorAddClick);
     }
 
     private void SingleVariableGotFocus(TextBox? receiver)
@@ -110,6 +128,11 @@ public partial class BoxplotViewModel : ObservableObject
         receiver.FontWeight = Avalonia.Media.FontWeight.Bold;
         receiver.Background = Avalonia.Media.Brushes.LightYellow;
         SetColumnNamesFactor();
+    }
+
+    private void OnSelectorAddClick()
+    {
+        selectorMediator.AddSelectedValueToReceiver("test");
     }
 
     private void SetColumnNamesAll()
