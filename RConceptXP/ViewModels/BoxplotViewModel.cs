@@ -13,7 +13,7 @@ namespace RConceptXP.ViewModels;
 public partial class BoxplotViewModel : ObservableObject
 {
     [ObservableProperty]
-    private List<string> columnNames; // List of data frame column names
+    private List<string> _columnNames; // List of data frame column names
 
     [ObservableProperty]
     private string graphName; // Selected group to connect
@@ -64,74 +64,45 @@ public partial class BoxplotViewModel : ObservableObject
         selectorMediator = new SelectorMediator(receivers);
 
         OnSelectorAddClickCommand = new RelayCommand(OnSelectorAddClick);
+
+        //// ensure initial input focus is the single variable text box
+        //TextBox singleVariableTextBox = boxplot.FindControl<TextBox>("singleVariableTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name");
+        //singleVariableTextBox.AttachedToVisualTree += (s, e) => singleVariableTextBox.Focus();
     }
 
-    private void SingleVariableGotFocus(TextBox? receiver)
+    private void SingleVariableGotFocus(TextBox receiver)
     {
-        //if receiver is null then raise exception
-        if (receiver == null)
-        {
-            throw new ArgumentNullException(nameof(receiver));
-        }
-
-        receiver.FontWeight = Avalonia.Media.FontWeight.Bold;
-        receiver.Background = Avalonia.Media.Brushes.LightYellow;
+        selectorMediator.SetFocus(receiver);
         SetColumnNamesNonFactor();
     }
 
-    private void MultipleVariableGotFocus(TextBox? receiver)
+    private void MultipleVariableGotFocus(TextBox receiver)
     {
-        //if receiver is null then raise exception
-        if (receiver == null)
-        {
-            throw new ArgumentNullException(nameof(receiver));
-        }
-
-        receiver.FontWeight = Avalonia.Media.FontWeight.Bold;
-        receiver.Background = Avalonia.Media.Brushes.LightYellow;
+        selectorMediator.SetFocus(receiver);
         SetColumnNamesNonFactor();
     }
 
-    private void FactorGotFocus(TextBox? receiver)
+    private void FactorGotFocus(TextBox receiver)
     {
-        //if receiver is null then raise exception
-        if (receiver == null)
-        {
-            throw new ArgumentNullException(nameof(receiver));
-        }
-
-        receiver.FontWeight = Avalonia.Media.FontWeight.Bold;
-        receiver.Background = Avalonia.Media.Brushes.LightYellow;
+        selectorMediator.SetFocus(receiver);
         SetColumnNamesAll();
     }
 
-    private void SecondFactorGotFocus(TextBox? receiver)
+    private void SecondFactorGotFocus(TextBox receiver)
     {
-        //if receiver is null then raise exception
-        if (receiver == null)
-        {
-            throw new ArgumentNullException(nameof(receiver));
-        }
-
-        receiver.FontWeight = Avalonia.Media.FontWeight.Bold;
-        receiver.Background = Avalonia.Media.Brushes.LightYellow;
+        selectorMediator.SetFocus(receiver);
         SetColumnNamesFactor();
     }
 
-    private void FacetByGotFocus(TextBox? receiver)
+    private void FacetByGotFocus(TextBox receiver)
     {
-        //if receiver is null then raise exception
-        if (receiver == null)
-        {
-            throw new ArgumentNullException(nameof(receiver));
-        }
-        receiver.FontWeight = Avalonia.Media.FontWeight.Bold;
-        receiver.Background = Avalonia.Media.Brushes.LightYellow;
+        selectorMediator.SetFocus(receiver);
         SetColumnNamesFactor();
     }
 
     private void OnSelectorAddClick()
     {
+       // ListBox boxplot.FindControl<TextBox>("singleVariableTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name")
         selectorMediator.AddSelectedValueToReceiver("test");
     }
 

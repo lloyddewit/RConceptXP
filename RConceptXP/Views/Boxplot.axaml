@@ -50,11 +50,14 @@
                                 <ComboBoxItem>survey</ComboBoxItem>
                             </ComboBox>
                             <ListBox 
+                                Background="{StaticResource BackgroundTextBlock}"
                                 Classes="accent" 
                                 Height="80" 
                                 ItemsSource="{Binding ColumnNames}"
                                 Margin="0 5 0 0" 
-                                Background="{StaticResource BackgroundTextBlock}"/>
+                                Name="columns"
+                                SelectionMode="AlwaysSelected,Single,Toggle"
+                                />
                             <SplitButton Classes="accent" Content="Plot Options">
                                 <SplitButton.Flyout>
                                     <MenuFlyout>
@@ -152,20 +155,40 @@
                         GroupName="VariablesType"
                         Name="singleOption"
                         IsChecked="True"
-                        />
+                        >
+                        <i:Interaction.Behaviors>
+                            <ia:EventTriggerBehavior
+                                EventName="Checked"
+                                SourceObject="{Binding #singleOption}">
+                                <ia:InvokeCommandAction
+                                    Command="{Binding SingleVariableGotFocusCommand}"
+                                    CommandParameter="{Binding ElementName=singleVariableTextBox}"/>
+                            </ia:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </RadioButton>
                     <RadioButton
                         Content="Multiple"
                         Classes="accent"
                         GroupName="VariablesType"
                         Name="multipleOption"
-                        />
+                        >
+                        <i:Interaction.Behaviors>
+                            <ia:EventTriggerBehavior
+                                EventName="Checked"
+                                SourceObject="{Binding #multipleOption}">
+                                <ia:InvokeCommandAction
+                                    Command="{Binding MultipleVariableGotFocusCommand}"
+                                    CommandParameter="{Binding ElementName=multipleVariableTextBox}"/>
+                            </ia:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </RadioButton>
                 </UniformGrid>
                 <TextBox
                     Classes="accent"
-                    Margin="0 5 0 0"
-                    Name="singleVariableTextBox"
                     IsReadOnly="True"
                     IsVisible="{Binding #singleOption.IsChecked}"
+                    Margin="0 5 0 0"
+                    Name="singleVariableTextBox"
                     >
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior

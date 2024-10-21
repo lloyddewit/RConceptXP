@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Media;
+using RConceptXP.Views;
 
 namespace RConceptXP.ViewModels;
 
 public class SelectorMediator
 {
-    public TextBox CurrentReceiver => _receivers[_textBoxWithFocus];
+    public TextBox CurrentReceiver => _receivers[_textBoxWithFocusIndex];
 
     private List<TextBox> _receivers { get; set; } = new List<TextBox>();
-    private int _textBoxWithFocus = 0;
+    private int _textBoxWithFocusIndex = 0;
     private Brush? _defaultBackground;
 
     public SelectorMediator(List<TextBox> receivers)
@@ -19,25 +20,39 @@ public class SelectorMediator
             throw new ArgumentException("receivers list is empty");
 
         _receivers.AddRange(receivers);
-        _textBoxWithFocus = 0;
-        _receivers[_textBoxWithFocus].Focus();
-        if (_receivers[_textBoxWithFocus].Background is null)
+        _textBoxWithFocusIndex = 0;
+        _receivers[_textBoxWithFocusIndex].Focus();
+        if (_receivers[_textBoxWithFocusIndex].Background is null)
             _defaultBackground = (Brush?)Brushes.White;
         else
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            _defaultBackground = (Brush)_receivers[_textBoxWithFocus].Background;
+            _defaultBackground = (Brush)_receivers[_textBoxWithFocusIndex].Background;
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+
+        // set input focus to first receiver
+        // Note: this statement uses a lambda expression to define an event handler for when the
+        // first receiver has been added to the visual tree (calling the Focus method before this
+        // event has no affect). Ask GitHub Copilot for more explanation.
+        _receivers[_textBoxWithFocusIndex].AttachedToVisualTree += (s, e) => _receivers[_textBoxWithFocusIndex].Focus();
     }
 
     public void AddSelectedValueToReceiver(string text)
     {
-        _receivers[_textBoxWithFocus].Text = text;
-        _receivers[_textBoxWithFocus].Background = _defaultBackground;
-        do
+        _receivers[_textBoxWithFocusIndex].Text = text;
+
+        int newTextBoxIndex = (_textBoxWithFocusIndex + 1) % _receivers.Count; 
+        while (!_receivers[newTextBoxIndex].IsVisible) //todo handle case where no receivers are visible
         {
-            _textBoxWithFocus = (_textBoxWithFocus + 1) % _receivers.Count;
-        } while (!_receivers[_textBoxWithFocus].IsVisible);
-        
-        _receivers[_textBoxWithFocus].Focus();
+            newTextBoxIndex = (newTextBoxIndex + 1) % _receivers.Count;
+        }
+
+        _receivers[newTextBoxIndex].Focus();
+    }
+
+    public void SetFocus(TextBox receiver)
+    {
+        _receivers[_textBoxWithFocusIndex].Background = _defaultBackground;
+        receiver.Background = Brushes.LightYellow;
+        _textBoxWithFocusIndex = _receivers.IndexOf(receiver);
     }
 }
