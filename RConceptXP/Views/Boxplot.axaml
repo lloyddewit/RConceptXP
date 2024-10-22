@@ -56,6 +56,7 @@
                                 ItemsSource="{Binding ColumnNames}"
                                 Margin="0 5 0 0" 
                                 Name="columns"
+                                Selection="{Binding Selection}"
                                 SelectionMode="AlwaysSelected,Single,Toggle"
                                 />
                             <SplitButton Classes="accent" Content="Plot Options">
@@ -93,8 +94,16 @@
                                 Margin="0 50 0 0">
                                 <SplitButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
-                                        <MenuItem Header="Add Selected" IsEnabled="False"/>
-                                        <MenuItem Header="Add All" IsEnabled="False"/>
+                                        <MenuItem 
+                                            Command="{Binding OnSelectorAddClickCommand}" 
+                                            Header="Add Selected"
+                                            />
+                                        <MenuItem
+                                            Command="{Binding OnSelectorAddAllClickCommand}"
+                                            Header="Add All" 
+                                            IsEnabled="False" 
+                                            Name="addAllOption"
+                                            />
                                         <Separator/>
                                         <MenuItem Header="Help"/>
                                     </MenuFlyout>

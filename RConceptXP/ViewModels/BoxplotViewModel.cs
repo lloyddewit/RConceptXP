@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Avalonia.Controls;
 using System;
+using Avalonia.Controls.Selection;
 
 namespace RConceptXP.ViewModels;
 
+//todo support empty list of columns (test that selector buttons enable/disable correctly and no crashes)
 public partial class BoxplotViewModel : ObservableObject
 {
     [ObservableProperty]
@@ -30,7 +32,9 @@ public partial class BoxplotViewModel : ObservableObject
     public RelayCommand<TextBox> SecondFactorGotFocusCommand { get; }
     public RelayCommand<TextBox> FacetByGotFocusCommand { get; }
     public RelayCommand OnSelectorAddClickCommand { get; }
+    public RelayCommand OnSelectorAddAllClickCommand { get; }
 
+    public SelectionModel<string> Selection { get; }
 
     // todo hardcoded column names for testing
     private static readonly List<string> ColumnNamesAll = new List<string> { "village", "field", "size", "fert", "variety", "yield", "fertgrp" };
@@ -38,6 +42,9 @@ public partial class BoxplotViewModel : ObservableObject
     private static readonly List<string> ColumnNamesNonFactor = new List<string> { "field", "size", "fert", "yield" };
 
     private SelectorMediator selectorMediator;
+
+    private ListBox columnsListBox;
+    private MenuItem addAllOption;
 
     public BoxplotViewModel(Boxplot boxplot)
     {
@@ -64,6 +71,12 @@ public partial class BoxplotViewModel : ObservableObject
         selectorMediator = new SelectorMediator(receivers);
 
         OnSelectorAddClickCommand = new RelayCommand(OnSelectorAddClick);
+        OnSelectorAddAllClickCommand = new RelayCommand(OnSelectorAddAllClick);
+
+        Selection = new SelectionModel<string>();
+
+        columnsListBox = boxplot.FindControl<ListBox>("columns") ?? throw new Exception("Cannot find columns ListBox by name");
+        addAllOption = boxplot.FindControl<MenuItem>("addAllOption") ?? throw new Exception("Cannot find addAllOption MenuItem by name");
 
         //// ensure initial input focus is the single variable text box
         //TextBox singleVariableTextBox = boxplot.FindControl<TextBox>("singleVariableTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name");
@@ -74,36 +87,54 @@ public partial class BoxplotViewModel : ObservableObject
     {
         selectorMediator.SetFocus(receiver);
         SetColumnNamesNonFactor();
+        columnsListBox.SelectionMode = SelectionMode.Single | SelectionMode.AlwaysSelected | SelectionMode.Toggle;
+        addAllOption.IsEnabled = false;
     }
 
     private void MultipleVariableGotFocus(TextBox receiver)
     {
         selectorMediator.SetFocus(receiver);
         SetColumnNamesNonFactor();
+        columnsListBox.SelectionMode = SelectionMode.Multiple | SelectionMode.AlwaysSelected | SelectionMode.Toggle;
+        addAllOption.IsEnabled = true;
     }
 
     private void FactorGotFocus(TextBox receiver)
     {
         selectorMediator.SetFocus(receiver);
         SetColumnNamesAll();
+        columnsListBox.SelectionMode = SelectionMode.Single | SelectionMode.AlwaysSelected | SelectionMode.Toggle;
+        addAllOption.IsEnabled = false;
     }
 
     private void SecondFactorGotFocus(TextBox receiver)
     {
         selectorMediator.SetFocus(receiver);
         SetColumnNamesFactor();
+        columnsListBox.SelectionMode = SelectionMode.Single | SelectionMode.AlwaysSelected | SelectionMode.Toggle;
+        addAllOption.IsEnabled = false;
     }
 
     private void FacetByGotFocus(TextBox receiver)
     {
         selectorMediator.SetFocus(receiver);
         SetColumnNamesFactor();
+        columnsListBox.SelectionMode = SelectionMode.Single | SelectionMode.AlwaysSelected | SelectionMode.Toggle;
+        addAllOption.IsEnabled = false;
     }
 
     private void OnSelectorAddClick()
     {
-       // ListBox boxplot.FindControl<TextBox>("singleVariableTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name")
-        selectorMediator.AddSelectedValueToReceiver("test");
+        string selectedValue = Selection.SelectedItem ?? throw new Exception("Selected value in column selector list is null");
+        IReadOnlyList<string?> selectedItems = Selection.SelectedItems;
+        selectorMediator.AddSelectedValueToReceiver(selectedItems);
+    }
+
+    private void OnSelectorAddAllClick()
+    {
+        Selection.SelectAll();
+        IReadOnlyList<string?> selectedItems = Selection.SelectedItems;
+        selectorMediator.AddSelectedValueToReceiver(selectedItems);
     }
 
     private void SetColumnNamesAll()

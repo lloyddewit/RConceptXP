@@ -36,8 +36,10 @@ public class SelectorMediator
         _receivers[_textBoxWithFocusIndex].AttachedToVisualTree += (s, e) => _receivers[_textBoxWithFocusIndex].Focus();
     }
 
-    public void AddSelectedValueToReceiver(string text)
+    public void AddSelectedValueToReceiver(IReadOnlyList<string?> items)
     {
+        //convert items to newline separated string
+        string text = string.Join(Environment.NewLine, items);
         _receivers[_textBoxWithFocusIndex].Text = text;
 
         int newTextBoxIndex = (_textBoxWithFocusIndex + 1) % _receivers.Count; 
