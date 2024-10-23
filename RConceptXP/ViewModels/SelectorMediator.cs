@@ -43,7 +43,7 @@ public class SelectorMediator
         _receivers[_textBoxWithFocusIndex].Text = text;
 
         int newTextBoxIndex = (_textBoxWithFocusIndex + 1) % _receivers.Count; 
-        while (!_receivers[newTextBoxIndex].IsVisible) //todo handle case where no receivers are visible
+        while (!_receivers[newTextBoxIndex].IsVisible || !_receivers[newTextBoxIndex].IsEnabled) //todo handle case where no receivers are visible
         {
             newTextBoxIndex = (newTextBoxIndex + 1) % _receivers.Count;
         }

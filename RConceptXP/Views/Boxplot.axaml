@@ -231,6 +231,7 @@
                 <TextBox 
                     Classes="theme-soft accent" 
                     HorizontalAlignment="Left" 
+                    IsEnabled="{Binding #singleOption.IsChecked}"
                     IsReadOnly="True"
                     Margin="0 5 0 0"
                     Name="factorTextBox"

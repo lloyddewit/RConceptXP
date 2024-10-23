@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 using Avalonia.Controls;
 using System;
 using Avalonia.Controls.Selection;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 
 namespace RConceptXP.ViewModels;
 
@@ -45,6 +47,7 @@ public partial class BoxplotViewModel : ObservableObject
 
     private ListBox columnsListBox;
     private MenuItem addAllOption;
+    private TextBox factorTextBox;
 
     public BoxplotViewModel(Boxplot boxplot)
     {
@@ -77,6 +80,17 @@ public partial class BoxplotViewModel : ObservableObject
 
         columnsListBox = boxplot.FindControl<ListBox>("columns") ?? throw new Exception("Cannot find columns ListBox by name");
         addAllOption = boxplot.FindControl<MenuItem>("addAllOption") ?? throw new Exception("Cannot find addAllOption MenuItem by name");
+        TextBox singleVariableTextBox = boxplot.FindControl<TextBox>("singleVariableTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name");
+        TextBox multipleVariableTextBox = boxplot.FindControl<TextBox>("multipleVariableTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name");
+        factorTextBox = boxplot.FindControl<TextBox>("factorTextBox") ?? throw new Exception("Cannot find factor textBox by name");
+        TextBox secondFactorTextBox = boxplot.FindControl<TextBox>("secondFactorTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name");
+        TextBox facetByTextBox = boxplot.FindControl<TextBox>("facetByTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name");
+
+        singleVariableTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown, RoutingStrategies.Tunnel); // Use AddHandler with RoutingStrategies.Tunnel
+        multipleVariableTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown, RoutingStrategies.Tunnel); // Use AddHandler with RoutingStrategies.Tunnel
+        factorTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown, RoutingStrategies.Tunnel); // Use AddHandler with RoutingStrategies.Tunnel
+        secondFactorTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown, RoutingStrategies.Tunnel); // Use AddHandler with RoutingStrategies.Tunnel
+        facetByTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown, RoutingStrategies.Tunnel); // Use AddHandler with RoutingStrategies.Tunnel
 
         //// ensure initial input focus is the single variable text box
         //TextBox singleVariableTextBox = boxplot.FindControl<TextBox>("singleVariableTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name");
@@ -97,6 +111,7 @@ public partial class BoxplotViewModel : ObservableObject
         SetColumnNamesNonFactor();
         columnsListBox.SelectionMode = SelectionMode.Multiple | SelectionMode.AlwaysSelected | SelectionMode.Toggle;
         addAllOption.IsEnabled = true;
+        factorTextBox.Text = "";
     }
 
     private void FactorGotFocus(TextBox receiver)
@@ -154,5 +169,16 @@ public partial class BoxplotViewModel : ObservableObject
     {
         ColumnNames = ColumnNamesNonFactor;
         // Additional logic using textBlock if needed
+    }
+
+    private void OnReceiverKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (sender is TextBox textBox)
+        {
+            if (e.Key == Key.Delete || e.Key == Key.Back)
+            {
+                textBox.Clear();
+            }
+        }
     }
 }
