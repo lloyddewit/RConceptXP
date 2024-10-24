@@ -170,7 +170,7 @@
                                 EventName="Checked"
                                 SourceObject="{Binding #singleOption}">
                                 <ia:InvokeCommandAction
-                                    Command="{Binding SingleVariableGotFocusCommand}"
+                                    Command="{Binding OnReceiverGotFocusCommand}"
                                     CommandParameter="{Binding ElementName=singleVariableTextBox}"/>
                             </ia:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
@@ -186,7 +186,7 @@
                                 EventName="Checked"
                                 SourceObject="{Binding #multipleOption}">
                                 <ia:InvokeCommandAction
-                                    Command="{Binding MultipleVariableGotFocusCommand}"
+                                    Command="{Binding OnReceiverGotFocusCommand}"
                                     CommandParameter="{Binding ElementName=multipleVariableTextBox}"/>
                             </ia:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
@@ -204,7 +204,7 @@
                             EventName="GotFocus"
                             SourceObject="{Binding #singleVariableTextBox}">
                             <ia:InvokeCommandAction
-                                Command="{Binding SingleVariableGotFocusCommand}"
+                                Command="{Binding OnReceiverGotFocusCommand}"
                                 CommandParameter="{Binding ElementName=singleVariableTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
@@ -222,7 +222,7 @@
                             EventName="GotFocus"
                             SourceObject="{Binding #multipleVariableTextBox}">
                             <ia:InvokeCommandAction
-                                Command="{Binding MultipleVariableGotFocusCommand}"
+                                Command="{Binding OnReceiverGotFocusCommand}"
                                 CommandParameter="{Binding ElementName=multipleVariableTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
@@ -242,7 +242,7 @@
                             EventName="GotFocus"
                             SourceObject="{Binding #factorTextBox}">
                             <ia:InvokeCommandAction
-                                Command="{Binding FactorGotFocusCommand}"
+                                Command="{Binding OnReceiverGotFocusCommand}"
                                 CommandParameter="{Binding ElementName=factorTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
@@ -261,7 +261,7 @@
                             EventName="GotFocus"
                             SourceObject="{Binding #secondFactorTextBox}">
                             <ia:InvokeCommandAction
-                                Command="{Binding SecondFactorGotFocusCommand}"
+                                Command="{Binding OnReceiverGotFocusCommand}"
                                 CommandParameter="{Binding ElementName=secondFactorTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
@@ -382,7 +382,7 @@
                             EventName="GotFocus"
                             SourceObject="{Binding #facetByTextBox}">
                             <ia:InvokeCommandAction
-                                Command="{Binding FacetByGotFocusCommand}"
+                                Command="{Binding OnReceiverGotFocusCommand}"
                                 CommandParameter="{Binding ElementName=facetByTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
@@ -447,7 +447,7 @@
                 Classes="accent" 
                 Content="OK" 
                 HorizontalAlignment="Left" 
-                IsEnabled="False" 
+                IsEnabled="{Binding #singleVariableTextBox.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" 
                 Margin="0 0 0 0"
                 Width="80"
                 >
@@ -465,7 +465,7 @@
                 Classes="accent" 
                 Content="To Script" 
                 HorizontalAlignment="Right"
-                IsEnabled="False"
+                IsEnabled="{Binding #singleVariableTextBox.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                 Margin="30 0 0 0"
                 Width="80"
                 >
