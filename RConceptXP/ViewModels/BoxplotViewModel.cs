@@ -21,18 +21,13 @@ public partial class BoxplotViewModel : ObservableObject
     public SelectionModel<string> Selection { get; }
 
     [ObservableProperty]
-    private List<string> _columnNames; // List of data frame column names
+    private List<string> _columnNames = [];
 
     [ObservableProperty]
-    private string _graphName; // Selected group to connect
+    private string _graphName;
 
     [ObservableProperty]
     private List<string> _graphNames; // List of groups to connect
-
-    // todo hardcoded column names for testing
-    private static readonly List<string> ColumnNamesAll = new List<string> { "village", "field", "size", "fert", "variety", "yield", "fertgrp" };
-    private static readonly List<string> ColumnNamesFactor = new List<string> { "village", "variety", "fertgrp" };
-    private static readonly List<string> ColumnNamesNonFactor = new List<string> { "field", "size", "fert", "yield" };
 
     private SelectorMediator _selectorMediator;
 
@@ -69,7 +64,6 @@ public partial class BoxplotViewModel : ObservableObject
 
 
         // initialize selector controls
-        ColumnNames = ColumnNamesNonFactor;
         OnSelectorAddClickCommand = new RelayCommand(OnSelectorAddClick);
         OnSelectorAddAllClickCommand = new RelayCommand(OnSelectorAddAllClick);
         Selection = new SelectionModel<string>();
@@ -93,6 +87,10 @@ public partial class BoxplotViewModel : ObservableObject
     private void OnReceiverGotFocus(TextBox? receiver)
     {
         ArgumentNullException.ThrowIfNull(receiver, nameof(receiver));
+
+        // todo hardcoded column names for testing
+        List<string> ColumnNamesFactor = new() { "village", "variety", "fertgrp" };
+        List<string> ColumnNamesNonFactor = new() { "field", "size", "fert", "yield" };
 
         _selectorMediator.SetFocus(receiver);
         if (receiver == _factorTextBox)
