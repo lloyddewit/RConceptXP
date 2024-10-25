@@ -18,7 +18,10 @@ public partial class BoxplotViewModel : ObservableObject
     public RelayCommand OnSelectorAddAllClickCommand { get; }
     public RelayCommand OnSelectorAddClickCommand { get; }
 
+    public bool IsOkEnabled => (IsSingle && !string.IsNullOrEmpty(SingleVariable)) ||
+                               (!IsSingle && !string.IsNullOrEmpty(MultipleVariables)); 
     public SelectionModel<string> Selection { get; }
+
 
     [ObservableProperty]
     private List<string> _columnNames = [];
@@ -28,6 +31,19 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private List<string> _graphNames; // List of groups to connect
+
+    [ObservableProperty]
+    private bool _isSingle;
+    partial void OnIsSingleChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
+
+    [ObservableProperty]
+    private string _singleVariable;
+    partial void OnSingleVariableChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
+
+    [ObservableProperty]
+    private string _multipleVariables;
+    partial void OnMultipleVariablesChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
+
 
     private SelectorMediator _selectorMediator;
 
@@ -45,22 +61,34 @@ public partial class BoxplotViewModel : ObservableObject
         // initialize receiver controls
         OnReceiverGotFocusCommand = new RelayCommand<TextBox>(OnReceiverGotFocus);
 
-        _columnsListBox = boxplot.FindControl<ListBox>("columns") ?? throw new Exception("Cannot find columns ListBox by name");
-        _addAllOption = boxplot.FindControl<MenuItem>("addAllOption") ?? throw new Exception("Cannot find addAllOption MenuItem by name");
-        _singleVariableTextBox = boxplot.FindControl<TextBox>("singleVariableTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name");
-        _multipleVariableTextBox = boxplot.FindControl<TextBox>("multipleVariableTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name");
-        _factorTextBox = boxplot.FindControl<TextBox>("factorTextBox") ?? throw new Exception("Cannot find factor textBox by name");
-        _secondFactorTextBox = boxplot.FindControl<TextBox>("secondFactorTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name");
-        _facetByTextBox = boxplot.FindControl<TextBox>("facetByTextBox") ?? throw new Exception("Cannot find singleVariableTextBox by name");
+        _columnsListBox = boxplot.FindControl<ListBox>("columns") ?? 
+            throw new Exception("Cannot find columns ListBox by name");
+        _addAllOption = boxplot.FindControl<MenuItem>("addAllOption") ?? 
+            throw new Exception("Cannot find addAllOption MenuItem by name");
+        _singleVariableTextBox = boxplot.FindControl<TextBox>("singleVariableTextBox") ?? 
+            throw new Exception("Cannot find singleVariableTextBox by name");
+        _multipleVariableTextBox = boxplot.FindControl<TextBox>("multipleVariableTextBox") ?? 
+            throw new Exception("Cannot find singleVariableTextBox by name");
+        _factorTextBox = boxplot.FindControl<TextBox>("factorTextBox") ?? 
+            throw new Exception("Cannot find factor textBox by name");
+        _secondFactorTextBox = boxplot.FindControl<TextBox>("secondFactorTextBox") ?? 
+            throw new Exception("Cannot find singleVariableTextBox by name");
+        _facetByTextBox = boxplot.FindControl<TextBox>("facetByTextBox") ?? 
+            throw new Exception("Cannot find singleVariableTextBox by name");
 
         // Note: We need to catch delete and backspace key presses in receivers so that the user
         // can clear the receiver. There are simpler ways to catch most key events in Avalonia,
         // but delete and backspace are a special case and require a Tunnel routing strategy.
-        _singleVariableTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown, RoutingStrategies.Tunnel);
-        _multipleVariableTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown, RoutingStrategies.Tunnel);
-        _factorTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown, RoutingStrategies.Tunnel);
-        _secondFactorTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown, RoutingStrategies.Tunnel);
-        _facetByTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown, RoutingStrategies.Tunnel);
+        _singleVariableTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown, 
+                                          RoutingStrategies.Tunnel);
+        _multipleVariableTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown,
+                                          RoutingStrategies.Tunnel);
+        _factorTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown,
+                                          RoutingStrategies.Tunnel);
+        _secondFactorTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown,
+                                          RoutingStrategies.Tunnel);
+        _facetByTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown,
+                                          RoutingStrategies.Tunnel);
 
 
         // initialize selector controls
@@ -82,6 +110,11 @@ public partial class BoxplotViewModel : ObservableObject
         // intitialize graph name autocomplete box
         GraphName = "plot1"; // Initialize selected group to connect
         GraphNames = new List<string> { "box_plot", "jitter", "violin" }; // Initialize list of groups to connect
+
+        // initialize other binding variables
+        IsSingle = true;
+        SingleVariable = "";
+        MultipleVariables = "";
     }
 
     private void OnReceiverGotFocus(TextBox? receiver)

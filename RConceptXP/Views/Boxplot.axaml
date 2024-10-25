@@ -162,8 +162,8 @@
                         Classes="accent"
                         Content="Single"
                         GroupName="VariablesType"
+                        IsChecked="{Binding IsSingle}"
                         Name="singleOption"
-                        IsChecked="True"
                         >
                         <i:Interaction.Behaviors>
                             <ia:EventTriggerBehavior
@@ -179,6 +179,7 @@
                         Content="Multiple"
                         Classes="accent"
                         GroupName="VariablesType"
+                        IsChecked="{Binding !IsSingle}"
                         Name="multipleOption"
                         >
                         <i:Interaction.Behaviors>
@@ -198,6 +199,7 @@
                     IsVisible="{Binding #singleOption.IsChecked}"
                     Margin="0 5 0 0"
                     Name="singleVariableTextBox"
+                    Text="{Binding SingleVariable}"
                     >
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior
@@ -212,10 +214,11 @@
                 <TextBox
                     Classes="accent"
                     Height="70"
-                    Margin="0 5 0 0"
-                    Name="multipleVariableTextBox"
                     IsReadOnly="True"
                     IsVisible="{Binding IsChecked, ElementName=multipleOption}"
+                    Margin="0 5 0 0"
+                    Name="multipleVariableTextBox"
+                    Text="{Binding MultipleVariables}"
                     >
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior
@@ -447,7 +450,7 @@
                 Classes="accent" 
                 Content="OK" 
                 HorizontalAlignment="Left" 
-                IsEnabled="{Binding #singleVariableTextBox.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" 
+                IsEnabled="{Binding IsOkEnabled, Mode=OneWay}" 
                 Margin="0 0 0 0"
                 Width="80"
                 >
@@ -465,7 +468,7 @@
                 Classes="accent" 
                 Content="To Script" 
                 HorizontalAlignment="Right"
-                IsEnabled="{Binding #singleVariableTextBox.Text, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                IsEnabled="{Binding IsOkEnabled}"
                 Margin="30 0 0 0"
                 Width="80"
                 >
