@@ -18,12 +18,17 @@ public partial class BoxplotViewModel : ObservableObject
     public RelayCommand OnSelectorAddAllClickCommand { get; }
     public RelayCommand OnSelectorAddClickCommand { get; }
 
-    public bool IsOkEnabled => GetIsOkEnabled(); 
+    public bool IsOkEnabled => GetIsOkEnabled();
+    public bool IsWidthEnabled => GetIsWidthEnabled();
     public SelectionModel<string> Selection { get; }
 
 
     [ObservableProperty]
     private List<string> _columnNames = [];
+
+    [ObservableProperty]
+    private string _factor;
+    partial void OnFactorChanged(string value) => OnPropertyChanged(nameof(IsWidthEnabled));
 
     [ObservableProperty]
     private string _graphName;
@@ -116,6 +121,7 @@ public partial class BoxplotViewModel : ObservableObject
         GraphNames = new List<string> { "box_plot", "jitter", "violin" }; // Initialize list of groups to connect
 
         // initialize other binding variables
+        Factor = "";
         IsSaveGraph = true;
         IsSingle = true;
         SingleVariable = "";
@@ -133,19 +139,31 @@ public partial class BoxplotViewModel : ObservableObject
             return !string.IsNullOrEmpty(MultipleVariables);
     }
 
+    private bool GetIsWidthEnabled()
+    {
+        if (string.IsNullOrEmpty(Factor))
+            return false;
+
+        // todo hard-coded column names for testing
+        if (Factor == "village" || Factor == "variety" || Factor == "fertgrp")
+            return false;
+
+        return true;
+    }
+
     private void OnReceiverGotFocus(TextBox? receiver)
     {
         ArgumentNullException.ThrowIfNull(receiver, nameof(receiver));
 
         // todo hardcoded column names for testing
+        List<string> ColumnNamesAll= new() { "village", "field", "size", "fert", "variety", "yield", "fertgrp" };
         List<string> ColumnNamesFactor = new() { "village", "variety", "fertgrp" };
         List<string> ColumnNamesNonFactor = new() { "field", "size", "fert", "yield" };
 
         _selectorMediator.SetFocus(receiver);
         if (receiver == _factorTextBox)
         {
-            ColumnNames = new List<string>(ColumnNamesFactor);
-            ColumnNames.AddRange(ColumnNamesNonFactor);
+            ColumnNames = ColumnNamesAll;
         }
         else if (receiver == _secondFactorTextBox || receiver == _facetByTextBox)
             ColumnNames = ColumnNamesFactor;
