@@ -18,8 +18,7 @@ public partial class BoxplotViewModel : ObservableObject
     public RelayCommand OnSelectorAddAllClickCommand { get; }
     public RelayCommand OnSelectorAddClickCommand { get; }
 
-    public bool IsOkEnabled => (IsSingle && !string.IsNullOrEmpty(SingleVariable)) ||
-                               (!IsSingle && !string.IsNullOrEmpty(MultipleVariables)); 
+    public bool IsOkEnabled => GetIsOkEnabled(); 
     public SelectionModel<string> Selection { get; }
 
 
@@ -28,9 +27,14 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private string _graphName;
+    partial void OnGraphNameChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private List<string> _graphNames; // List of groups to connect
+
+    [ObservableProperty]
+    private bool _isSaveGraph;
+    partial void OnIsSaveGraphChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private bool _isSingle;
@@ -112,9 +116,21 @@ public partial class BoxplotViewModel : ObservableObject
         GraphNames = new List<string> { "box_plot", "jitter", "violin" }; // Initialize list of groups to connect
 
         // initialize other binding variables
+        IsSaveGraph = true;
         IsSingle = true;
         SingleVariable = "";
         MultipleVariables = "";
+    }
+
+    private bool GetIsOkEnabled()
+    {
+        if (IsSaveGraph && string.IsNullOrEmpty(GraphName))
+            return false;
+
+        if (IsSingle)
+            return !string.IsNullOrEmpty(SingleVariable);
+        else
+            return !string.IsNullOrEmpty(MultipleVariables);
     }
 
     private void OnReceiverGotFocus(TextBox? receiver)

@@ -410,6 +410,7 @@
             <CheckBox 
                 Classes="accent" 
                 Content="Save Graph" 
+                IsChecked="{Binding IsSaveGraph}"
                 Margin="0 5 0 0"
                 Name="isSaveGraph"
                 />
