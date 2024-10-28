@@ -90,7 +90,7 @@
                                 Classes="accent"
                                 Command="{Binding OnSelectorAddClickCommand}"
                                 Content="Add" 
-                                IsEnabled="{Binding !!ColumnNames.Count}"
+                                IsEnabled="{Binding !!#columns.ItemCount}"
                                 Margin="0 50 0 0">
                                 <SplitButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
@@ -148,7 +148,7 @@
                             Grid.Column="2"
                             Height="25"
                             TextAlignment="Right"
-                            IsEnabled="{Binding IsWidthEnabled}"
+                            IsEnabled="{Binding #isWidth.IsEnabled}"
                             IsVisible="{Binding #isWidth.IsChecked}"
                             Margin="5 0 0 0"
                             Text="0.25"
@@ -173,7 +173,7 @@
                                 SourceObject="{Binding #singleOption}">
                                 <ia:InvokeCommandAction
                                     Command="{Binding OnReceiverGotFocusCommand}"
-                                    CommandParameter="{Binding ElementName=singleVariableTextBox}"/>
+                                    CommandParameter="{Binding #singleVariableTextBox}"/>
                             </ia:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </RadioButton>
@@ -190,7 +190,7 @@
                                 SourceObject="{Binding #multipleOption}">
                                 <ia:InvokeCommandAction
                                     Command="{Binding OnReceiverGotFocusCommand}"
-                                    CommandParameter="{Binding ElementName=multipleVariableTextBox}"/>
+                                    CommandParameter="{Binding #multipleVariableTextBox}"/>
                             </ia:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </RadioButton>
@@ -209,7 +209,7 @@
                             SourceObject="{Binding #singleVariableTextBox}">
                             <ia:InvokeCommandAction
                                 Command="{Binding OnReceiverGotFocusCommand}"
-                                CommandParameter="{Binding ElementName=singleVariableTextBox}"/>
+                                CommandParameter="{Binding #singleVariableTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
@@ -217,7 +217,7 @@
                     Classes="accent"
                     Height="70"
                     IsReadOnly="True"
-                    IsVisible="{Binding IsChecked, ElementName=multipleOption}"
+                    IsVisible="{Binding #multipleOption}"
                     Margin="0 5 0 0"
                     Name="multipleVariableTextBox"
                     Text="{Binding MultipleVariables}"
@@ -228,7 +228,7 @@
                             SourceObject="{Binding #multipleVariableTextBox}">
                             <ia:InvokeCommandAction
                                 Command="{Binding OnReceiverGotFocusCommand}"
-                                CommandParameter="{Binding ElementName=multipleVariableTextBox}"/>
+                                CommandParameter="{Binding #multipleVariableTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
@@ -454,8 +454,9 @@
                 Classes="accent" 
                 Content="OK" 
                 HorizontalAlignment="Left" 
-                IsEnabled="{Binding IsOkEnabled, Mode=OneWay}" 
+                IsEnabled="{Binding IsOkEnabled}" 
                 Margin="0 0 0 0"
+                Name="ok"
                 Width="80"
                 >
                 <SplitButton.Flyout>
@@ -472,7 +473,7 @@
                 Classes="accent" 
                 Content="To Script" 
                 HorizontalAlignment="Right"
-                IsEnabled="{Binding IsOkEnabled}"
+                IsEnabled="{Binding #ok.IsEnabled}"
                 Margin="30 0 0 0"
                 Width="80"
                 >
