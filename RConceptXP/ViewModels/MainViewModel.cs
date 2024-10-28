@@ -2,12 +2,17 @@
 using RConceptXP.Views;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace RConceptXP.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
     public IRelayCommand OpenBoxplotCommand { get; }
+
+    [ObservableProperty]
+    private string toDoButton = "BoxPlot"; // Set the initial text for the button
+
 
     public MainViewModel()
     {
