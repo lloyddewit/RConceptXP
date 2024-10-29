@@ -31,11 +31,11 @@ public partial class BoxplotViewModel : ObservableObject
     partial void OnFactorChanged(string value) => OnPropertyChanged(nameof(IsWidthEnabled));
 
     [ObservableProperty]
-    private string _graphName;
-    partial void OnGraphNameChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
+    private string _saveName;
+    partial void OnSaveNameChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
-    private List<string> _graphNames; // List of groups to connect
+    private List<string> _saveNames;
 
     [ObservableProperty]
     private bool _isSaveGraph;
@@ -52,6 +52,79 @@ public partial class BoxplotViewModel : ObservableObject
     [ObservableProperty]
     private string _multipleVariables;
     partial void OnMultipleVariablesChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
+
+
+    [ObservableProperty]
+    private string _comment;
+
+    [ObservableProperty]
+    private string _dataFrame;
+
+    [ObservableProperty]
+    private string _facetBy;
+
+    [ObservableProperty]
+    private string _facetByType;
+
+    [ObservableProperty]
+    private string _inputSummaries;
+
+    [ObservableProperty]
+    private string _inputWidth;
+
+    [ObservableProperty]
+    private bool _isAddPoints;
+
+    [ObservableProperty]
+    private bool _isBoxPlot;
+
+    [ObservableProperty]
+    private bool _isBoxPlotExtra;
+
+    [ObservableProperty]
+    private bool _isComment;
+
+    [ObservableProperty]
+    private bool _isGroupToConnect;
+
+    [ObservableProperty]
+    private bool _isHorizontalBoxPlot;
+
+    [ObservableProperty]
+    private bool _isJitter;
+
+    [ObservableProperty]
+    private bool _isLegend;
+
+    [ObservableProperty]
+    private bool _isTufte;
+
+    [ObservableProperty]
+    private bool _isVarWidth;
+
+    [ObservableProperty]
+    private bool _isViolin;
+
+    [ObservableProperty]
+    private bool _isWidth;
+
+    [ObservableProperty]
+    private string _jitterExtra;
+
+    [ObservableProperty]
+    private string _legendPosition;
+
+    [ObservableProperty]
+    private string _secondFactor;
+
+    [ObservableProperty]
+    private string _transparency;
+
+    [ObservableProperty]
+    private string _width;
+
+    [ObservableProperty]
+    private string _widthExtra;
 
 
     private SelectorMediator _selectorMediator;
@@ -117,8 +190,8 @@ public partial class BoxplotViewModel : ObservableObject
         _selectorMediator = new SelectorMediator(receivers);
 
         // intitialize graph name autocomplete box
-        GraphName = "plot1"; // Initialize selected group to connect
-        GraphNames = new List<string> { "box_plot", "jitter", "violin" }; // Initialize list of groups to connect
+        SaveName = "plot1"; // Initialize selected group to connect
+        SaveNames = new List<string> { "box_plot", "jitter", "violin" }; // Initialize list of groups to connect
 
         // initialize other binding variables
         Factor = "";
@@ -126,11 +199,34 @@ public partial class BoxplotViewModel : ObservableObject
         IsSingle = true;
         SingleVariable = "";
         MultipleVariables = "";
+
+        Comment = "Dialog: Boxplot Options";
+        DataFrame = "survey"; // todo hard coded for testing
+        FacetBy = "";
+        FacetByType = "";
+        InputSummaries = "";
+        IsAddPoints = false;
+        IsBoxPlot = true;
+        IsBoxPlotExtra = false;
+        IsComment = true;
+        IsGroupToConnect = false;
+        IsHorizontalBoxPlot = false;
+        IsJitter = false;
+        IsLegend = false;
+        IsTufte = false;
+        IsVarWidth = false;
+        IsViolin = false;
+        JitterExtra = "0.20";
+        LegendPosition = "";
+        SecondFactor = "";
+        Transparency = "1.00";
+        Width = "0.25";
+        WidthExtra = "0.5";
     }
 
     private bool GetIsOkEnabled()
     {
-        if (IsSaveGraph && string.IsNullOrEmpty(GraphName))
+        if (IsSaveGraph && string.IsNullOrEmpty(SaveName))
             return false;
 
         if (IsSingle)

@@ -20,7 +20,7 @@
                 Content="Boxplot"
                 GroupName="BoxplotType" 
                 HorizontalAlignment="Right" 
-                IsChecked="True"
+                IsChecked="{Binding IsBoxPlot}"
                 Name="isBoxplot"
                 />
             <RadioButton 
@@ -28,6 +28,7 @@
                 Content="Jitter Plot" 
                 GroupName="BoxplotType" 
                 HorizontalAlignment="Center"
+                IsChecked="{Binding IsJitter}"
                 Name="isJitter"
                 />
             <RadioButton 
@@ -35,6 +36,7 @@
                 Content="Violin Plot" 
                 GroupName="BoxplotType" 
                 HorizontalAlignment="Left"
+                IsChecked="{Binding IsViolin}"
                 Name="isViolin"
                 />
         </UniformGrid>
@@ -151,7 +153,7 @@
                             IsEnabled="{Binding #isWidth.IsEnabled}"
                             IsVisible="{Binding #isWidth.IsChecked}"
                             Margin="5 0 0 0"
-                            Text="0.25"
+                            Text="{Binding Width}"
                             Width="60"
                             />
                     </StackPanel>
@@ -260,6 +262,7 @@
                     IsReadOnly="True"
                     Margin="0 5 0 0"
                     Name="secondFactorTextBox"
+                    Text="{Binding SecondFactor}"
                     Width="100"
                     >
                     <i:Interaction.Behaviors>
@@ -313,7 +316,7 @@
                 Margin="5 0 0 0" 
                 Maximum="1" 
                 Minimum="0" 
-                Value="0.5"
+                Value="{Binding WidthExtra}"
                 Width="60"/>
         </StackPanel>
 
@@ -332,7 +335,7 @@
                     Increment="0.01" 
                     Margin="5 0 0 0" 
                     Minimum="0" 
-                    Value="0.20"
+                    Value="{Binding JitterExtra}"
                     Width="60"
                     />
                 <TextBlock Text="Transparency:" Margin="10 0 0 0" VerticalAlignment="Center"/>
@@ -343,7 +346,7 @@
                     Margin="5 0 0 0" 
                     Maximum="1" 
                     Minimum="0"
-                    Value="1.00"
+                    Value="{Binding Transparency}"
                     Width="60"
                     />
             </StackPanel>
@@ -358,6 +361,7 @@
                 Content="Legend" 
                 Grid.Column="0" 
                 Grid.Row="1" 
+                IsChecked="{Binding IsLegend}"
                 Name="isLegend"
                 />
             <ComboBox
@@ -381,6 +385,7 @@
                 IsReadOnly="True"
                 Margin="0 5 0 0"
                 Name="facetByTextBox"
+                Text="{Binding FacetBy}"
                 Width="90"
                 >
                     <i:Interaction.Behaviors>
@@ -418,12 +423,12 @@
                 Name="isSaveGraph"
                 />
             <AutoCompleteBox
-                ItemsSource="{Binding GraphNames}"
+                ItemsSource="{Binding SaveNames}"
                 Classes="theme-soft accent"
                 IsVisible="{Binding #isSaveGraph.IsChecked}"
                 Margin="5 5 0 0"
                 Name="SaveGraphAutoCompleteBox"
-                Text="{Binding GraphName}"
+                Text="{Binding SaveName}"
                 VerticalAlignment="Center"
                 Width="220"
                 >
@@ -442,7 +447,7 @@
                 Classes="theme-soft accent" 
                 IsVisible="{Binding #isComment.IsChecked}"
                 Margin="5 0 0 0"
-                Text="Dialog: Boxplot Options"
+                Text="{Binding Comment}"
                 Width="227" 
                 />
         </StackPanel>
