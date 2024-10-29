@@ -217,7 +217,7 @@
                     Classes="accent"
                     Height="70"
                     IsReadOnly="True"
-                    IsVisible="{Binding #multipleOption}"
+                    IsVisible="{Binding #multipleOption.IsChecked}"
                     Margin="0 5 0 0"
                     Name="multipleVariableTextBox"
                     Text="{Binding MultipleVariables}"
