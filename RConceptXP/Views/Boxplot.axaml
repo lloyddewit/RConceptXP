@@ -476,6 +476,7 @@
             <Button Classes="accent" Content="Help" HorizontalAlignment="Left" Width="60"/>
             <SplitButton 
                 Classes="accent" 
+                Command="{Binding OnToScriptClickCommand}"
                 Content="To Script" 
                 HorizontalAlignment="Right"
                 IsEnabled="{Binding #ok.IsEnabled}"

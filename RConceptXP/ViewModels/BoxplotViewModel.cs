@@ -7,7 +7,9 @@ using CommunityToolkit.Mvvm.Input;
 using RConceptXP.Views;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection.Metadata;
+using static CommunityToolkit.Mvvm.ComponentModel.__Internals.__TaskExtensions.TaskAwaitableWithoutEndValidation;
 
 namespace RConceptXP.ViewModels;
 
@@ -17,6 +19,7 @@ public partial class BoxplotViewModel : ObservableObject
     public RelayCommand<TextBox> OnReceiverGotFocusCommand { get; }
     public RelayCommand OnSelectorAddAllClickCommand { get; }
     public RelayCommand OnSelectorAddClickCommand { get; }
+    public RelayCommand OnToScriptClickCommand { get; }
 
     public bool IsOkEnabled => GetIsOkEnabled();
     public bool IsWidthEnabled => GetIsWidthEnabled();
@@ -222,6 +225,8 @@ public partial class BoxplotViewModel : ObservableObject
         Transparency = "1.00";
         Width = "0.25";
         WidthExtra = "0.5";
+
+        OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
     }
 
     private bool GetIsOkEnabled()
@@ -302,5 +307,65 @@ public partial class BoxplotViewModel : ObservableObject
         string selectedValue = Selection.SelectedItem ?? throw new Exception("Selected value in column selector list is null");
         IReadOnlyList<string?> selectedItems = Selection.SelectedItems;
         _selectorMediator.AddSelectedValueToReceiver(selectedItems);
+    }
+    private void OnToScriptClick()
+    {
+        Dictionary<string, string> dataBindings = new Dictionary<string, string>
+        {
+            {"comment", Comment},
+            {"dataFrame", DataFrame},
+            {"facetBy", FacetBy},
+            {"facetByType", FacetByType},
+            {"inputSummaries", InputSummaries},
+            {"inputWidth", Width},
+            {"isAddPoints", IsBoxPlot.ToString()},
+            {"isBoxPlot", IsBoxPlot.ToString()},
+            {"isBoxPlotExtra", IsBoxPlotExtra.ToString()},
+            {"isComment", IsComment.ToString()},
+            {"isFactorFactor", GetIsWidthEnabled().ToString()},
+            {"isGroupToConnect", IsGroupToConnect.ToString()},
+            {"isHorizontalBoxPlot", IsHorizontalBoxPlot.ToString()},
+            {"isJitter", IsJitter.ToString()},
+            {"isSaveGraph", IsSaveGraph.ToString()},
+            {"isSingleVariable", IsSingle.ToString()},
+            {"isTufte", IsTufte.ToString()},
+            {"isVarWidth", IsVarWidth.ToString()},
+            {"isViolin", IsViolin.ToString()},
+            {"isWidth", IsVarWidth.ToString()},
+            {"jitter", "todo"}, //todo
+            {"jitterExtra", JitterExtra},
+            {"legendPosition", LegendPosition},
+            {"saveName", "todo"}, //todo
+            {"secondFactor", SecondFactor},
+            {"transparency", Transparency},
+            {"variableNames", MultipleVariables},
+            {"widthExtra", WidthExtra},
+            {"x", SingleVariable},
+            {"y", Factor}
+        };
+
+        string strExpected = "";
+        foreach (var kvp in dataBindings)
+        {
+            strExpected += $"Key: {kvp.Key}, Value: {kvp.Value}\n";
+        }
+
+        string strDesktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string strFilePath = Path.Combine(strDesktopPath, "tmp", "dictActual.txt");
+        strExpected = "\n\n\n" + strExpected;
+
+        if (File.Exists(strFilePath))
+        {
+            File.AppendAllText(strFilePath, strExpected);
+        }
+        else
+        {
+            string? directory = Path.GetDirectoryName(strFilePath);
+            if (directory != null)
+                Directory.CreateDirectory(directory);
+
+            File.WriteAllText(strFilePath, strExpected);
+        }
+
     }
 }
