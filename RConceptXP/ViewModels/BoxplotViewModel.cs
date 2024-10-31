@@ -8,8 +8,6 @@ using RConceptXP.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection.Metadata;
-using static CommunityToolkit.Mvvm.ComponentModel.__Internals.__TaskExtensions.TaskAwaitableWithoutEndValidation;
 
 namespace RConceptXP.ViewModels;
 
@@ -71,9 +69,6 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private string _inputSummaries;
-
-    [ObservableProperty]
-    private string _inputWidth;
 
     [ObservableProperty]
     private bool _isAddPoints;
@@ -139,6 +134,7 @@ public partial class BoxplotViewModel : ObservableObject
     private TextBox _multipleVariableTextBox;
     private TextBox _factorTextBox;
     private TextBox _secondFactorTextBox;
+    private ComboBox _facetByComboBox; //todo needed?
     private TextBox _facetByTextBox;
 
     public BoxplotViewModel(Boxplot boxplot)
@@ -153,13 +149,15 @@ public partial class BoxplotViewModel : ObservableObject
         _singleVariableTextBox = boxplot.FindControl<TextBox>("singleVariableTextBox") ?? 
             throw new Exception("Cannot find singleVariableTextBox by name");
         _multipleVariableTextBox = boxplot.FindControl<TextBox>("multipleVariableTextBox") ?? 
-            throw new Exception("Cannot find singleVariableTextBox by name");
+            throw new Exception("Cannot find multipleVariableTextBox by name");
         _factorTextBox = boxplot.FindControl<TextBox>("factorTextBox") ?? 
             throw new Exception("Cannot find factor textBox by name");
         _secondFactorTextBox = boxplot.FindControl<TextBox>("secondFactorTextBox") ?? 
-            throw new Exception("Cannot find singleVariableTextBox by name");
-        _facetByTextBox = boxplot.FindControl<TextBox>("facetByTextBox") ?? 
-            throw new Exception("Cannot find singleVariableTextBox by name");
+            throw new Exception("Cannot find secondFactorTextBox by name");
+        _facetByComboBox = boxplot.FindControl<ComboBox>("facetByComboBox") ??
+            throw new Exception("Cannot find facetByComboBox by name");
+        _facetByTextBox = boxplot.FindControl<TextBox>("facetByTextBox") ??
+            throw new Exception("Cannot find facetByTextBox by name");
 
         // Note: We need to catch delete and backspace key presses in receivers so that the user
         // can clear the receiver. There are simpler ways to catch most key events in Avalonia,
@@ -198,7 +196,7 @@ public partial class BoxplotViewModel : ObservableObject
 
         // initialize other binding variables
         Factor = "";
-        IsSaveGraph = true;
+        IsSaveGraph = false;
         IsSingle = true;
         SingleVariable = "";
         MultipleVariables = "";
@@ -206,7 +204,7 @@ public partial class BoxplotViewModel : ObservableObject
         Comment = "Dialog: Boxplot Options";
         DataFrame = "survey"; // todo hard coded for testing
         FacetBy = "";
-        FacetByType = "";
+        FacetByType = "Facet Wrap";
         InputSummaries = "";
         IsAddPoints = false;
         IsBoxPlot = true;
@@ -227,6 +225,11 @@ public partial class BoxplotViewModel : ObservableObject
         WidthExtra = "0.5";
 
         OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
+    }
+
+    private string BoolToUpperCaseString(bool value)
+    {
+        return value ? "TRUE" : "FALSE";
     }
 
     private bool GetIsOkEnabled()
@@ -310,53 +313,56 @@ public partial class BoxplotViewModel : ObservableObject
     }
     private void OnToScriptClick()
     {
+        //todo tidy up names and ordering
         Dictionary<string, string> dataBindings = new Dictionary<string, string>
         {
-            {"comment", Comment},
+            {"comment", "# " + Comment + "\n\n"},
             {"dataFrame", DataFrame},
             {"facetBy", FacetBy},
             {"facetByType", FacetByType},
             {"inputSummaries", InputSummaries},
             {"inputWidth", Width},
-            {"isAddPoints", IsBoxPlot.ToString()},
-            {"isBoxPlot", IsBoxPlot.ToString()},
-            {"isBoxPlotExtra", IsBoxPlotExtra.ToString()},
-            {"isComment", IsComment.ToString()},
-            {"isFactorFactor", GetIsWidthEnabled().ToString()},
-            {"isGroupToConnect", IsGroupToConnect.ToString()},
-            {"isHorizontalBoxPlot", IsHorizontalBoxPlot.ToString()},
-            {"isJitter", IsJitter.ToString()},
-            {"isSaveGraph", IsSaveGraph.ToString()},
-            {"isSingleVariable", IsSingle.ToString()},
-            {"isTufte", IsTufte.ToString()},
-            {"isVarWidth", IsVarWidth.ToString()},
-            {"isViolin", IsViolin.ToString()},
-            {"isWidth", IsVarWidth.ToString()},
-            {"jitter", "todo"}, //todo
+            {"isAddPoints", BoolToUpperCaseString(IsAddPoints)},
+            {"isBoxPlot", BoolToUpperCaseString(IsBoxPlot)},
+            {"isBoxPlotExtra", BoolToUpperCaseString(IsBoxPlotExtra)},
+            {"isComment", BoolToUpperCaseString(IsComment)},
+            {"isFactorFactor", BoolToUpperCaseString(GetIsWidthEnabled())},
+            {"isGroupToConnect", BoolToUpperCaseString(IsGroupToConnect)},
+            {"isHorizontalBoxPlot", BoolToUpperCaseString(IsHorizontalBoxPlot)},
+            {"isJitter", BoolToUpperCaseString(IsJitter)},
+            {"isSaveGraph", BoolToUpperCaseString(IsSaveGraph)},
+            {"isSingleVariable", BoolToUpperCaseString(IsSingle)},
+            {"isTufte", BoolToUpperCaseString(IsTufte)},
+            {"isVarWidth", BoolToUpperCaseString(IsVarWidth)},
+            {"isViolin", BoolToUpperCaseString(IsViolin)},
+            {"isWidth", BoolToUpperCaseString(IsVarWidth)},
+            {"jitter", ""}, //todo
             {"jitterExtra", JitterExtra},
             {"legendPosition", LegendPosition},
-            {"saveName", "todo"}, //todo
+            {"saveName", SaveName},
             {"secondFactor", SecondFactor},
             {"transparency", Transparency},
             {"variableNames", MultipleVariables},
             {"widthExtra", WidthExtra},
-            {"x", SingleVariable},
-            {"y", Factor}
+            {"x", Factor},
+            {"y", SingleVariable},
+            {"isLegend", BoolToUpperCaseString(IsLegend)}
         };
 
-        string strExpected = "";
+        //todo write dict to file for debugging -------
+        string dataBindingsSummary = "";
         foreach (var kvp in dataBindings)
         {
-            strExpected += $"Key: {kvp.Key}, Value: {kvp.Value}\n";
+            dataBindingsSummary += $"Key: {kvp.Key}, Value: {kvp.Value}\n";
         }
 
         string strDesktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         string strFilePath = Path.Combine(strDesktopPath, "tmp", "dictActual.txt");
-        strExpected = "\n\n\n" + strExpected;
+        dataBindingsSummary += "\n\n\n";
 
         if (File.Exists(strFilePath))
         {
-            File.AppendAllText(strFilePath, strExpected);
+            File.AppendAllText(strFilePath, dataBindingsSummary);
         }
         else
         {
@@ -364,8 +370,9 @@ public partial class BoxplotViewModel : ObservableObject
             if (directory != null)
                 Directory.CreateDirectory(directory);
 
-            File.WriteAllText(strFilePath, strExpected);
+            File.WriteAllText(strFilePath, dataBindingsSummary);
         }
+        //todo end -------
 
     }
 }
