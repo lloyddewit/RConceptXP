@@ -116,21 +116,27 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="0 10 0 0">
-                    <CheckBox Classes="accent" Content="Horizontal Plot"/>
+                    <CheckBox 
+                        Classes="accent" 
+                        Content="Horizontal Plot"
+                        IsChecked="{Binding IsHorizontalBoxPlot}"
+                        />
                     <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
                         <CheckBox 
                             Classes="accent" 
                             Content="Group to Connect"
+                            IsChecked="{Binding IsGroupToConnect}"
                             Name="groupToConnect"
                             />
                         <ComboBox 
                             Classes="theme-soft accent" 
                             IsVisible="{Binding #groupToConnect.IsChecked}" 
+                            ItemsSource="{Binding GroupToConnectSummaries}"
                             Margin="10 0 0 0" 
                             Width="70"
-                            SelectedIndex="0">
-                            <ComboBoxItem>mean</ComboBoxItem>
-                            <ComboBoxItem>median</ComboBoxItem>
+                            SelectedIndex="0"
+                            SelectedItem="{Binding GroupToConnectSummary, Mode=TwoWay}"
+                            >
                         </ComboBox>
                     </StackPanel>
                     <StackPanel 
@@ -278,6 +284,7 @@
                 <CheckBox
                     Classes="accent"
                     Content="Variable Width"
+                    IsChecked="{Binding IsVarWidth}"
                     Margin="0 5 0 0">
                     <CheckBox.IsVisible>
                         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -289,6 +296,7 @@
                 <CheckBox 
                     Classes="accent" 
                     Content="Tufte Boxplots" 
+                    IsChecked="{Binding IsTufte}"
                     IsVisible="{Binding #isBoxplot.IsChecked}"
                     Margin="0 5 0 0"
                     Name="isTufte"
@@ -324,7 +332,8 @@
         <StackPanel IsVisible="{Binding !#isJitter.IsChecked}" Orientation="Horizontal" Margin="0 5 0 0">
             <CheckBox 
                 Classes="accent" 
-                Content="Add Points"                
+                Content="Add Points"  
+                IsChecked="{Binding IsAddPoints}"
                 Name="isAddPoints"
                 />
             <StackPanel Orientation="Horizontal" IsVisible="{Binding #isAddPoints.IsChecked}" >
@@ -369,13 +378,10 @@
                 Grid.Column="1"
                 Grid.Row="1"
                 IsVisible="{Binding #isLegend.IsChecked}"
+                ItemsSource="{Binding LegendPositions}"
                 SelectedIndex="0"
+                SelectedItem="{Binding LegendPosition, Mode=TwoWay}"
                 >
-                <ComboBoxItem>None</ComboBoxItem>
-                <ComboBoxItem>Left</ComboBoxItem>
-                <ComboBoxItem>Right</ComboBoxItem>
-                <ComboBoxItem>Top</ComboBoxItem>
-                <ComboBoxItem>Bottom</ComboBoxItem>
             </ComboBox>
             <TextBox 
                 Classes="theme-soft accent" 
@@ -401,17 +407,14 @@
             <ComboBox 
                 Classes="theme-soft accent" 
                 Grid.Row="1" 
-                Grid.Column="3" 
+                Grid.Column="3"
+                ItemsSource="{Binding FacetByTypes}"
                 Margin="5 5 0 0"
                 Name="facetByComboBox"
-                SelectedItem="{Binding FacetByType}"
+                SelectedItem="{Binding FacetByType, Mode=TwoWay}"
                 SelectedIndex="0"
                 Width="90"
                 >
-                <ComboBoxItem>Facet Wrap</ComboBoxItem>
-                <ComboBoxItem>Facet Row</ComboBoxItem>
-                <ComboBoxItem>Facet Column</ComboBoxItem>
-                <ComboBoxItem>None</ComboBoxItem>
             </ComboBox>
         </Grid>
 

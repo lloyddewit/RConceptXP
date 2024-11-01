@@ -20,7 +20,7 @@ public partial class BoxplotViewModel : ObservableObject
     public RelayCommand OnToScriptClickCommand { get; }
 
     public bool IsOkEnabled => GetIsOkEnabled();
-    public bool IsWidthEnabled => GetIsWidthEnabled();
+    public bool IsWidthEnabled => GetIsFactorNumeric();
     public SelectionModel<string> Selection { get; }
 
 
@@ -68,6 +68,15 @@ public partial class BoxplotViewModel : ObservableObject
     private string _facetByType;
 
     [ObservableProperty]
+    private List<string> _facetByTypes;
+
+    [ObservableProperty]
+    private List<string> _groupToConnectSummaries;
+
+    [ObservableProperty]
+    private string _groupToConnectSummary;
+
+    [ObservableProperty]
     private string _inputSummaries;
 
     [ObservableProperty]
@@ -111,6 +120,9 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private string _legendPosition;
+
+    [ObservableProperty]
+    private List<string> _legendPositions;
 
     [ObservableProperty]
     private string _secondFactor;
@@ -204,7 +216,10 @@ public partial class BoxplotViewModel : ObservableObject
         Comment = "Dialog: Boxplot Options";
         DataFrame = "survey"; // todo hard coded for testing
         FacetBy = "";
-        FacetByType = "Facet Wrap";
+        FacetByTypes = new List<string> { "Facet Wrap", "Facet Row", "Facet Column", "None" };
+        FacetByType = FacetByTypes[0];
+        GroupToConnectSummaries = new List<string> { "mean", "median" };
+        GroupToConnectSummary = GroupToConnectSummaries[0];
         InputSummaries = "";
         IsAddPoints = false;
         IsBoxPlot = true;
@@ -218,7 +233,8 @@ public partial class BoxplotViewModel : ObservableObject
         IsVarWidth = false;
         IsViolin = false;
         JitterExtra = "0.20";
-        LegendPosition = "";
+        LegendPositions = new List<string> { "None", "Left", "Right", "Top", "Bottom" };
+        LegendPosition = LegendPositions[0];
         SecondFactor = "";
         Transparency = "1.00";
         Width = "0.25";
@@ -232,6 +248,26 @@ public partial class BoxplotViewModel : ObservableObject
         return value ? "TRUE" : "FALSE";
     }
 
+    private bool GetIsFactorFactor()
+    {
+        if (string.IsNullOrEmpty(Factor))
+            return false;
+
+        // todo hard-coded column names for testing
+        List<string> ColumnNamesFactor = new() { "village", "variety", "fertgrp" };
+        return ColumnNamesFactor.Contains(Factor);
+    }
+
+    private bool GetIsFactorNumeric()
+    {
+        if (string.IsNullOrEmpty(Factor))
+            return false;
+
+        // todo hard-coded column names for testing
+        List<string> ColumnNamesNonFactor = new() { "field", "size", "fert", "yield" };
+        return ColumnNamesNonFactor.Contains(Factor);
+    }
+
     private bool GetIsOkEnabled()
     {
         if (IsSaveGraph && string.IsNullOrEmpty(SaveName))
@@ -241,18 +277,6 @@ public partial class BoxplotViewModel : ObservableObject
             return !string.IsNullOrEmpty(SingleVariable);
         else
             return !string.IsNullOrEmpty(MultipleVariables);
-    }
-
-    private bool GetIsWidthEnabled()
-    {
-        if (string.IsNullOrEmpty(Factor))
-            return false;
-
-        // todo hard-coded column names for testing
-        if (Factor == "village" || Factor == "variety" || Factor == "fertgrp")
-            return false;
-
-        return true;
     }
 
     private void OnReceiverGotFocus(TextBox? receiver)
@@ -320,13 +344,13 @@ public partial class BoxplotViewModel : ObservableObject
             {"dataFrame", DataFrame},
             {"facetBy", FacetBy},
             {"facetByType", FacetByType},
-            {"inputSummaries", InputSummaries},
+            {"inputSummaries", GroupToConnectSummary},
             {"inputWidth", Width},
             {"isAddPoints", BoolToUpperCaseString(IsAddPoints)},
             {"isBoxPlot", BoolToUpperCaseString(IsBoxPlot)},
             {"isBoxPlotExtra", BoolToUpperCaseString(IsBoxPlotExtra)},
             {"isComment", BoolToUpperCaseString(IsComment)},
-            {"isFactorFactor", BoolToUpperCaseString(GetIsWidthEnabled())},
+            {"isFactorFactor", BoolToUpperCaseString(GetIsFactorFactor())},
             {"isGroupToConnect", BoolToUpperCaseString(IsGroupToConnect)},
             {"isHorizontalBoxPlot", BoolToUpperCaseString(IsHorizontalBoxPlot)},
             {"isJitter", BoolToUpperCaseString(IsJitter)},
@@ -335,10 +359,10 @@ public partial class BoxplotViewModel : ObservableObject
             {"isTufte", BoolToUpperCaseString(IsTufte)},
             {"isVarWidth", BoolToUpperCaseString(IsVarWidth)},
             {"isViolin", BoolToUpperCaseString(IsViolin)},
-            {"isWidth", BoolToUpperCaseString(IsVarWidth)},
+            {"isWidth", BoolToUpperCaseString(GetIsFactorNumeric())},
             {"jitter", ""}, //todo
             {"jitterExtra", JitterExtra},
-            {"legendPosition", LegendPosition},
+            {"legendPosition", $"\"{LegendPosition.ToLower()}\""},
             {"saveName", SaveName},
             {"secondFactor", SecondFactor},
             {"transparency", Transparency},
