@@ -204,7 +204,7 @@ public partial class BoxplotViewModel : ObservableObject
 
         // intitialize graph name autocomplete box
         SaveName = "plot1"; // Initialize selected group to connect
-        SaveNames = new List<string> { "box_plot", "jitter", "violin" }; // Initialize list of groups to connect
+        SaveNames = new List<string> { "box_plot", "jitter", "tufte_boxplot", "violin" }; // Initialize list of groups to connect
 
         // initialize other binding variables
         Factor = "";
