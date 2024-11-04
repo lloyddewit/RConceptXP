@@ -20,5 +20,16 @@
 
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RInsightF461">
+      <HintPath>..\..\RInsightF461\RInsightF461\bin\Debug\RInsightF461.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

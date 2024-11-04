@@ -2,12 +2,16 @@
 using Avalonia.Controls.Selection;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media.TextFormatting.Unicode;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using RConceptXP.Views;
-using System;
+using RInsightF461;
+using RConceptXP.Services;
 using System.Collections.Generic;
 using System.IO;
+using System;
 
 namespace RConceptXP.ViewModels;
 
@@ -373,7 +377,9 @@ public partial class BoxplotViewModel : ObservableObject
             {"isLegend", BoolToUpperCaseString(IsLegend)}
         };
 
-        //todo write dict to file for debugging -------
+        string rScript = GetRScript("BoxPlot", dataBindings);
+
+        //todo write dict and script to file for debugging -------
         string dataBindingsSummary = "";
         foreach (var kvp in dataBindings)
         {
@@ -396,7 +402,43 @@ public partial class BoxplotViewModel : ObservableObject
 
             File.WriteAllText(strFilePath, dataBindingsSummary);
         }
+
+        //write the actual script (script built from the R model)
+        strFilePath = Path.Combine(strDesktopPath, "tmp", "actual.R");
+        rScript = $"\n\n\n {rScript}";
+        if (File.Exists(strFilePath))
+        {
+            File.AppendAllText(strFilePath, rScript);
+        }
+        else
+        {
+            string? directory = Path.GetDirectoryName(strFilePath);
+            if (directory != null)
+                Directory.CreateDirectory(directory);
+
+            File.WriteAllText(strFilePath, rScript);
+        }
         //todo end -------
 
+    }
+
+    private static string GetRScript(string dialogName, Dictionary<string, string> dataBindings)
+    {
+        // Build the R model from the R script
+        string strScriptReset = File.ReadAllText(@"C:\Users\steph\source\repos\RConceptXP\RConceptXP\RViews\" + dialogName + @"\" + dialogName + ".R");
+        RScript rScript = new RScript(strScriptReset);
+
+        // Update the R model from the configurable values
+        string strTransformationsRJson = File.ReadAllText(@"C:\Users\steph\source\repos\R-InstatLite\instatLite\DialogDefinitions\Dlg" + dialogName + @"\dlg" + dialogName + ".json");
+        List<clsTransformationRModel>? lstTransformToScript = JsonConvert.DeserializeObject<List<clsTransformationRModel>>(strTransformationsRJson);
+        if (lstTransformToScript == null)
+            throw new Exception("Failed to deserialize JSON");
+
+        foreach (clsTransformationRModel transform in lstTransformToScript)
+        {
+            transform.updateRModel(rScript, dataBindings);
+        }
+
+        return rScript.GetAsExecutableScript();
     }
 }
