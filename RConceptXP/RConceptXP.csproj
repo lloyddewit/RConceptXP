@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="RInsightF461">
       <HintPath>..\..\RInsightF461\RInsightF461\bin\Debug\RInsightF461.dll</HintPath>
     </Reference>

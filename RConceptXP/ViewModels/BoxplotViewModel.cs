@@ -206,22 +206,16 @@ public partial class BoxplotViewModel : ObservableObject
         };
         _selectorMediator = new SelectorMediator(receivers);
 
-        // intitialize graph name autocomplete box
-        SaveName = "plot1"; // Initialize selected group to connect
-        SaveNames = new List<string> { "box_plot", "jitter", "tufte_boxplot", "violin" }; // Initialize list of groups to connect
+        // initialize other command controls
+        OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
 
         // initialize other binding variables
-        Factor = "";
-        IsSaveGraph = false;
-        IsSingle = true;
-        SingleVariable = "";
-        MultipleVariables = "";
-
         Comment = "Dialog: Boxplot Options";
         DataFrame = "survey"; // todo hard coded for testing
         FacetBy = "";
         FacetByTypes = new List<string> { "Facet Wrap", "Facet Row", "Facet Column", "None" };
         FacetByType = FacetByTypes[0];
+        Factor = "";
         GroupToConnectSummaries = new List<string> { "mean", "median" };
         GroupToConnectSummary = GroupToConnectSummaries[0];
         InputSummaries = "";
@@ -233,18 +227,22 @@ public partial class BoxplotViewModel : ObservableObject
         IsHorizontalBoxPlot = false;
         IsJitter = false;
         IsLegend = false;
+        IsSaveGraph = false;
+        IsSingle = true;
         IsTufte = false;
         IsVarWidth = false;
         IsViolin = false;
         JitterExtra = "0.20";
         LegendPositions = new List<string> { "None", "Left", "Right", "Top", "Bottom" };
         LegendPosition = LegendPositions[0];
+        MultipleVariables = "";
+        SaveName = "plot1";
+        SaveNames = new List<string> { "box_plot", "jitter", "tufte_boxplot", "violin" };
         SecondFactor = "";
+        SingleVariable = "";
         Transparency = "1.00";
         Width = "0.25";
         WidthExtra = "0.5";
-
-        OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
     }
 
     private string BoolToUpperCaseString(bool value)
@@ -339,9 +337,9 @@ public partial class BoxplotViewModel : ObservableObject
         IReadOnlyList<string?> selectedItems = Selection.SelectedItems;
         _selectorMediator.AddSelectedValueToReceiver(selectedItems);
     }
+
     private void OnToScriptClick()
     {
-        //todo tidy up names and ordering
         Dictionary<string, string> dataBindings = new Dictionary<string, string>
         {
             {"comment", "# " + Comment + "\n\n"},
@@ -358,6 +356,7 @@ public partial class BoxplotViewModel : ObservableObject
             {"isGroupToConnect", BoolToUpperCaseString(IsGroupToConnect)},
             {"isHorizontalBoxPlot", BoolToUpperCaseString(IsHorizontalBoxPlot)},
             {"isJitter", BoolToUpperCaseString(IsJitter)},
+            {"isLegend", BoolToUpperCaseString(IsLegend)},
             {"isSaveGraph", BoolToUpperCaseString(IsSaveGraph)},
             {"isSingleVariable", BoolToUpperCaseString(IsSingle)},
             {"isTufte", BoolToUpperCaseString(IsTufte)},
@@ -373,11 +372,10 @@ public partial class BoxplotViewModel : ObservableObject
             {"variableNames", MultipleVariables},
             {"widthExtra", WidthExtra},
             {"x", Factor},
-            {"y", SingleVariable},
-            {"isLegend", BoolToUpperCaseString(IsLegend)}
+            {"y", SingleVariable}
         };
 
-        string rScript = GetRScript("BoxPlot", dataBindings);
+        string rScript = TransformationUtilities.GetRScript("BoxPlot", dataBindings);
 
         //todo write dict and script to file for debugging -------
         string dataBindingsSummary = "";
@@ -420,25 +418,5 @@ public partial class BoxplotViewModel : ObservableObject
         }
         //todo end -------
 
-    }
-
-    private static string GetRScript(string dialogName, Dictionary<string, string> dataBindings)
-    {
-        // Build the R model from the R script
-        string strScriptReset = File.ReadAllText(@"C:\Users\steph\source\repos\RConceptXP\RConceptXP\RViews\" + dialogName + @"\" + dialogName + ".R");
-        RScript rScript = new RScript(strScriptReset);
-
-        // Update the R model from the configurable values
-        string strTransformationsRJson = File.ReadAllText(@"C:\Users\steph\source\repos\R-InstatLite\instatLite\DialogDefinitions\Dlg" + dialogName + @"\dlg" + dialogName + ".json");
-        List<clsTransformationRModel>? lstTransformToScript = JsonConvert.DeserializeObject<List<clsTransformationRModel>>(strTransformationsRJson);
-        if (lstTransformToScript == null)
-            throw new Exception("Failed to deserialize JSON");
-
-        foreach (clsTransformationRModel transform in lstTransformToScript)
-        {
-            transform.updateRModel(rScript, dataBindings);
-        }
-
-        return rScript.GetAsExecutableScript();
     }
 }
