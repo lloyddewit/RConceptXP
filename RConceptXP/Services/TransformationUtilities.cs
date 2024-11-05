@@ -16,7 +16,7 @@ internal static class TransformationUtilities
                 + dialogName + @"\" + dialogName + ".R");
         RScript rScript = new RScript(scriptReset);
 
-        // Update the R model from the configurable values
+        // Read in the transformations from the JSON file
         string transformationsRJson = File.ReadAllText(
                 @"C:\Users\steph\source\repos\RConceptXP\RConceptXP\RViews\" 
                 + dialogName + @"\" + $"{dialogName}.json");
@@ -25,6 +25,7 @@ internal static class TransformationUtilities
         if (transformationsToScript == null)
             throw new Exception("Failed to deserialize JSON");
 
+        // Update the R model based on the transformations and the configurable values
         foreach (TransformationRModel transform in transformationsToScript)
         {
             transform.UpdateRModel(rScript, dataBindings);
