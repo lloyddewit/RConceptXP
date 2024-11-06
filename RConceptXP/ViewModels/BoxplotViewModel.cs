@@ -2,12 +2,16 @@
 using Avalonia.Controls.Selection;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media.TextFormatting.Unicode;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using RConceptXP.Views;
-using System;
+using RInsightF461;
+using RConceptXP.Services;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
+using System.IO;
+using System;
 
 namespace RConceptXP.ViewModels;
 
@@ -17,9 +21,10 @@ public partial class BoxplotViewModel : ObservableObject
     public RelayCommand<TextBox> OnReceiverGotFocusCommand { get; }
     public RelayCommand OnSelectorAddAllClickCommand { get; }
     public RelayCommand OnSelectorAddClickCommand { get; }
+    public RelayCommand OnToScriptClickCommand { get; }
 
     public bool IsOkEnabled => GetIsOkEnabled();
-    public bool IsWidthEnabled => GetIsWidthEnabled();
+    public bool IsWidthEnabled => GetIsFactorNumeric();
     public SelectionModel<string> Selection { get; }
 
 
@@ -31,11 +36,11 @@ public partial class BoxplotViewModel : ObservableObject
     partial void OnFactorChanged(string value) => OnPropertyChanged(nameof(IsWidthEnabled));
 
     [ObservableProperty]
-    private string _graphName;
-    partial void OnGraphNameChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
+    private string _saveName;
+    partial void OnSaveNameChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
-    private List<string> _graphNames; // List of groups to connect
+    private List<string> _saveNames;
 
     [ObservableProperty]
     private bool _isSaveGraph;
@@ -54,6 +59,88 @@ public partial class BoxplotViewModel : ObservableObject
     partial void OnMultipleVariablesChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
 
 
+    [ObservableProperty]
+    private string _comment;
+
+    [ObservableProperty]
+    private string _dataFrame;
+
+    [ObservableProperty]
+    private string _facetBy;
+
+    [ObservableProperty]
+    private string _facetByType;
+
+    [ObservableProperty]
+    private List<string> _facetByTypes;
+
+    [ObservableProperty]
+    private List<string> _groupToConnectSummaries;
+
+    [ObservableProperty]
+    private string _groupToConnectSummary;
+
+    [ObservableProperty]
+    private string _inputSummaries;
+
+    [ObservableProperty]
+    private bool _isAddPoints;
+
+    [ObservableProperty]
+    private bool _isBoxPlot;
+
+    [ObservableProperty]
+    private bool _isBoxPlotExtra;
+
+    [ObservableProperty]
+    private bool _isComment;
+
+    [ObservableProperty]
+    private bool _isGroupToConnect;
+
+    [ObservableProperty]
+    private bool _isHorizontalBoxPlot;
+
+    [ObservableProperty]
+    private bool _isJitter;
+
+    [ObservableProperty]
+    private bool _isLegend;
+
+    [ObservableProperty]
+    private bool _isTufte;
+
+    [ObservableProperty]
+    private bool _isVarWidth;
+
+    [ObservableProperty]
+    private bool _isViolin;
+
+    [ObservableProperty]
+    private bool _isWidth;
+
+    [ObservableProperty]
+    private string _jitterExtra;
+
+    [ObservableProperty]
+    private string _legendPosition;
+
+    [ObservableProperty]
+    private List<string> _legendPositions;
+
+    [ObservableProperty]
+    private string _secondFactor;
+
+    [ObservableProperty]
+    private string _transparency;
+
+    [ObservableProperty]
+    private string _width;
+
+    [ObservableProperty]
+    private string _widthExtra;
+
+
     private SelectorMediator _selectorMediator;
 
     private ListBox _columnsListBox;
@@ -63,6 +150,7 @@ public partial class BoxplotViewModel : ObservableObject
     private TextBox _multipleVariableTextBox;
     private TextBox _factorTextBox;
     private TextBox _secondFactorTextBox;
+    private ComboBox _facetByComboBox; //todo needed?
     private TextBox _facetByTextBox;
 
     public BoxplotViewModel(Boxplot boxplot)
@@ -77,13 +165,15 @@ public partial class BoxplotViewModel : ObservableObject
         _singleVariableTextBox = boxplot.FindControl<TextBox>("singleVariableTextBox") ?? 
             throw new Exception("Cannot find singleVariableTextBox by name");
         _multipleVariableTextBox = boxplot.FindControl<TextBox>("multipleVariableTextBox") ?? 
-            throw new Exception("Cannot find singleVariableTextBox by name");
+            throw new Exception("Cannot find multipleVariableTextBox by name");
         _factorTextBox = boxplot.FindControl<TextBox>("factorTextBox") ?? 
             throw new Exception("Cannot find factor textBox by name");
         _secondFactorTextBox = boxplot.FindControl<TextBox>("secondFactorTextBox") ?? 
-            throw new Exception("Cannot find singleVariableTextBox by name");
-        _facetByTextBox = boxplot.FindControl<TextBox>("facetByTextBox") ?? 
-            throw new Exception("Cannot find singleVariableTextBox by name");
+            throw new Exception("Cannot find secondFactorTextBox by name");
+        _facetByComboBox = boxplot.FindControl<ComboBox>("facetByComboBox") ??
+            throw new Exception("Cannot find facetByComboBox by name");
+        _facetByTextBox = boxplot.FindControl<TextBox>("facetByTextBox") ??
+            throw new Exception("Cannot find facetByTextBox by name");
 
         // Note: We need to catch delete and backspace key presses in receivers so that the user
         // can clear the receiver. There are simpler ways to catch most key events in Avalonia,
@@ -116,39 +206,79 @@ public partial class BoxplotViewModel : ObservableObject
         };
         _selectorMediator = new SelectorMediator(receivers);
 
-        // intitialize graph name autocomplete box
-        GraphName = "plot1"; // Initialize selected group to connect
-        GraphNames = new List<string> { "box_plot", "jitter", "violin" }; // Initialize list of groups to connect
+        // initialize other command controls
+        OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
 
         // initialize other binding variables
+        Comment = "Dialog: Boxplot Options";
+        DataFrame = "survey"; // todo hard coded for testing
+        FacetBy = "";
+        FacetByTypes = new List<string> { "Facet Wrap", "Facet Row", "Facet Column", "None" };
+        FacetByType = FacetByTypes[0];
         Factor = "";
-        IsSaveGraph = true;
+        GroupToConnectSummaries = new List<string> { "mean", "median" };
+        GroupToConnectSummary = GroupToConnectSummaries[0];
+        InputSummaries = "";
+        IsAddPoints = false;
+        IsBoxPlot = true;
+        IsBoxPlotExtra = false;
+        IsComment = true;
+        IsGroupToConnect = false;
+        IsHorizontalBoxPlot = false;
+        IsJitter = false;
+        IsLegend = false;
+        IsSaveGraph = false;
         IsSingle = true;
-        SingleVariable = "";
+        IsTufte = false;
+        IsVarWidth = false;
+        IsViolin = false;
+        JitterExtra = "0.20";
+        LegendPositions = new List<string> { "None", "Left", "Right", "Top", "Bottom" };
+        LegendPosition = LegendPositions[0];
         MultipleVariables = "";
+        SaveName = "plot1";
+        SaveNames = new List<string> { "box_plot", "jitter", "tufte_boxplot", "violin" };
+        SecondFactor = "";
+        SingleVariable = "";
+        Transparency = "1.00";
+        Width = "0.25";
+        WidthExtra = "0.5";
+    }
+
+    private string BoolToUpperCaseString(bool value)
+    {
+        return value ? "TRUE" : "FALSE";
+    }
+
+    private bool GetIsFactorFactor()
+    {
+        if (string.IsNullOrEmpty(Factor))
+            return false;
+
+        // todo hard-coded column names for testing
+        List<string> ColumnNamesFactor = new() { "village", "variety", "fertgrp" };
+        return ColumnNamesFactor.Contains(Factor);
+    }
+
+    private bool GetIsFactorNumeric()
+    {
+        if (string.IsNullOrEmpty(Factor))
+            return false;
+
+        // todo hard-coded column names for testing
+        List<string> ColumnNamesNonFactor = new() { "field", "size", "fert", "yield" };
+        return ColumnNamesNonFactor.Contains(Factor);
     }
 
     private bool GetIsOkEnabled()
     {
-        if (IsSaveGraph && string.IsNullOrEmpty(GraphName))
+        if (IsSaveGraph && string.IsNullOrEmpty(SaveName))
             return false;
 
         if (IsSingle)
             return !string.IsNullOrEmpty(SingleVariable);
         else
             return !string.IsNullOrEmpty(MultipleVariables);
-    }
-
-    private bool GetIsWidthEnabled()
-    {
-        if (string.IsNullOrEmpty(Factor))
-            return false;
-
-        // todo hard-coded column names for testing
-        if (Factor == "village" || Factor == "variety" || Factor == "fertgrp")
-            return false;
-
-        return true;
     }
 
     private void OnReceiverGotFocus(TextBox? receiver)
@@ -206,5 +336,87 @@ public partial class BoxplotViewModel : ObservableObject
         string selectedValue = Selection.SelectedItem ?? throw new Exception("Selected value in column selector list is null");
         IReadOnlyList<string?> selectedItems = Selection.SelectedItems;
         _selectorMediator.AddSelectedValueToReceiver(selectedItems);
+    }
+
+    private void OnToScriptClick()
+    {
+        Dictionary<string, string> dataBindings = new Dictionary<string, string>
+        {
+            {"comment", "# " + Comment + "\n\n"},
+            {"dataFrame", DataFrame},
+            {"facetBy", FacetBy},
+            {"facetByType", FacetByType},
+            {"inputSummaries", GroupToConnectSummary},
+            {"inputWidth", Width},
+            {"isAddPoints", BoolToUpperCaseString(IsAddPoints)},
+            {"isBoxPlot", BoolToUpperCaseString(IsBoxPlot)},
+            {"isBoxPlotExtra", BoolToUpperCaseString(IsBoxPlotExtra)},
+            {"isComment", BoolToUpperCaseString(IsComment)},
+            {"isFactorFactor", BoolToUpperCaseString(GetIsFactorFactor())},
+            {"isGroupToConnect", BoolToUpperCaseString(IsGroupToConnect)},
+            {"isHorizontalBoxPlot", BoolToUpperCaseString(IsHorizontalBoxPlot)},
+            {"isJitter", BoolToUpperCaseString(IsJitter)},
+            {"isLegend", BoolToUpperCaseString(IsLegend)},
+            {"isSaveGraph", BoolToUpperCaseString(IsSaveGraph)},
+            {"isSingleVariable", BoolToUpperCaseString(IsSingle)},
+            {"isTufte", BoolToUpperCaseString(IsTufte)},
+            {"isVarWidth", BoolToUpperCaseString(IsVarWidth)},
+            {"isViolin", BoolToUpperCaseString(IsViolin)},
+            {"isWidth", BoolToUpperCaseString(GetIsFactorNumeric())},
+            {"jitter", ""}, //todo
+            {"jitterExtra", JitterExtra},
+            {"legendPosition", $"\"{LegendPosition.ToLower()}\""},
+            {"saveName", SaveName},
+            {"secondFactor", SecondFactor},
+            {"transparency", Transparency},
+            {"variableNames", MultipleVariables},
+            {"widthExtra", WidthExtra},
+            {"x", Factor},
+            {"y", SingleVariable}
+        };
+
+        string rScript = TransformationUtilities.GetRScript("BoxPlot", dataBindings);
+
+        //todo write dict and script to file for debugging -------
+        string dataBindingsSummary = "";
+        foreach (var kvp in dataBindings)
+        {
+            dataBindingsSummary += $"Key: {kvp.Key}, Value: {kvp.Value}\n";
+        }
+
+        string strDesktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string strFilePath = Path.Combine(strDesktopPath, "tmp", "dictActual.txt");
+        dataBindingsSummary += "\n\n\n";
+
+        if (File.Exists(strFilePath))
+        {
+            File.AppendAllText(strFilePath, dataBindingsSummary);
+        }
+        else
+        {
+            string? directory = Path.GetDirectoryName(strFilePath);
+            if (directory != null)
+                Directory.CreateDirectory(directory);
+
+            File.WriteAllText(strFilePath, dataBindingsSummary);
+        }
+
+        //write the actual script (script built from the R model)
+        strFilePath = Path.Combine(strDesktopPath, "tmp", "actual.R");
+        rScript = $"\n\n\n {rScript}";
+        if (File.Exists(strFilePath))
+        {
+            File.AppendAllText(strFilePath, rScript);
+        }
+        else
+        {
+            string? directory = Path.GetDirectoryName(strFilePath);
+            if (directory != null)
+                Directory.CreateDirectory(directory);
+
+            File.WriteAllText(strFilePath, rScript);
+        }
+        //todo end -------
+
     }
 }

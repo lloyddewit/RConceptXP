@@ -1,0 +1,664 @@
+[
+    {
+        "TransformationType": "ifTrueExecuteChildTransformations",
+        "ValueKey": "isComment",
+        "Transformations": [
+            {
+                "TransformationType": "operatorUpdateParamPresentation",
+                "StatementNumber": 0,
+                "FunctionName": "<-",
+                "ParameterNumber": 0,
+                "ValueKey": "comment"
+            }
+        ]
+    },
+    {
+        "TransformationType": "operatorUpdateParam",
+        "StatementNumber": 0,
+        "FunctionName": "<-",
+        "ParameterNumber": 0,
+        "ValueKey": "dataFrame"
+    },
+    {
+        "TransformationType": "functionUpdateParamValue",
+        "StatementNumber": 0,
+        "FunctionName": "get_data_frame",
+        "ParameterNumber": 0,
+        "ValueKey": "dataFrame",
+        "IsQuoted": true
+    },
+    {
+        "TransformationType": "ifFalseExecuteChildTransformations",
+        "ValueKey": "isSingleVariable",
+        "Transformations": [
+            {
+                "TransformationType": "functionAddParam",
+                "StatementNumber": 0,
+                "FunctionName": "get_data_frame",
+                "ParameterNumber": 1,
+                "ParameterName": "stack_data",
+                "Script": "TRUE"
+            },
+            {
+                "TransformationType": "functionAddParam",
+                "StatementNumber": 0,
+                "FunctionName": "get_data_frame",
+                "ParameterNumber": 2,
+                "ParameterName": "measure.vars",
+                "ValueKey": "variableNames"
+            }
+        ]
+    },
+    {
+        "TransformationType": "functionUpdateParamValue",
+        "StatementNumber": 1,
+        "FunctionName": "ggplot",
+        "ParameterNumber": 0,
+        "ValueKey": "dataFrame"
+    },
+    {
+        "TransformationType": "quoteEmptyString",
+        "StatementNumber": 1,
+        "FunctionName": "aes",
+        "ParameterNumber": 1,
+        "ValueKey": "x"
+    },
+    {
+        "TransformationType": "ifTrueExecuteChildTransformations",
+        "ValueKey": "isSingleVariable",
+        "Transformations": [
+            {
+                "TransformationType": "functionUpdateParamValue",
+                "StatementNumber": 1,
+                "FunctionName": "aes",
+                "ParameterNumber": 0,
+                "ValueKey": "y"
+            }
+        ]
+    },
+    {
+        "TransformationType": "ifTrueExecuteChildTransformations",
+        "ValueKey": "isGroupToConnect",
+        "Transformations": [
+            {
+                "TransformationType": "ifTrueExecuteChildTransformations",
+                "ValueKey": "secondFactor",
+                "ValueDefault": "",
+                "Transformations": [
+                    {
+                        "TransformationType": "operatorAddParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "+",
+                        "ParameterNumber": 1,
+                        "Script": "ggplot2::stat_summary(geom=\"line\", group=1, color=\"blue\", size=1.5, fun.y=_funY)"
+                    },
+                    {
+                        "TransformationType": "functionUpdateParamValue",
+                        "StatementNumber": 1,
+                        "FunctionName": "stat_summary",
+                        "ParameterNumber": 4,
+                        "ValueKey": "inputSummaries",
+                        "IsQuoted": true
+                    },
+                    {
+                        "TransformationType": "ifTrueExecuteChildTransformations",
+                        "ValueKey": "isBoxPlot",
+                        "Transformations": [
+                            {
+                                "TransformationType": "ifTrueExecuteChildTransformations",
+                                "ValueKey": "isTufte",
+                                "Transformations": [
+                                    {
+                                        "TransformationType": "functionUpdateParamValue",
+                                        "StatementNumber": 1,
+                                        "FunctionName": "stat_summary",
+                                        "ParameterNumber": 3,
+                                        "Script": "0.7"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "TransformationType": "ifFalseExecuteChildTransformations",
+                "ValueKey": "secondFactor",
+                "ValueDefault": "",
+                "Transformations": [
+                    {
+                        "TransformationType": "operatorAddParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "+",
+                        "ParameterNumber": 1,
+                        "Script": "ggplot2::stat_summary(geom=\"line\", fun.y=_funY, size=1.5, ggplot2::aes(group=_group, colour=_colour), position=ggplot2::position_dodge(width=0.9))"
+                    },
+                    {
+                        "TransformationType": "functionUpdateParamValue",
+                        "StatementNumber": 1,
+                        "FunctionName": "stat_summary",
+                        "ParameterNumber": 1,
+                        "ValueKey": "inputSummaries",
+                        "IsQuoted": true
+                    },
+                    {
+                        "TransformationType": "ifTrueExecuteChildTransformations",
+                        "ValueKey": "isBoxPlot",
+                        "Transformations": [
+                            {
+                                "TransformationType": "ifTrueExecuteChildTransformations",
+                                "ValueKey": "isTufte",
+                                "Transformations": [
+                                    {
+                                        "TransformationType": "functionUpdateParamValue",
+                                        "StatementNumber": 1,
+                                        "FunctionName": "stat_summary",
+                                        "ParameterNumber": 2,
+                                        "Script": "0.7"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "TransformationType": "functionUpdateParamValue",
+                        "StatementNumber": 1,
+                        "FunctionName": "aes",
+                        "Occurence": 1,
+                        "ParameterNumber": 0,
+                        "ValueKey": "secondFactor"
+                    },
+                    {
+                        "TransformationType": "functionUpdateParamValue",
+                        "StatementNumber": 1,
+                        "FunctionName": "aes",
+                        "Occurence": 1,
+                        "ParameterNumber": 1,
+                        "ValueKey": "secondFactor"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "TransformationType": "ifFalseExecuteChildTransformations",
+        "ValueKey": "isJitter",
+        "Transformations": [
+            {
+                "TransformationType": "ifTrueExecuteChildTransformations",
+                "ValueKey": "isAddPoints",
+                "Transformations": [
+                    {
+                        "TransformationType": "operatorAddParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "+",
+                        "ParameterNumber": 1,
+                        "Script": "ggplot2::geom_jitter(height=0, width=_width)"
+                    },
+                    {
+                        "TransformationType": "functionUpdateParamValue",
+                        "StatementNumber": 1,
+                        "FunctionName": "geom_jitter",
+                        "ParameterNumber": 1,
+                        "ValueKey": "jitterExtra"
+                    },
+                    {
+                        "TransformationType": "ifFalseExecuteChildTransformations",
+                        "ValueKey": "transparency",
+                        "ValueDefault": "1",
+                        "Transformations": [
+                            {
+                                "TransformationType": "functionAddParam",
+                                "StatementNumber": 1,
+                                "FunctionName": "geom_jitter",
+                                "ParameterNumber": 1,
+                                "ParameterName": "alpha",
+                                "ValueKey": "transparency"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "TransformationType": "ifTrueExecuteChildTransformations",
+        "ValueKey": "isBoxPlot",
+        "Transformations": [
+            {
+                "TransformationType": "ifFalseExecuteChildTransformations",
+                "ValueKey": "isTufte",
+                "Transformations": [
+                    {
+                        "TransformationType": "operatorAddParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "+",
+                        "ParameterNumber": 1,
+                        "Script": "ggplot2::geom_boxplot()"
+                    },
+                    {
+                        "TransformationType": "ifFalseExecuteChildTransformations",
+                        "ValueKey": "x",
+                        "ValueDefault": "",
+                        "Transformations": [
+                            {
+                                "TransformationType": "ifTrueExecuteChildTransformations",
+                                "ValueKey": "isFactorFactor",
+                                "ValueDefault": "FALSE",
+                                "Transformations": [
+                                    {
+                                        "TransformationType": "ifTrueExecuteChildTransformations",
+                                        "ValueKey": "isWidth",
+                                        "Transformations": [
+                                            {
+                                                "TransformationType": "functionAddParam",
+                                                "StatementNumber": 1,
+                                                "FunctionName": "geom_boxplot",
+                                                "ParameterNumber": 0,
+                                                "ParameterName": "",
+                                                "Script": "ggplot2::aes(group=ggplot2::cut_width(_var, width=_width))"
+                                            },
+                                            {
+                                                "TransformationType": "functionUpdateParamValue",
+                                                "StatementNumber": 1,
+                                                "FunctionName": "cut_width",
+                                                "ParameterNumber": 0,
+                                                "ValueKey": "x"
+                                            },
+                                            {
+                                                "TransformationType": "functionUpdateParamValue",
+                                                "StatementNumber": 1,
+                                                "FunctionName": "cut_width",
+                                                "ParameterNumber": 1,
+                                                "ValueKey": "inputWidth"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "TransformationType": "functionAddRemoveParamByName",
+                        "StatementNumber": 1,
+                        "FunctionName": "geom_boxplot",
+                        "ParameterNumber": 0,
+                        "ParameterName": "varwidth",
+                        "ValueDefault": "FALSE",
+                        "ValueKey": "isVarWidth"
+                    },
+                    {
+                        "TransformationType": "ifTrueExecuteChildTransformations",
+                        "ValueKey": "isAddPoints",
+                        "Transformations": [
+                            {
+                                "TransformationType": "functionAddParam",
+                                "StatementNumber": 1,
+                                "FunctionName": "geom_boxplot",
+                                "ParameterNumber": 99,
+                                "ParameterName": "outlier.shape",
+                                "Script": "NA"
+                            }
+                        ]
+                    },
+                    {
+                        "TransformationType": "functionAddParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "geom_boxplot",
+                        "ParameterNumber": 99,
+                        "ParameterName": "outlier.colour",
+                        "Script": "\"red\""
+                    },
+                    {
+                        "TransformationType": "functionAddRemoveParamByName",
+                        "StatementNumber": 1,
+                        "FunctionName": "aes",
+                        "ParameterName": "fill",
+                        "ValueKey": "secondFactor",
+                        "ParameterNumber": 2
+                    }
+                ]
+            },
+            {
+                "TransformationType": "ifTrueExecuteChildTransformations",
+                "ValueKey": "isTufte",
+                "Transformations": [
+                    {
+                        "TransformationType": "functionAddRemoveParamByName",
+                        "StatementNumber": 1,
+                        "FunctionName": "aes",
+                        "ParameterName": "colour",
+                        "ValueKey": "secondFactor",
+                        "ParameterNumber": 2
+                    },
+                    {
+                        "TransformationType": "operatorAddParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "+",
+                        "ParameterNumber": 1,
+                        "Script": "ggthemes::geom_tufteboxplot(stat=\"boxplot\", median.type=\"line\", coef =1.5)"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "TransformationType": "ifTrueExecuteChildTransformations",
+        "ValueKey": "isViolin",
+        "Transformations": [
+            {
+                "TransformationType": "operatorAddParam",
+                "StatementNumber": 1,
+                "FunctionName": "+",
+                "ParameterNumber": 1,
+                "Script": "ggplot2::geom_violin()"
+            },
+            {
+                "TransformationType": "ifFalseExecuteChildTransformations",
+                "ValueKey": "x",
+                "ValueDefault": "",
+                "Transformations": [
+                    {
+                        "TransformationType": "ifTrueExecuteChildTransformations",
+                        "ValueKey": "isFactorFactor",
+                        "ValueDefault": "FALSE",
+                        "Transformations": [
+                            {
+                                "TransformationType": "ifTrueExecuteChildTransformations",
+                                "ValueKey": "isWidth",
+                                "Transformations": [
+                                    {
+                                        "TransformationType": "functionAddParam",
+                                        "StatementNumber": 1,
+                                        "FunctionName": "geom_violin",
+                                        "ParameterNumber": 0,
+                                        "ParameterName": "",
+                                        "Script": "ggplot2::aes(group=ggplot2::cut_width(_var, width=_width))"
+                                    },
+                                    {
+                                        "TransformationType": "functionUpdateParamValue",
+                                        "StatementNumber": 1,
+                                        "FunctionName": "cut_width",
+                                        "ParameterNumber": 0,
+                                        "ValueKey": "x"
+                                    },
+                                    {
+                                        "TransformationType": "functionUpdateParamValue",
+                                        "StatementNumber": 1,
+                                        "FunctionName": "cut_width",
+                                        "ParameterNumber": 1,
+                                        "ValueKey": "inputWidth"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "TransformationType": "functionAddRemoveParamByName",
+                "StatementNumber": 1,
+                "FunctionName": "aes",
+                "ParameterName": "fill",
+                "ValueKey": "secondFactor",
+                "ParameterNumber": 2
+            }
+        ]
+    },
+    {
+        "TransformationType": "ifTrueExecuteChildTransformations",
+        "ValueKey": "isJitter",
+        "Transformations": [
+            {
+                "TransformationType": "functionAddRemoveParamByName",
+                "StatementNumber": 1,
+                "FunctionName": "aes",
+                "ParameterName": "colour",
+                "ValueKey": "secondFactor",
+                "ParameterNumber": 2
+            },
+            {
+                "TransformationType": "operatorAddParam",
+                "StatementNumber": 1,
+                "FunctionName": "+",
+                "ParameterNumber": 1,
+                "Script": "ggplot2::geom_jitter(height=0, width=0.2)"
+            }
+        ]
+    },
+    {
+        "TransformationType": "ifFalseExecuteChildTransformations",
+        "ValueKey": "isSingleVariable",
+        "Transformations": [
+            {
+                "TransformationType": "functionUpdateParamValue",
+                "StatementNumber": 1,
+                "FunctionName": "aes",
+                "ParameterNumber": 0,
+                "Script": "value"
+            }
+        ]
+    },
+    {
+        "TransformationType": "ifTrueExecuteChildTransformations",
+        "ValueKey": "isLegend",
+        "Transformations": [
+            {
+                "TransformationType": "operatorAddParam",
+                "StatementNumber": 1,
+                "FunctionName": "+",
+                "ParameterNumber": 99,
+                "Script": "ggplot2::theme(legend.position=_legendPosition)"
+            },
+            {
+                "TransformationType": "functionUpdateParamValue",
+                "StatementNumber": 1,
+                "FunctionName": "theme",
+                "ParameterNumber": 0,
+                "ValueKey": "legendPosition"
+            }
+        ]
+    },
+    {
+        "TransformationType": "ifFalseExecuteChildTransformations",
+        "ValueKey": "isBoxPlot",
+        "Transformations": [
+            {
+                "TransformationType": "ifTrueExecuteChildTransformations",
+                "ValueKey": "isBoxPlotExtra",
+                "Transformations": [
+                    {
+                        "TransformationType": "operatorAddParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "+",
+                        "ParameterNumber": 99,
+                        "Script": "ggplot2::geom_boxplot(width=_width)"
+                    },
+                    {
+                        "TransformationType": "functionUpdateParamValue",
+                        "StatementNumber": 1,
+                        "FunctionName": "geom_boxplot",
+                        "ParameterNumber": 0,
+                        "ValueKey": "widthExtra"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "TransformationType": "ifFalseExecuteChildTransformations",
+        "ValueKey": "facetBy",
+        "ValueDefault": "",
+        "Transformations": [
+            {
+                "TransformationType": "ifTrueExecuteChildTransformations",
+                "ValueKey": "facetByType",
+                "ValueDefault": "Facet Wrap",
+                "Transformations": [
+                    {
+                        "TransformationType": "operatorAddParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "+",
+                        "ParameterNumber": 99,
+                        "Script": "ggplot2::facet_wrap(facets= ~ _facetBy)"
+                    },
+                    {
+                        "TransformationType": "operatorUpdateParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "~",
+                        "ParameterNumber": 0,
+                        "ValueKey": "facetBy"
+                    }
+                ]
+            },
+            {
+                "TransformationType": "ifTrueExecuteChildTransformations",
+                "ValueKey": "facetByType",
+                "ValueDefault": "Facet Row",
+                "Transformations": [
+                    {
+                        "TransformationType": "operatorAddParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "+",
+                        "ParameterNumber": 99,
+                        "Script": "ggplot2::facet_grid(facets=_facetBy ~ .)"
+                    },
+                    {
+                        "TransformationType": "operatorUpdateParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "~",
+                        "ParameterNumber": 0,
+                        "ValueKey": "facetBy"
+                    }
+                ]
+            },
+            {
+                "TransformationType": "ifTrueExecuteChildTransformations",
+                "ValueKey": "facetByType",
+                "ValueDefault": "Facet Column",
+                "Transformations": [
+                    {
+                        "TransformationType": "operatorAddParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "+",
+                        "ParameterNumber": 99,
+                        "Script": "ggplot2::facet_grid(facets=. ~ _facetBy)"
+                    },
+                    {
+                        "TransformationType": "operatorUpdateParam",
+                        "StatementNumber": 1,
+                        "FunctionName": "~",
+                        "ParameterNumber": 1,
+                        "ValueKey": "facetBy"
+                    }
+                ]
+            },
+            {
+                "TransformationType": "ifTrueExecuteChildTransformations",
+                "ValueKey": "facetByType",
+                "ValueDefault": "None",
+                "Transformations": [
+                ]
+            }
+        ]
+    },
+    {
+        "TransformationType": "ifTrueExecuteChildTransformations",
+        "ValueKey": "isHorizontalBoxPlot",
+        "Transformations": [
+            {
+                "TransformationType": "operatorAddParam",
+                "StatementNumber": 1,
+                "FunctionName": "+",
+                "ParameterNumber": 99,
+                "Script": "ggplot2::coord_flip()"
+            }
+        ]
+    },
+    {
+        "TransformationType": "ifTrueExecuteChildTransformations",
+        "ValueKey": "isSaveGraph",
+        "Transformations": [
+            {
+                "TransformationType": "operatorUpdateParam",
+                "StatementNumber": 1,
+                "FunctionName": "<-",
+                "ParameterNumber": 0,
+                "ValueKey": "saveName"
+            }
+        ]
+    },
+    {
+        "TransformationType": "functionUpdateParamValue",
+        "StatementNumber": 2,
+        "FunctionName": "add_object",
+        "ParameterNumber": 0,
+        "ValueKey": "dataFrame",
+        "IsQuoted": true
+    },
+    {
+        "TransformationType": "ifTrueExecuteChildTransformations",
+        "ValueKey": "isSaveGraph",
+        "Transformations": [
+            {
+                "TransformationType": "functionUpdateParamValue",
+                "StatementNumber": 2,
+                "FunctionName": "add_object",
+                "ParameterNumber": 1,
+                "ValueKey": "saveName",
+                "IsQuoted": true
+            },
+            {
+                "TransformationType": "functionUpdateParamValue",
+                "StatementNumber": 2,
+                "FunctionName": "check_graph",
+                "ParameterNumber": 0,
+                "ValueKey": "saveName"
+            }
+        ]
+    },
+    {
+        "TransformationType": "functionUpdateParamValue",
+        "StatementNumber": 3,
+        "FunctionName": "get_object_data",
+        "ParameterNumber": 0,
+        "ValueKey": "dataFrame",
+        "IsQuoted": true
+    },
+    {
+        "TransformationType": "ifTrueExecuteChildTransformations",
+        "ValueKey": "isSaveGraph",
+        "Transformations": [
+            {
+                "TransformationType": "functionUpdateParamValue",
+                "StatementNumber": 3,
+                "FunctionName": "get_object_data",
+                "ParameterNumber": 1,
+                "ValueKey": "saveName",
+                "IsQuoted": true
+            }
+        ]
+    },
+    {
+        "TransformationType": "ifTrueExecuteChildTransformations",
+        "ValueKey": "isSaveGraph",
+        "Transformations": [
+            {
+                "TransformationType": "functionUpdateParamValue",
+                "StatementNumber": 4,
+                "FunctionName": "c",
+                "ParameterNumber": 0,
+                "ValueKey": "saveName",
+                "IsQuoted": true
+            }
+        ]
+    },
+    {
+        "IsQuoted": true,
+        "ParameterNumber": 1,
+        "StatementNumber": 4,
+        "FunctionName": "c",
+        "ValueKey": "dataFrame",
+        "TransformationType": "functionUpdateParamValue"
+    }
+]

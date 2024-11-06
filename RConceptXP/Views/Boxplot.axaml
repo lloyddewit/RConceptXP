@@ -20,7 +20,7 @@
                 Content="Boxplot"
                 GroupName="BoxplotType" 
                 HorizontalAlignment="Right" 
-                IsChecked="True"
+                IsChecked="{Binding IsBoxPlot}"
                 Name="isBoxplot"
                 />
             <RadioButton 
@@ -28,6 +28,7 @@
                 Content="Jitter Plot" 
                 GroupName="BoxplotType" 
                 HorizontalAlignment="Center"
+                IsChecked="{Binding IsJitter}"
                 Name="isJitter"
                 />
             <RadioButton 
@@ -35,6 +36,7 @@
                 Content="Violin Plot" 
                 GroupName="BoxplotType" 
                 HorizontalAlignment="Left"
+                IsChecked="{Binding IsViolin}"
                 Name="isViolin"
                 />
         </UniformGrid>
@@ -90,7 +92,7 @@
                                 Classes="accent"
                                 Command="{Binding OnSelectorAddClickCommand}"
                                 Content="Add" 
-                                IsEnabled="{Binding !!ColumnNames.Count}"
+                                IsEnabled="{Binding !!#columns.ItemCount}"
                                 Margin="0 50 0 0">
                                 <SplitButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
@@ -114,21 +116,27 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="0 10 0 0">
-                    <CheckBox Classes="accent" Content="Horizontal Plot"/>
+                    <CheckBox 
+                        Classes="accent" 
+                        Content="Horizontal Plot"
+                        IsChecked="{Binding IsHorizontalBoxPlot}"
+                        />
                     <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
                         <CheckBox 
                             Classes="accent" 
                             Content="Group to Connect"
+                            IsChecked="{Binding IsGroupToConnect}"
                             Name="groupToConnect"
                             />
                         <ComboBox 
                             Classes="theme-soft accent" 
                             IsVisible="{Binding #groupToConnect.IsChecked}" 
+                            ItemsSource="{Binding GroupToConnectSummaries}"
                             Margin="10 0 0 0" 
                             Width="70"
-                            SelectedIndex="0">
-                            <ComboBoxItem>mean</ComboBoxItem>
-                            <ComboBoxItem>median</ComboBoxItem>
+                            SelectedIndex="0"
+                            SelectedItem="{Binding GroupToConnectSummary, Mode=TwoWay}"
+                            >
                         </ComboBox>
                     </StackPanel>
                     <StackPanel 
@@ -148,10 +156,10 @@
                             Grid.Column="2"
                             Height="25"
                             TextAlignment="Right"
-                            IsEnabled="{Binding IsWidthEnabled}"
+                            IsEnabled="{Binding #isWidth.IsEnabled}"
                             IsVisible="{Binding #isWidth.IsChecked}"
                             Margin="5 0 0 0"
-                            Text="0.25"
+                            Text="{Binding Width}"
                             Width="60"
                             />
                     </StackPanel>
@@ -173,7 +181,7 @@
                                 SourceObject="{Binding #singleOption}">
                                 <ia:InvokeCommandAction
                                     Command="{Binding OnReceiverGotFocusCommand}"
-                                    CommandParameter="{Binding ElementName=singleVariableTextBox}"/>
+                                    CommandParameter="{Binding #singleVariableTextBox}"/>
                             </ia:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </RadioButton>
@@ -190,7 +198,7 @@
                                 SourceObject="{Binding #multipleOption}">
                                 <ia:InvokeCommandAction
                                     Command="{Binding OnReceiverGotFocusCommand}"
-                                    CommandParameter="{Binding ElementName=multipleVariableTextBox}"/>
+                                    CommandParameter="{Binding #multipleVariableTextBox}"/>
                             </ia:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </RadioButton>
@@ -209,7 +217,7 @@
                             SourceObject="{Binding #singleVariableTextBox}">
                             <ia:InvokeCommandAction
                                 Command="{Binding OnReceiverGotFocusCommand}"
-                                CommandParameter="{Binding ElementName=singleVariableTextBox}"/>
+                                CommandParameter="{Binding #singleVariableTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
@@ -217,7 +225,7 @@
                     Classes="accent"
                     Height="70"
                     IsReadOnly="True"
-                    IsVisible="{Binding IsChecked, ElementName=multipleOption}"
+                    IsVisible="{Binding #multipleOption.IsChecked}"
                     Margin="0 5 0 0"
                     Name="multipleVariableTextBox"
                     Text="{Binding MultipleVariables}"
@@ -228,7 +236,7 @@
                             SourceObject="{Binding #multipleVariableTextBox}">
                             <ia:InvokeCommandAction
                                 Command="{Binding OnReceiverGotFocusCommand}"
-                                CommandParameter="{Binding ElementName=multipleVariableTextBox}"/>
+                                CommandParameter="{Binding #multipleVariableTextBox}"/>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
@@ -260,6 +268,7 @@
                     IsReadOnly="True"
                     Margin="0 5 0 0"
                     Name="secondFactorTextBox"
+                    Text="{Binding SecondFactor}"
                     Width="100"
                     >
                     <i:Interaction.Behaviors>
@@ -275,6 +284,7 @@
                 <CheckBox
                     Classes="accent"
                     Content="Variable Width"
+                    IsChecked="{Binding IsVarWidth}"
                     Margin="0 5 0 0">
                     <CheckBox.IsVisible>
                         <MultiBinding Converter="{x:Static BoolConverters.And}">
@@ -286,6 +296,7 @@
                 <CheckBox 
                     Classes="accent" 
                     Content="Tufte Boxplots" 
+                    IsChecked="{Binding IsTufte}"
                     IsVisible="{Binding #isBoxplot.IsChecked}"
                     Margin="0 5 0 0"
                     Name="isTufte"
@@ -313,7 +324,7 @@
                 Margin="5 0 0 0" 
                 Maximum="1" 
                 Minimum="0" 
-                Value="0.5"
+                Value="{Binding WidthExtra}"
                 Width="60"/>
         </StackPanel>
 
@@ -321,7 +332,8 @@
         <StackPanel IsVisible="{Binding !#isJitter.IsChecked}" Orientation="Horizontal" Margin="0 5 0 0">
             <CheckBox 
                 Classes="accent" 
-                Content="Add Points"                
+                Content="Add Points"  
+                IsChecked="{Binding IsAddPoints}"
                 Name="isAddPoints"
                 />
             <StackPanel Orientation="Horizontal" IsVisible="{Binding #isAddPoints.IsChecked}" >
@@ -332,7 +344,7 @@
                     Increment="0.01" 
                     Margin="5 0 0 0" 
                     Minimum="0" 
-                    Value="0.20"
+                    Value="{Binding JitterExtra}"
                     Width="60"
                     />
                 <TextBlock Text="Transparency:" Margin="10 0 0 0" VerticalAlignment="Center"/>
@@ -343,7 +355,7 @@
                     Margin="5 0 0 0" 
                     Maximum="1" 
                     Minimum="0"
-                    Value="1.00"
+                    Value="{Binding Transparency}"
                     Width="60"
                     />
             </StackPanel>
@@ -358,6 +370,7 @@
                 Content="Legend" 
                 Grid.Column="0" 
                 Grid.Row="1" 
+                IsChecked="{Binding IsLegend}"
                 Name="isLegend"
                 />
             <ComboBox
@@ -365,13 +378,10 @@
                 Grid.Column="1"
                 Grid.Row="1"
                 IsVisible="{Binding #isLegend.IsChecked}"
+                ItemsSource="{Binding LegendPositions}"
                 SelectedIndex="0"
+                SelectedItem="{Binding LegendPosition, Mode=TwoWay}"
                 >
-                <ComboBoxItem>None</ComboBoxItem>
-                <ComboBoxItem>Left</ComboBoxItem>
-                <ComboBoxItem>Right</ComboBoxItem>
-                <ComboBoxItem>Top</ComboBoxItem>
-                <ComboBoxItem>Bottom</ComboBoxItem>
             </ComboBox>
             <TextBox 
                 Classes="theme-soft accent" 
@@ -381,6 +391,7 @@
                 IsReadOnly="True"
                 Margin="0 5 0 0"
                 Name="facetByTextBox"
+                Text="{Binding FacetBy}"
                 Width="90"
                 >
                     <i:Interaction.Behaviors>
@@ -396,15 +407,14 @@
             <ComboBox 
                 Classes="theme-soft accent" 
                 Grid.Row="1" 
-                Grid.Column="3" 
+                Grid.Column="3"
+                ItemsSource="{Binding FacetByTypes}"
                 Margin="5 5 0 0"
+                Name="facetByComboBox"
+                SelectedItem="{Binding FacetByType, Mode=TwoWay}"
                 SelectedIndex="0"
                 Width="90"
                 >
-                <ComboBoxItem>Facet Wrap</ComboBoxItem>
-                <ComboBoxItem>Facet Row</ComboBoxItem>
-                <ComboBoxItem>Facet Column</ComboBoxItem>
-                <ComboBoxItem>None</ComboBoxItem>
             </ComboBox>
         </Grid>
 
@@ -418,12 +428,12 @@
                 Name="isSaveGraph"
                 />
             <AutoCompleteBox
-                ItemsSource="{Binding GraphNames}"
+                ItemsSource="{Binding SaveNames}"
                 Classes="theme-soft accent"
                 IsVisible="{Binding #isSaveGraph.IsChecked}"
                 Margin="5 5 0 0"
                 Name="SaveGraphAutoCompleteBox"
-                Text="{Binding GraphName}"
+                Text="{Binding SaveName}"
                 VerticalAlignment="Center"
                 Width="220"
                 >
@@ -442,7 +452,7 @@
                 Classes="theme-soft accent" 
                 IsVisible="{Binding #isComment.IsChecked}"
                 Margin="5 0 0 0"
-                Text="Dialog: Boxplot Options"
+                Text="{Binding Comment}"
                 Width="227" 
                 />
         </StackPanel>
@@ -454,8 +464,9 @@
                 Classes="accent" 
                 Content="OK" 
                 HorizontalAlignment="Left" 
-                IsEnabled="{Binding IsOkEnabled, Mode=OneWay}" 
+                IsEnabled="{Binding IsOkEnabled}" 
                 Margin="0 0 0 0"
+                Name="ok"
                 Width="80"
                 >
                 <SplitButton.Flyout>
@@ -470,9 +481,10 @@
             <Button Classes="accent" Content="Help" HorizontalAlignment="Left" Width="60"/>
             <SplitButton 
                 Classes="accent" 
+                Command="{Binding OnToScriptClickCommand}"
                 Content="To Script" 
                 HorizontalAlignment="Right"
-                IsEnabled="{Binding IsOkEnabled}"
+                IsEnabled="{Binding #ok.IsEnabled}"
                 Margin="30 0 0 0"
                 Width="80"
                 >
