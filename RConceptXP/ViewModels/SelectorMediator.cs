@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using RConceptXP.Views;
 
 namespace RConceptXP.ViewModels;
@@ -12,7 +13,7 @@ public class SelectorMediator
 
     private List<TextBox> _receivers { get; set; } = new List<TextBox>();
     private int _textBoxWithFocusIndex = 0;
-    private Brush? _defaultBackground;
+    private ImmutableSolidColorBrush? _defaultBackground;
 
     public SelectorMediator(List<TextBox> receivers)
     {
@@ -23,10 +24,10 @@ public class SelectorMediator
         _textBoxWithFocusIndex = 0;
         _receivers[_textBoxWithFocusIndex].Focus();
         if (_receivers[_textBoxWithFocusIndex].Background is null)
-            _defaultBackground = (Brush?)Brushes.White;
+            _defaultBackground = (ImmutableSolidColorBrush?)Brushes.White;
         else
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            _defaultBackground = (Brush)_receivers[_textBoxWithFocusIndex].Background;
+            _defaultBackground = (ImmutableSolidColorBrush)_receivers[_textBoxWithFocusIndex].Background;
 #pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
         // set input focus to first receiver

@@ -80,7 +80,7 @@
         <!-- Tool bar -->
         <Grid Grid.Row="1" Background="{StaticResource BackgroundTextBlock}" Height="40"
               ColumnDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *">
-            <Button Grid.Column="2" Classes="accent" Content="{Binding ToDoButton}" Command="{Binding OpenBoxplotCommand}" Margin="10 0 0 0"/>
+            <Button Grid.Column="2" Classes="accent" Content="Boxplot" Command="{Binding OpenBoxplotCommand}" Margin="10 0 0 0"/>
         </Grid>
 
         <!-- Working area -->
@@ -95,7 +95,7 @@
             </Grid.RowDefinitions>
             <TabControl Grid.Column="1" Grid.Row="0" Classes="TabControlSubtle" Margin="5">
                 <TabItem Header="Tab 1">
-                    <TextBlock Margin="5">This is tab 1 content</TextBlock>
+                    <ContentControl Content="{Binding FirstTabContent}" />
                 </TabItem>
                 <TabItem Header="Tab 2">
                     <TextBlock Margin="5">This is tab 2 content</TextBlock>
