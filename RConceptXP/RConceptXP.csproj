@@ -28,4 +28,10 @@
       <HintPath>..\..\RInsightF461\RInsightF461\bin\Debug\RInsightF461.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\TabControlDynamicView.axaml.cs">
+      <DependentUpon>TabControlDynamicView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

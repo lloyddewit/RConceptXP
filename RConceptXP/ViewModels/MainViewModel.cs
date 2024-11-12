@@ -5,6 +5,8 @@ using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Avalonia.Controls;
 using System.Collections.ObjectModel;
+using static System.Net.Mime.MediaTypeNames;
+using System;
 
 namespace RConceptXP.ViewModels;
 
@@ -12,29 +14,19 @@ public partial class MainViewModel : ViewModelBase
 {
     public IRelayCommand OpenBoxplotCommand { get; }
 
-    [ObservableProperty]
-    private object _firstTabContent;
+    private TabControlDynamicView _dialogTabs;
 
-    [ObservableProperty]
-    private TabControl _tabs;
-    
-    public MainViewModel()
+    public MainViewModel(MainView mainView)
     {
         OpenBoxplotCommand = new RelayCommand(OpenBoxplot);
 
-        FirstTabContent = new TextBlock { Text = "Empty tab" };
+        _dialogTabs = mainView.FindControl<TabControlDynamicView>("dialogTabs") ??
+            throw new Exception("Cannot find dialogTabs by name");
 
-        Tabs = new TabControl();
     }
 
     private void OpenBoxplot()
     {
-        var newTab = new TabItem
-        {
-            Header = "Boxplot",
-            Content = new Boxplot2View()
-        };
-        Tabs.Items.Add(newTab);
+        _dialogTabs.AddNewTab();
     }
-
 }
