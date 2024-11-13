@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace RConceptXP.ViewModels;
 
-public class TabItemViewModel
+public partial class TabItemViewModel : ObservableObject
 {
-    public string Header { get; set; }
-    public string Content { get; set; }
+    [ObservableProperty]
+    private string _header;
+
+    [ObservableProperty]
+    private string _content;
+    
     public TabItemViewModel(string header, string content)
     {
         Header = header;
