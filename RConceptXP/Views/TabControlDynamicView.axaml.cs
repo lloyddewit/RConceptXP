@@ -25,8 +25,10 @@ public partial class TabControlDynamicView : UserControl
     {
         //DataContext = new TabItemViewModel("Three", "Some content on third tab");
         // add an extra element to the array
-        Array.Resize(ref _tabItemViewModels, _tabItemViewModels.Length + 1);
-        _tabItemViewModels[^1] = new TabItemViewModel("New", "Some content on new tab");
+        //Array.Resize(ref _tabItemViewModels, _tabItemViewModels.Length + 1);
+        //_tabItemViewModels[^1] = new TabItemViewModel("New", "Some content on new tab");
+        _tabItemViewModels[0].Content = "new content";
+        _tabItemViewModels[0].Header = "New";
     }
 
     private void InitializeComponent()

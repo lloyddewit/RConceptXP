@@ -8,8 +8,8 @@ namespace RConceptXP.ViewModels;
 
 public class TabItemViewModel
 {
-    public string Header { get; }
-    public string Content { get; }
+    public string Header { get; set; }
+    public string Content { get; set; }
     public TabItemViewModel(string header, string content)
     {
         Header = header;
