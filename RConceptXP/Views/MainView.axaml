@@ -85,13 +85,13 @@
                 <ColumnDefinition Width="410"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="495"/>
+                <RowDefinition Height="595"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <views:TabControlDynamicView 
+            <views:TabsDynamicView 
                 Grid.Row="0" 
                 Grid.Column="1" 
-                Name="dialogTabs" />
+                Name="tabsForDialogs" />
         </Grid>
 
         <!-- Status bar -->

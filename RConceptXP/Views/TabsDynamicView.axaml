@@ -1,0 +1,24 @@
+<UserControl 
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="410" d:DesignHeight="595"
+    x:Class="RConceptXP.Views.TabsDynamicView"
+    xmlns:vm="clr-namespace:RConceptXP.ViewModels"
+    x:DataType="vm:TabsDynamicViewModel"
+    Width="410"
+    Height="595">
+    <TabControl x:Name="tabs" ItemsSource="{Binding}">
+        <TabControl.ItemTemplate>
+            <DataTemplate DataType="vm:TabsDynamicViewModel">
+                <TextBlock Text="{Binding Header}" />
+            </DataTemplate>
+        </TabControl.ItemTemplate>
+        <TabControl.ContentTemplate>
+            <DataTemplate DataType="vm:TabsDynamicViewModel">
+                <TextBlock Text="{Binding Content}" />
+            </DataTemplate>
+        </TabControl.ContentTemplate>
+    </TabControl>
+</UserControl>

@@ -2,8 +2,6 @@
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-
-using RConceptXP.ViewModels;
 using RConceptXP.Views;
 
 namespace RConceptXP;
@@ -25,7 +23,8 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
-                //DataContext = new MainViewModel()
+                //todo commented out line below because it requires mainView to be passes as parameter to MainViewModel. Still needed?
+                //DataContext = new MainViewModel() 
             };
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)

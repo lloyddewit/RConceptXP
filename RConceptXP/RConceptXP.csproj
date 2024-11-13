@@ -30,8 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\TabControlDynamicView.axaml.cs">
-      <DependentUpon>TabControlDynamicView.axaml</DependentUpon>
+    <Compile Update="Views\TabsDynamicView.axaml.cs">
+      <DependentUpon>TabsDynamicView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>
