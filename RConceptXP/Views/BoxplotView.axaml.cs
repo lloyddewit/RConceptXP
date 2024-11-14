@@ -5,12 +5,12 @@ using RConceptXP.ViewModels;
 
 namespace RConceptXP.Views;
 
-public partial class Boxplot2View : UserControl
+public partial class BoxplotView : UserControl
 {
-    public Boxplot2View()
+    public BoxplotView()
     {
         InitializeComponent();
-        DataContext = new Boxplot2ViewModel(this);
+        DataContext = new BoxplotViewModel(this);
     }
 
     private void InitializeComponent()

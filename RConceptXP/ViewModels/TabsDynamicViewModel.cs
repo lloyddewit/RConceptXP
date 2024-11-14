@@ -9,9 +9,9 @@ public partial class TabsDynamicViewModel : ObservableObject
     private string _header;
 
     [ObservableProperty]
-    private Boxplot2View? _content;
+    private BoxplotView? _content;
 
-    public TabsDynamicViewModel(string header, Boxplot2View? content)
+    public TabsDynamicViewModel(string header, BoxplotView? content)
     {
         Header = header;
         Content = content;

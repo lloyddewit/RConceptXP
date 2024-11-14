@@ -30,6 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\BoxplotView.axaml.cs">
+      <DependentUpon>BoxplotView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\TabsDynamicView.axaml.cs">
       <DependentUpon>TabsDynamicView.axaml</DependentUpon>
     </Compile>

@@ -24,7 +24,7 @@ public partial class TabsDynamicView : UserControl
 
     public void AddNewTab()
     {
-        var newTab = new TabsDynamicViewModel("New", new Boxplot2View());
+        var newTab = new TabsDynamicViewModel("New", new BoxplotView());
         _tabViewModels.Add(newTab);
 
         var tabControl = this.FindControl<TabControl>("tabs") ??
