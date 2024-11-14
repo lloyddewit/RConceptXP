@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using RConceptXP.Views;
 
 namespace RConceptXP.ViewModels;
 
@@ -8,9 +9,9 @@ public partial class TabsDynamicViewModel : ObservableObject
     private string _header;
 
     [ObservableProperty]
-    private string _content;
+    private Boxplot2View? _content;
 
-    public TabsDynamicViewModel(string header, string content)
+    public TabsDynamicViewModel(string header, Boxplot2View? content)
     {
         Header = header;
         Content = content;

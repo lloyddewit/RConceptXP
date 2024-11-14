@@ -23,7 +23,7 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
-                //todo commented out line below because it requires mainView to be passes as parameter to MainViewModel. Still needed?
+                //todo commented out line below because it requires mainView to be passed as parameter to MainViewModel. Still needed?
                 //DataContext = new MainViewModel() 
             };
         }

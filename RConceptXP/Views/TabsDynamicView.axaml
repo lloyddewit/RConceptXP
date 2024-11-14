@@ -17,7 +17,7 @@
         </TabControl.ItemTemplate>
         <TabControl.ContentTemplate>
             <DataTemplate DataType="vm:TabsDynamicViewModel">
-                <TextBlock Text="{Binding Content}" />
+                <ContentControl Content="{Binding Content}" />
             </DataTemplate>
         </TabControl.ContentTemplate>
     </TabControl>

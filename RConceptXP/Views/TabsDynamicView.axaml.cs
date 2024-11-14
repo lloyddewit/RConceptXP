@@ -17,14 +17,14 @@ public partial class TabsDynamicView : UserControl
 
         _tabViewModels = new ObservableCollection<TabsDynamicViewModel>
         {
-            new TabsDynamicViewModel("<empty>", "")
+            new TabsDynamicViewModel("<empty>", null)
         };
         DataContext = _tabViewModels;
     }
 
     public void AddNewTab()
     {
-        var newTab = new TabsDynamicViewModel("New", "Some content on new tab");
+        var newTab = new TabsDynamicViewModel("New", new Boxplot2View());
         _tabViewModels.Add(newTab);
 
         var tabControl = this.FindControl<TabControl>("tabs") ??
