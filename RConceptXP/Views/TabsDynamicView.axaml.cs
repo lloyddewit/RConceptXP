@@ -5,7 +5,6 @@ using RConceptXP.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading;
 
 namespace RConceptXP.Views;
 
@@ -17,7 +16,7 @@ public partial class TabsDynamicView : UserControl
     {
         AvaloniaXamlLoader.Load(this);
 
-        _tabViewModels = new ObservableCollection<TabsDynamicViewModel> {};
+        _tabViewModels = new ObservableCollection<TabsDynamicViewModel> { };
         DataContext = _tabViewModels;
     }
 
@@ -43,7 +42,17 @@ public partial class TabsDynamicView : UserControl
             count++;
         } while (headers.Contains(header));
 
-        _tabViewModels.Add(new TabsDynamicViewModel(header, new BoxplotView()));
+        var newTab = new TabsDynamicViewModel(header, new BoxplotView());
+        newTab.TabDeleted += OnTabDeleted;
+        _tabViewModels.Add(newTab);
         tabControl.SelectedIndex = _tabViewModels.Count - 1;
+    }
+
+    private void OnTabDeleted(object? sender, EventArgs e)
+    {
+        if (sender is TabsDynamicViewModel tab)
+        {
+            _tabViewModels.Remove(tab);
+        }
     }
 }
