@@ -1,10 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using RConceptXP.Views;
+using System;
+using System.Collections.ObjectModel;
 
 namespace RConceptXP.ViewModels;
 
 public partial class TabsDynamicViewModel : ObservableObject
 {
+    public RelayCommand OnDeleteTabCommand { get; }
+
     [ObservableProperty]
     private string _header;
 
@@ -15,6 +20,11 @@ public partial class TabsDynamicViewModel : ObservableObject
     {
         Header = header;
         Content = content;
+        OnDeleteTabCommand = new RelayCommand(DeleteTab);
+
+    }
+
+    private void DeleteTab()
+    {
     }
 }
-

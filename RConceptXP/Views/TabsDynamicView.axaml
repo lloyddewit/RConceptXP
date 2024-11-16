@@ -12,7 +12,16 @@
     <TabControl x:Name="tabs" ItemsSource="{Binding}">
         <TabControl.ItemTemplate>
             <DataTemplate DataType="vm:TabsDynamicViewModel">
-                <TextBlock Text="{Binding Header}" />
+                <TextBlock Text="{Binding Header}">
+                    <TextBlock.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem 
+                                Header="Close Tab" 
+                                Command="{Binding OnDeleteTabCommand}" 
+                                />
+                        </ContextMenu>
+                    </TextBlock.ContextMenu>
+                </TextBlock>
             </DataTemplate>
         </TabControl.ItemTemplate>
         <TabControl.ContentTemplate>
