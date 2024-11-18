@@ -150,7 +150,6 @@ public partial class BoxplotViewModel : ObservableObject
     private TextBox _multipleVariableTextBox;
     private TextBox _factorTextBox;
     private TextBox _secondFactorTextBox;
-    private ComboBox _facetByComboBox; //todo needed?
     private TextBox _facetByTextBox;
 
     public BoxplotViewModel(BoxplotView boxplotView)
@@ -170,8 +169,6 @@ public partial class BoxplotViewModel : ObservableObject
             throw new Exception("Cannot find factor textBox by name");
         _secondFactorTextBox = boxplotView.FindControl<TextBox>("secondFactorTextBox") ?? 
             throw new Exception("Cannot find secondFactorTextBox by name");
-        _facetByComboBox = boxplotView.FindControl<ComboBox>("facetByComboBox") ??
-            throw new Exception("Cannot find facetByComboBox by name");
         _facetByTextBox = boxplotView.FindControl<TextBox>("facetByTextBox") ??
             throw new Exception("Cannot find facetByTextBox by name");
 
@@ -363,7 +360,6 @@ public partial class BoxplotViewModel : ObservableObject
             {"isVarWidth", BoolToUpperCaseString(IsVarWidth)},
             {"isViolin", BoolToUpperCaseString(IsViolin)},
             {"isWidth", BoolToUpperCaseString(GetIsFactorNumeric())},
-            {"jitter", ""}, //todo
             {"jitterExtra", JitterExtra},
             {"legendPosition", $"\"{LegendPosition.ToLower()}\""},
             {"saveName", SaveName},
