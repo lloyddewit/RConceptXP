@@ -1,11 +1,13 @@
-<Window xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="410" d:DesignHeight="495"
+             x:Class="RConceptXP.Views.BoxplotView"
         xmlns:i="using:Avalonia.Xaml.Interactivity"
         xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Class="RConceptXP.Views.Boxplot"
         xmlns:vm="clr-namespace:RConceptXP.ViewModels"
         x:DataType="vm:BoxplotViewModel"
-        Title="Boxplot"
         Width="410"
         Height="495"
         HorizontalAlignment="Stretch"
@@ -15,26 +17,26 @@
 
         <!-- Radio buttons -->
         <UniformGrid Columns="3">
-            <RadioButton 
+            <RadioButton
                 Classes="accent"
                 Content="Boxplot"
-                GroupName="BoxplotType" 
-                HorizontalAlignment="Right" 
+                GroupName="BoxplotType"
+                HorizontalAlignment="Right"
                 IsChecked="{Binding IsBoxPlot}"
                 Name="isBoxplot"
                 />
-            <RadioButton 
+            <RadioButton
                 Classes="accent"
-                Content="Jitter Plot" 
-                GroupName="BoxplotType" 
+                Content="Jitter Plot"
+                GroupName="BoxplotType"
                 HorizontalAlignment="Center"
                 IsChecked="{Binding IsJitter}"
                 Name="isJitter"
                 />
-            <RadioButton 
+            <RadioButton
                 Classes="accent"
-                Content="Violin Plot" 
-                GroupName="BoxplotType" 
+                Content="Violin Plot"
+                GroupName="BoxplotType"
                 HorizontalAlignment="Left"
                 IsChecked="{Binding IsViolin}"
                 Name="isViolin"
@@ -51,12 +53,12 @@
                             <ComboBox  Classes="accent" SelectedIndex="0">
                                 <ComboBoxItem>survey</ComboBoxItem>
                             </ComboBox>
-                            <ListBox 
+                            <ListBox
                                 Background="{StaticResource BackgroundTextBlock}"
-                                Classes="accent" 
-                                Height="80" 
+                                Classes="accent"
+                                Height="80"
                                 ItemsSource="{Binding ColumnNames}"
-                                Margin="0 5 0 0" 
+                                Margin="0 5 0 0"
                                 Name="columns"
                                 Selection="{Binding Selection}"
                                 SelectionMode="AlwaysSelected,Single,Toggle"
@@ -66,12 +68,12 @@
                                     <MenuFlyout>
                                         <MenuItem Header="Plot Options"/>
                                         <MenuItem Header="Boxplot Options"/>
-                                        <MenuItem 
-                                            Header="Jitter Options" 
+                                        <MenuItem
+                                            Header="Jitter Options"
                                             IsEnabled="{Binding #isJitter.IsChecked}"/>
-                                        <MenuItem 
-                                            Header="Summary Options" 
-                                            IsEnabled="{Binding #isBoxplot.IsChecked}" 
+                                        <MenuItem
+                                            Header="Summary Options"
+                                            IsEnabled="{Binding #isBoxplot.IsChecked}"
                                             />
                                         <MenuItem
                                             Header="Tufte Options" >
@@ -88,22 +90,22 @@
                             </SplitButton>
                         </StackPanel>
                         <StackPanel Margin="10 0 0 0">
-                            <SplitButton 
+                            <SplitButton
                                 Classes="accent"
                                 Command="{Binding OnSelectorAddClickCommand}"
-                                Content="Add" 
+                                Content="Add"
                                 IsEnabled="{Binding !!#columns.ItemCount}"
                                 Margin="0 50 0 0">
                                 <SplitButton.Flyout>
                                     <MenuFlyout Placement="Bottom">
-                                        <MenuItem 
-                                            Command="{Binding OnSelectorAddClickCommand}" 
+                                        <MenuItem
+                                            Command="{Binding OnSelectorAddClickCommand}"
                                             Header="Add Selected"
                                             />
                                         <MenuItem
                                             Command="{Binding OnSelectorAddAllClickCommand}"
-                                            Header="Add All" 
-                                            IsEnabled="False" 
+                                            Header="Add All"
+                                            IsEnabled="False"
                                             Name="addAllOption"
                                             />
                                         <Separator/>
@@ -116,37 +118,37 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Margin="0 10 0 0">
-                    <CheckBox 
-                        Classes="accent" 
+                    <CheckBox
+                        Classes="accent"
                         Content="Horizontal Plot"
                         IsChecked="{Binding IsHorizontalBoxPlot}"
                         />
                     <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
-                        <CheckBox 
-                            Classes="accent" 
+                        <CheckBox
+                            Classes="accent"
                             Content="Group to Connect"
                             IsChecked="{Binding IsGroupToConnect}"
                             Name="groupToConnect"
                             />
-                        <ComboBox 
-                            Classes="theme-soft accent" 
-                            IsVisible="{Binding #groupToConnect.IsChecked}" 
+                        <ComboBox
+                            Classes="theme-soft accent"
+                            IsVisible="{Binding #groupToConnect.IsChecked}"
                             ItemsSource="{Binding GroupToConnectSummaries}"
-                            Margin="10 0 0 0" 
+                            Margin="10 0 0 0"
                             Width="70"
                             SelectedIndex="0"
                             SelectedItem="{Binding GroupToConnectSummary, Mode=TwoWay}"
                             >
                         </ComboBox>
                     </StackPanel>
-                    <StackPanel 
-                        IsVisible="{Binding !#isJitter.IsChecked}" 
-                        Margin="0 5 0 0" 
+                    <StackPanel
+                        IsVisible="{Binding !#isJitter.IsChecked}"
+                        Margin="0 5 0 0"
                         Orientation="Horizontal"
                         >
-                        <CheckBox 
-                            Classes="accent" 
-                            Content="Width" 
+                        <CheckBox
+                            Classes="accent"
+                            Content="Width"
                             IsEnabled="{Binding IsWidthEnabled}"
                             Name="isWidth"
                             />
@@ -241,15 +243,15 @@
                     </i:Interaction.Behaviors>
                 </TextBox>
                 <TextBlock Text="Factor (Optional):" Margin="0 10 0 0"/>
-                <TextBox 
-                    Classes="theme-soft accent" 
-                    HorizontalAlignment="Left" 
+                <TextBox
+                    Classes="theme-soft accent"
+                    HorizontalAlignment="Left"
                     IsEnabled="{Binding #singleOption.IsChecked}"
                     IsReadOnly="True"
                     Margin="0 5 0 0"
                     Name="factorTextBox"
                     Text="{Binding Factor}"
-                    Width="100" 
+                    Width="100"
                     >
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior
@@ -293,9 +295,9 @@
                         </MultiBinding>
                     </CheckBox.IsVisible>
                 </CheckBox>
-                <CheckBox 
-                    Classes="accent" 
-                    Content="Tufte Boxplots" 
+                <CheckBox
+                    Classes="accent"
+                    Content="Tufte Boxplots"
                     IsChecked="{Binding IsTufte}"
                     IsVisible="{Binding #isBoxplot.IsChecked}"
                     Margin="0 5 0 0"
@@ -305,55 +307,55 @@
         </StackPanel>
 
         <!-- Add boxplot -->
-        <StackPanel 
-            IsVisible="{Binding !#isBoxplot.IsChecked}" 
-            Margin="0 5 0 0" 
+        <StackPanel
+            IsVisible="{Binding !#isBoxplot.IsChecked}"
+            Margin="0 5 0 0"
             Orientation="Horizontal"
             >
             <CheckBox Classes="accent" Content="Add Boxplot" Name="addBoxplot"/>
-            <TextBlock 
+            <TextBlock
                 Margin="10 5 0 0"
-                IsVisible="{Binding #addBoxplot.IsChecked}" 
-                Text="Width:" 
+                IsVisible="{Binding #addBoxplot.IsChecked}"
+                Text="Width:"
                 />
-            <NumericUpDown 
-                Classes="theme-soft accent" 
+            <NumericUpDown
+                Classes="theme-soft accent"
                 FormatString="0.00"
                 Increment="0.01"
                 IsVisible="{Binding #addBoxplot.IsChecked}"
-                Margin="5 0 0 0" 
-                Maximum="1" 
-                Minimum="0" 
+                Margin="5 0 0 0"
+                Maximum="1"
+                Minimum="0"
                 Value="{Binding WidthExtra}"
                 Width="60"/>
         </StackPanel>
 
         <!-- Add points -->
         <StackPanel IsVisible="{Binding !#isJitter.IsChecked}" Orientation="Horizontal" Margin="0 5 0 0">
-            <CheckBox 
-                Classes="accent" 
-                Content="Add Points"  
+            <CheckBox
+                Classes="accent"
+                Content="Add Points"
                 IsChecked="{Binding IsAddPoints}"
                 Name="isAddPoints"
                 />
             <StackPanel Orientation="Horizontal" IsVisible="{Binding #isAddPoints.IsChecked}" >
                 <TextBlock Text="Jitter:" Margin="10 0 0 0" VerticalAlignment="Center"/>
-                <NumericUpDown 
+                <NumericUpDown
                     Classes="theme-soft accent"
                     FormatString="0.00"
-                    Increment="0.01" 
-                    Margin="5 0 0 0" 
-                    Minimum="0" 
+                    Increment="0.01"
+                    Margin="5 0 0 0"
+                    Minimum="0"
                     Value="{Binding JitterExtra}"
                     Width="60"
                     />
                 <TextBlock Text="Transparency:" Margin="10 0 0 0" VerticalAlignment="Center"/>
-                <NumericUpDown 
-                    Classes="theme-soft accent" 
+                <NumericUpDown
+                    Classes="theme-soft accent"
                     FormatString="0.00"
-                    Increment="0.01" 
-                    Margin="5 0 0 0" 
-                    Maximum="1" 
+                    Increment="0.01"
+                    Margin="5 0 0 0"
+                    Maximum="1"
                     Minimum="0"
                     Value="{Binding Transparency}"
                     Width="60"
@@ -362,14 +364,14 @@
         </StackPanel>
 
         <!-- Legend and Facet By -->
-        <Grid ColumnDefinitions="Auto,130, Auto, Auto" 
+        <Grid ColumnDefinitions="Auto,130, Auto, Auto"
               RowDefinitions="Auto Auto">
             <TextBlock Grid.Row="0" Grid.Column="2" Text="Facet By:"/>
-            <CheckBox 
-                Classes="accent" 
-                Content="Legend" 
-                Grid.Column="0" 
-                Grid.Row="1" 
+            <CheckBox
+                Classes="accent"
+                Content="Legend"
+                Grid.Column="0"
+                Grid.Row="1"
                 IsChecked="{Binding IsLegend}"
                 Name="isLegend"
                 />
@@ -383,30 +385,30 @@
                 SelectedItem="{Binding LegendPosition, Mode=TwoWay}"
                 >
             </ComboBox>
-            <TextBox 
-                Classes="theme-soft accent" 
-                Grid.Row="1" 
-                Grid.Column="2" 
-                Height="25" 
+            <TextBox
+                Classes="theme-soft accent"
+                Grid.Row="1"
+                Grid.Column="2"
+                Height="25"
                 IsReadOnly="True"
                 Margin="0 5 0 0"
                 Name="facetByTextBox"
                 Text="{Binding FacetBy}"
                 Width="90"
                 >
-                    <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior
-                            EventName="GotFocus"
-                            SourceObject="{Binding #facetByTextBox}">
-                            <ia:InvokeCommandAction
-                                Command="{Binding OnReceiverGotFocusCommand}"
-                                CommandParameter="{Binding ElementName=facetByTextBox}"/>
-                        </ia:EventTriggerBehavior>
-                    </i:Interaction.Behaviors>
-                </TextBox>
-            <ComboBox 
-                Classes="theme-soft accent" 
-                Grid.Row="1" 
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior
+                        EventName="GotFocus"
+                        SourceObject="{Binding #facetByTextBox}">
+                        <ia:InvokeCommandAction
+                            Command="{Binding OnReceiverGotFocusCommand}"
+                            CommandParameter="{Binding ElementName=facetByTextBox}"/>
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <ComboBox
+                Classes="theme-soft accent"
+                Grid.Row="1"
                 Grid.Column="3"
                 ItemsSource="{Binding FacetByTypes}"
                 Margin="5 5 0 0"
@@ -420,9 +422,9 @@
 
         <!-- Save graph -->
         <StackPanel Orientation="Horizontal">
-            <CheckBox 
-                Classes="accent" 
-                Content="Save Graph" 
+            <CheckBox
+                Classes="accent"
+                Content="Save Graph"
                 IsChecked="{Binding IsSaveGraph}"
                 Margin="0 5 0 0"
                 Name="isSaveGraph"
@@ -442,29 +444,29 @@
 
         <!-- Comment -->
         <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
-            <CheckBox 
-                Classes="accent" 
-                Content="Comment" 
+            <CheckBox
+                Classes="accent"
+                Content="Comment"
                 IsChecked="true"
                 Name="isComment"
                 />
-            <TextBox 
-                Classes="theme-soft accent" 
+            <TextBox
+                Classes="theme-soft accent"
                 IsVisible="{Binding #isComment.IsChecked}"
                 Margin="5 0 0 0"
                 Text="{Binding Comment}"
-                Width="227" 
+                Width="227"
                 />
         </StackPanel>
 
         <!-- Standard dialog buttons -->
         <UniformGrid Columns="5" Margin="0 15 0 0">
 
-            <SplitButton 
-                Classes="accent" 
-                Content="OK" 
-                HorizontalAlignment="Left" 
-                IsEnabled="{Binding IsOkEnabled}" 
+            <SplitButton
+                Classes="accent"
+                Content="OK"
+                HorizontalAlignment="Left"
+                IsEnabled="{Binding IsOkEnabled}"
                 Margin="0 0 0 0"
                 Name="ok"
                 Width="80"
@@ -479,10 +481,10 @@
             <Button Classes="accent" Content="Reset" HorizontalAlignment="Right" Width="60"/>
             <Button Classes="accent" Content="Close" HorizontalAlignment="Center" Width="60"/>
             <Button Classes="accent" Content="Help" HorizontalAlignment="Left" Width="60"/>
-            <SplitButton 
-                Classes="accent" 
+            <SplitButton
+                Classes="accent"
                 Command="{Binding OnToScriptClickCommand}"
-                Content="To Script" 
+                Content="To Script"
                 HorizontalAlignment="Right"
                 IsEnabled="{Binding #ok.IsEnabled}"
                 Margin="30 0 0 0"
@@ -495,7 +497,6 @@
                     </MenuFlyout>
                 </SplitButton.Flyout>
             </SplitButton>
-            </UniformGrid>
+        </UniformGrid>
     </StackPanel>
-</Window>
-
+</UserControl>

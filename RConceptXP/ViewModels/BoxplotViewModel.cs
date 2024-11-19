@@ -150,29 +150,26 @@ public partial class BoxplotViewModel : ObservableObject
     private TextBox _multipleVariableTextBox;
     private TextBox _factorTextBox;
     private TextBox _secondFactorTextBox;
-    private ComboBox _facetByComboBox; //todo needed?
     private TextBox _facetByTextBox;
 
-    public BoxplotViewModel(Boxplot boxplot)
+    public BoxplotViewModel(BoxplotView boxplotView)
     {
         // initialize receiver controls
         OnReceiverGotFocusCommand = new RelayCommand<TextBox>(OnReceiverGotFocus);
 
-        _columnsListBox = boxplot.FindControl<ListBox>("columns") ?? 
+        _columnsListBox = boxplotView.FindControl<ListBox>("columns") ?? 
             throw new Exception("Cannot find columns ListBox by name");
-        _addAllOption = boxplot.FindControl<MenuItem>("addAllOption") ?? 
+        _addAllOption = boxplotView.FindControl<MenuItem>("addAllOption") ?? 
             throw new Exception("Cannot find addAllOption MenuItem by name");
-        _singleVariableTextBox = boxplot.FindControl<TextBox>("singleVariableTextBox") ?? 
+        _singleVariableTextBox = boxplotView.FindControl<TextBox>("singleVariableTextBox") ?? 
             throw new Exception("Cannot find singleVariableTextBox by name");
-        _multipleVariableTextBox = boxplot.FindControl<TextBox>("multipleVariableTextBox") ?? 
+        _multipleVariableTextBox = boxplotView.FindControl<TextBox>("multipleVariableTextBox") ?? 
             throw new Exception("Cannot find multipleVariableTextBox by name");
-        _factorTextBox = boxplot.FindControl<TextBox>("factorTextBox") ?? 
+        _factorTextBox = boxplotView.FindControl<TextBox>("factorTextBox") ?? 
             throw new Exception("Cannot find factor textBox by name");
-        _secondFactorTextBox = boxplot.FindControl<TextBox>("secondFactorTextBox") ?? 
+        _secondFactorTextBox = boxplotView.FindControl<TextBox>("secondFactorTextBox") ?? 
             throw new Exception("Cannot find secondFactorTextBox by name");
-        _facetByComboBox = boxplot.FindControl<ComboBox>("facetByComboBox") ??
-            throw new Exception("Cannot find facetByComboBox by name");
-        _facetByTextBox = boxplot.FindControl<TextBox>("facetByTextBox") ??
+        _facetByTextBox = boxplotView.FindControl<TextBox>("facetByTextBox") ??
             throw new Exception("Cannot find facetByTextBox by name");
 
         // Note: We need to catch delete and backspace key presses in receivers so that the user
@@ -363,7 +360,6 @@ public partial class BoxplotViewModel : ObservableObject
             {"isVarWidth", BoolToUpperCaseString(IsVarWidth)},
             {"isViolin", BoolToUpperCaseString(IsViolin)},
             {"isWidth", BoolToUpperCaseString(GetIsFactorNumeric())},
-            {"jitter", ""}, //todo
             {"jitterExtra", JitterExtra},
             {"legendPosition", $"\"{LegendPosition.ToLower()}\""},
             {"saveName", SaveName},

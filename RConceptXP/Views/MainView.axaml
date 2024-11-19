@@ -2,16 +2,11 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:views="clr-namespace:RConceptXP.Views"
          xmlns:vm="clr-namespace:RConceptXP.ViewModels"
          mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
          x:Class="RConceptXP.Views.MainView"
          x:DataType="vm:MainViewModel">
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
-    </Design.DataContext>
-    <!-- test -->
 
     <Grid RowDefinitions="Auto, Auto, *, Auto">
         <!-- Menu bar -->
@@ -80,12 +75,24 @@
         <!-- Tool bar -->
         <Grid Grid.Row="1" Background="{StaticResource BackgroundTextBlock}" Height="40"
               ColumnDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *">
-            <Button Grid.Column="2" Classes="accent" Content="{Binding ToDoButton}" Command="{Binding OpenBoxplotCommand}" Margin="10 0 0 0"/>
+            <Button Grid.Column="2" Classes="accent" Content="Boxplot" Command="{Binding OpenBoxplotCommand}" Margin="10 0 0 0"/>
         </Grid>
 
         <!-- Working area -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-        </StackPanel>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="410"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="595"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <views:TabsDynamicView 
+                Grid.Row="0" 
+                Grid.Column="1" 
+                Name="tabsForDialogs" />
+        </Grid>
 
         <!-- Status bar -->
         <Label Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="LightGray" Height="25" Content="Status bar"/>

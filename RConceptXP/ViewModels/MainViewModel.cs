@@ -1,8 +1,7 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using Avalonia.Controls;
+using CommunityToolkit.Mvvm.Input;
 using RConceptXP.Views;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia;
-using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace RConceptXP.ViewModels;
 
@@ -10,32 +9,18 @@ public partial class MainViewModel : ViewModelBase
 {
     public IRelayCommand OpenBoxplotCommand { get; }
 
-    [ObservableProperty]
-    private string toDoButton = "BoxPlot"; // Set the initial text for the button
+    private TabsDynamicView _dialogTabs;
 
-
-    public MainViewModel()
+    public MainViewModel(MainView mainView)
     {
         OpenBoxplotCommand = new RelayCommand(OpenBoxplot);
+
+        _dialogTabs = mainView.FindControl<TabsDynamicView>("tabsForDialogs") ??
+            throw new Exception("Cannot find tabsForDialogs by name");
     }
 
-    private async void OpenBoxplot()
+    private void OpenBoxplot()
     {
-        // Check if Application or Application.Current is null
-        if (Application.Current == null || Application.Current.ApplicationLifetime == null)
-        {
-            return;
-        }
-
-        if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopLifetime)
-        {
-            var mainWindow = desktopLifetime.MainWindow;
-            if (mainWindow != null)
-            {
-                var dialog = new Boxplot();
-                await dialog.ShowDialog(mainWindow);
-            }
-        }
+        _dialogTabs.AddNewTab();
     }
-
 }
