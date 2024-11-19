@@ -19,6 +19,7 @@ namespace RConceptXP.ViewModels;
 public partial class BoxplotViewModel : ObservableObject
 {
     public RelayCommand<TextBox> OnReceiverGotFocusCommand { get; }
+    public RelayCommand OnResetClickCommand { get; }
     public RelayCommand OnSelectorAddAllClickCommand { get; }
     public RelayCommand OnSelectorAddClickCommand { get; }
     public RelayCommand OnToScriptClickCommand { get; }
@@ -79,9 +80,6 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private string _groupToConnectSummary;
-
-    [ObservableProperty]
-    private string _inputSummaries;
 
     [ObservableProperty]
     private bool _isAddPoints;
@@ -157,17 +155,17 @@ public partial class BoxplotViewModel : ObservableObject
         // initialize receiver controls
         OnReceiverGotFocusCommand = new RelayCommand<TextBox>(OnReceiverGotFocus);
 
-        _columnsListBox = boxplotView.FindControl<ListBox>("columns") ?? 
+        _columnsListBox = boxplotView.FindControl<ListBox>("columns") ??
             throw new Exception("Cannot find columns ListBox by name");
-        _addAllOption = boxplotView.FindControl<MenuItem>("addAllOption") ?? 
+        _addAllOption = boxplotView.FindControl<MenuItem>("addAllOption") ??
             throw new Exception("Cannot find addAllOption MenuItem by name");
-        _singleVariableTextBox = boxplotView.FindControl<TextBox>("singleVariableTextBox") ?? 
+        _singleVariableTextBox = boxplotView.FindControl<TextBox>("singleVariableTextBox") ??
             throw new Exception("Cannot find singleVariableTextBox by name");
-        _multipleVariableTextBox = boxplotView.FindControl<TextBox>("multipleVariableTextBox") ?? 
+        _multipleVariableTextBox = boxplotView.FindControl<TextBox>("multipleVariableTextBox") ??
             throw new Exception("Cannot find multipleVariableTextBox by name");
-        _factorTextBox = boxplotView.FindControl<TextBox>("factorTextBox") ?? 
+        _factorTextBox = boxplotView.FindControl<TextBox>("factorTextBox") ??
             throw new Exception("Cannot find factor textBox by name");
-        _secondFactorTextBox = boxplotView.FindControl<TextBox>("secondFactorTextBox") ?? 
+        _secondFactorTextBox = boxplotView.FindControl<TextBox>("secondFactorTextBox") ??
             throw new Exception("Cannot find secondFactorTextBox by name");
         _facetByTextBox = boxplotView.FindControl<TextBox>("facetByTextBox") ??
             throw new Exception("Cannot find facetByTextBox by name");
@@ -175,7 +173,7 @@ public partial class BoxplotViewModel : ObservableObject
         // Note: We need to catch delete and backspace key presses in receivers so that the user
         // can clear the receiver. There are simpler ways to catch most key events in Avalonia,
         // but delete and backspace are a special case and require a Tunnel routing strategy.
-        _singleVariableTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown, 
+        _singleVariableTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown,
                                           RoutingStrategies.Tunnel);
         _multipleVariableTextBox.AddHandler(InputElement.KeyDownEvent, OnReceiverKeyDown,
                                           RoutingStrategies.Tunnel);
@@ -205,41 +203,15 @@ public partial class BoxplotViewModel : ObservableObject
 
         // initialize other command controls
         OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
+        OnResetClickCommand = new RelayCommand(OnResetClick);
 
-        // initialize other binding variables
-        Comment = "Dialog: Boxplot Options";
-        DataFrame = "survey"; // todo hard coded for testing
-        FacetBy = "";
+        // initialize one-way data bindings (set only once here and never changed)
         FacetByTypes = new List<string> { "Facet Wrap", "Facet Row", "Facet Column", "None" };
-        FacetByType = FacetByTypes[0];
-        Factor = "";
         GroupToConnectSummaries = new List<string> { "mean", "median" };
-        GroupToConnectSummary = GroupToConnectSummaries[0];
-        InputSummaries = "";
-        IsAddPoints = false;
-        IsBoxPlot = true;
-        IsBoxPlotExtra = false;
-        IsComment = true;
-        IsGroupToConnect = false;
-        IsHorizontalBoxPlot = false;
-        IsJitter = false;
-        IsLegend = false;
-        IsSaveGraph = false;
-        IsSingle = true;
-        IsTufte = false;
-        IsVarWidth = false;
-        IsViolin = false;
-        JitterExtra = "0.20";
         LegendPositions = new List<string> { "None", "Left", "Right", "Top", "Bottom" };
-        LegendPosition = LegendPositions[0];
-        MultipleVariables = "";
-        SaveName = "plot1";
         SaveNames = new List<string> { "box_plot", "jitter", "tufte_boxplot", "violin" };
-        SecondFactor = "";
-        SingleVariable = "";
-        Transparency = "1.00";
-        Width = "0.25";
-        WidthExtra = "0.5";
+
+        OnResetClick();
     }
 
     private string BoolToUpperCaseString(bool value)
@@ -319,6 +291,38 @@ public partial class BoxplotViewModel : ObservableObject
                 textBox.Clear();
             }
         }
+    }
+
+    private void OnResetClick()
+    {
+        Comment = "Dialog: Boxplot Options";
+        DataFrame = "survey"; // todo hard coded for testing
+        FacetBy = "";
+        FacetByType = FacetByTypes[0];
+        Factor = "";
+        GroupToConnectSummary = GroupToConnectSummaries[0];
+        IsAddPoints = false;
+        IsBoxPlot = true;
+        IsBoxPlotExtra = false;
+        IsComment = true;
+        IsGroupToConnect = false;
+        IsHorizontalBoxPlot = false;
+        IsJitter = false;
+        IsLegend = false;
+        IsSaveGraph = false;
+        IsSingle = true;
+        IsTufte = false;
+        IsVarWidth = false;
+        IsViolin = false;
+        JitterExtra = "0.20";
+        LegendPosition = LegendPositions[0];
+        MultipleVariables = "";
+        SaveName = "plot1";
+        SecondFactor = "";
+        SingleVariable = "";
+        Transparency = "1.00";
+        Width = "0.25";
+        WidthExtra = "0.5";
     }
 
     private void OnSelectorAddAllClick()
@@ -413,6 +417,5 @@ public partial class BoxplotViewModel : ObservableObject
             File.WriteAllText(strFilePath, rScript);
         }
         //todo end -------
-
     }
 }

@@ -133,7 +133,7 @@
                         <ComboBox
                             Classes="theme-soft accent"
                             IsVisible="{Binding #groupToConnect.IsChecked}"
-                            ItemsSource="{Binding GroupToConnectSummaries}"
+                            ItemsSource="{Binding GroupToConnectSummaries, Mode=OneTime}"
                             Margin="10 0 0 0"
                             Width="70"
                             SelectedIndex="0"
@@ -380,7 +380,7 @@
                 Grid.Column="1"
                 Grid.Row="1"
                 IsVisible="{Binding #isLegend.IsChecked}"
-                ItemsSource="{Binding LegendPositions}"
+                ItemsSource="{Binding LegendPositions, Mode=OneTime}"
                 SelectedIndex="0"
                 SelectedItem="{Binding LegendPosition, Mode=TwoWay}"
                 >
@@ -410,7 +410,7 @@
                 Classes="theme-soft accent"
                 Grid.Row="1"
                 Grid.Column="3"
-                ItemsSource="{Binding FacetByTypes}"
+                ItemsSource="{Binding FacetByTypes, Mode=OneTime}"
                 Margin="5 5 0 0"
                 Name="facetByComboBox"
                 SelectedItem="{Binding FacetByType, Mode=TwoWay}"
@@ -430,7 +430,7 @@
                 Name="isSaveGraph"
                 />
             <AutoCompleteBox
-                ItemsSource="{Binding SaveNames}"
+                ItemsSource="{Binding SaveNames, Mode=OneTime}"
                 Classes="theme-soft accent"
                 IsVisible="{Binding #isSaveGraph.IsChecked}"
                 Margin="5 5 0 0"
@@ -478,7 +478,13 @@
                     </MenuFlyout>
                 </SplitButton.Flyout>
             </SplitButton>
-            <Button Classes="accent" Content="Reset" HorizontalAlignment="Right" Width="60"/>
+            <Button 
+                Classes="accent" 
+                Command="{Binding OnResetClickCommand}"
+                Content="Reset" 
+                HorizontalAlignment="Right" 
+                Width="60"
+                />
             <Button Classes="accent" Content="Close" HorizontalAlignment="Center" Width="60"/>
             <Button Classes="accent" Content="Help" HorizontalAlignment="Left" Width="60"/>
             <SplitButton
