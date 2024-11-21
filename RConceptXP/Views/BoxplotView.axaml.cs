@@ -7,10 +7,17 @@ namespace RConceptXP.Views;
 
 public partial class BoxplotView : UserControl
 {
-    public BoxplotView()
+    public BoxplotViewModel? BoxplotViewModel => DataContext as BoxplotViewModel;
+
+    // The axaml file needs a parameterless constructor
+    public BoxplotView() : this(null)
+    {
+    }
+
+    public BoxplotView(BoxplotViewModel? boxplotToDuplicate)
     {
         InitializeComponent();
-        DataContext = new BoxplotViewModel(this);
+        DataContext = new BoxplotViewModel(this, boxplotToDuplicate);
     }
 
     private void InitializeComponent()

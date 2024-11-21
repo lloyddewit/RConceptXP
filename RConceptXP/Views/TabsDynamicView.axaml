@@ -15,9 +15,17 @@
                 <TextBlock Text="{Binding Header}">
                     <TextBlock.ContextMenu>
                         <ContextMenu>
-                            <MenuItem 
-                                Header="Close Tab" 
-                                Command="{Binding OnDeleteTabCommand}" 
+                            <MenuItem
+                                Header="New"
+                                Command="{Binding OnCreateTabCommand}"
+                                />
+                            <MenuItem
+                                Header="Duplicate"
+                                Command="{Binding OnDuplicateTabCommand}"
+                                />
+                            <MenuItem
+                                Header="Delete"
+                                Command="{Binding OnDeleteTabCommand}"
                                 />
                         </ContextMenu>
                     </TextBlock.ContextMenu>
