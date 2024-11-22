@@ -319,8 +319,8 @@ public partial class BoxplotViewModel : ObservableObject
         }
         else
         {
-            _columnsListBox.SelectionMode |= SelectionMode.Single;
             _addAllOption.IsEnabled = false;
+            _columnsListBox.SelectionMode |= SelectionMode.Single;
         }
     }
 
