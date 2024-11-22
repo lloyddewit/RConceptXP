@@ -249,6 +249,7 @@ public partial class BoxplotViewModel : ObservableObject
         IsTufte = boxplotToDuplicate.IsTufte;
         IsVarWidth = boxplotToDuplicate.IsVarWidth;
         IsViolin = boxplotToDuplicate.IsViolin;
+        IsWidth = boxplotToDuplicate.IsWidth;
         JitterExtra = boxplotToDuplicate.JitterExtra;
         LegendPosition = boxplotToDuplicate.LegendPosition;
         MultipleVariables = boxplotToDuplicate.MultipleVariables;
@@ -355,6 +356,7 @@ public partial class BoxplotViewModel : ObservableObject
         IsTufte = false;
         IsVarWidth = false;
         IsViolin = false;
+        IsWidth = false;
         JitterExtra = "0.20";
         LegendPosition = LegendPositions[0];
         MultipleVariables = "";
@@ -404,7 +406,7 @@ public partial class BoxplotViewModel : ObservableObject
             {"isTufte", BoolToUpperCaseString(IsTufte)},
             {"isVarWidth", BoolToUpperCaseString(IsVarWidth)},
             {"isViolin", BoolToUpperCaseString(IsViolin)},
-            {"isWidth", BoolToUpperCaseString(GetIsFactorNumeric())},
+            {"isWidth", BoolToUpperCaseString(GetIsFactorNumeric() && IsWidth)},
             {"jitterExtra", JitterExtra},
             {"legendPosition", $"\"{LegendPosition.ToLower()}\""},
             {"saveName", SaveName},
