@@ -149,6 +149,7 @@
                         <CheckBox
                             Classes="accent"
                             Content="Width"
+                            IsChecked="{Binding IsWidth}"
                             IsEnabled="{Binding IsWidthEnabled}"
                             Name="isWidth"
                             />
@@ -283,26 +284,30 @@
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
-                <CheckBox
-                    Classes="accent"
-                    Content="Variable Width"
-                    IsChecked="{Binding IsVarWidth}"
-                    Margin="0 5 0 0">
-                    <CheckBox.IsVisible>
-                        <MultiBinding Converter="{x:Static BoolConverters.And}">
-                            <Binding Path="#isBoxplot.IsChecked" />
-                            <Binding Path="!#isTufte.IsChecked" />
-                        </MultiBinding>
-                    </CheckBox.IsVisible>
-                </CheckBox>
-                <CheckBox
-                    Classes="accent"
-                    Content="Tufte Boxplots"
-                    IsChecked="{Binding IsTufte}"
-                    IsVisible="{Binding #isBoxplot.IsChecked}"
-                    Margin="0 5 0 0"
-                    Name="isTufte"
+                <Grid RowDefinitions="22, Auto">
+                    <CheckBox
+                        Grid.Row="0"
+                        Classes="accent"
+                        Content="Variable Width"
+                        IsChecked="{Binding IsVarWidth}"
+                        Margin="0 5 0 0">
+                        <CheckBox.IsVisible>
+                            <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                <Binding Path="#isBoxplot.IsChecked" />
+                                <Binding Path="!#isTufte.IsChecked" />
+                            </MultiBinding>
+                        </CheckBox.IsVisible>
+                    </CheckBox>
+                    <CheckBox
+                        Grid.Row="1"
+                        Classes="accent"
+                        Content="Tufte Boxplots"
+                        IsChecked="{Binding IsTufte}"
+                        IsVisible="{Binding #isBoxplot.IsChecked}"
+                        Margin="0 5 0 0"
+                        Name="isTufte"
                     />
+                </Grid>                        
             </StackPanel>
         </StackPanel>
 
@@ -312,7 +317,12 @@
             Margin="0 5 0 0"
             Orientation="Horizontal"
             >
-            <CheckBox Classes="accent" Content="Add Boxplot" Name="addBoxplot"/>
+            <CheckBox 
+                Classes="accent" 
+                Content="Add Boxplot" 
+                IsChecked="{Binding IsBoxPlotExtra}"
+                Name="addBoxplot"
+                />
             <TextBlock
                 Margin="10 5 0 0"
                 IsVisible="{Binding #addBoxplot.IsChecked}"

@@ -13,7 +13,6 @@ public class SelectorMediator
 
     private List<TextBox> _receivers { get; set; } = new List<TextBox>();
     private int _textBoxWithFocusIndex = 0;
-    private ImmutableSolidColorBrush? _defaultBackground;
 
     public SelectorMediator(List<TextBox> receivers)
     {
@@ -23,12 +22,6 @@ public class SelectorMediator
         _receivers.AddRange(receivers);
         _textBoxWithFocusIndex = 0;
         _receivers[_textBoxWithFocusIndex].Focus();
-        if (_receivers[_textBoxWithFocusIndex].Background is null)
-            _defaultBackground = (ImmutableSolidColorBrush?)Brushes.White;
-        else
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-            _defaultBackground = (ImmutableSolidColorBrush)_receivers[_textBoxWithFocusIndex].Background;
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
         // set input focus to first receiver
         // Note: this statement uses a lambda expression to define an event handler for when the
@@ -54,8 +47,9 @@ public class SelectorMediator
 
     public void SetFocus(TextBox receiver)
     {
-        _receivers[_textBoxWithFocusIndex].Background = _defaultBackground;
+        int indexOfNextReceiver = _receivers.IndexOf(receiver);
+        _receivers[_textBoxWithFocusIndex].Background = _receivers[indexOfNextReceiver].Background;
         receiver.Background = Brushes.LightYellow;
-        _textBoxWithFocusIndex = _receivers.IndexOf(receiver);
+        _textBoxWithFocusIndex = indexOfNextReceiver;
     }
 }

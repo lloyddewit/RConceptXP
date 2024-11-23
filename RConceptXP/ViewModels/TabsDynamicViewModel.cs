@@ -7,7 +7,15 @@ namespace RConceptXP.ViewModels;
 
 public partial class TabsDynamicViewModel : ObservableObject
 {
+    public event EventHandler? TabCreated;
+    public event EventHandler? TabDeleted;
+    public event EventHandler? TabDuplicated;
+
+    public RelayCommand OnCreateTabCommand { get; }
     public RelayCommand OnDeleteTabCommand { get; }
+    public RelayCommand OnDuplicateTabCommand { get; }
+
+    public BoxplotViewModel? TabBoxPlotViewModel { get; }
 
     [ObservableProperty]
     private string _header;
@@ -19,13 +27,24 @@ public partial class TabsDynamicViewModel : ObservableObject
     {
         Header = header;
         Content = content;
+        TabBoxPlotViewModel = content?.BoxplotViewModel;
+        OnCreateTabCommand = new RelayCommand(CreateTab);
         OnDeleteTabCommand = new RelayCommand(DeleteTab);
+        OnDuplicateTabCommand = new RelayCommand(DuplicateTab);
     }
 
-    public event EventHandler? TabDeleted;
+    private void CreateTab()
+    {
+        TabCreated?.Invoke(this, EventArgs.Empty);
+    }
 
     private void DeleteTab()
     {
         TabDeleted?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void DuplicateTab()
+    {
+        TabDuplicated?.Invoke(this, EventArgs.Empty);
     }
 }

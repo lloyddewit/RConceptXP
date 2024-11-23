@@ -150,7 +150,13 @@ public partial class BoxplotViewModel : ObservableObject
     private TextBox _secondFactorTextBox;
     private TextBox _facetByTextBox;
 
-    public BoxplotViewModel(BoxplotView boxplotView)
+    // Disable the warning 'non-nullable field must contain a non-null value when exiting
+    // constructor'. We need to disable because otherwise many incorrect warnings are generated
+    // for the observable properties that are initialised in the constructor via the
+    // 'OnResetClick' method.
+#pragma warning disable CS8618
+    public BoxplotViewModel(BoxplotView boxplotView, BoxplotViewModel? boxplotToDuplicate)
+#pragma warning restore CS8618
     {
         // initialize receiver controls
         OnReceiverGotFocusCommand = new RelayCommand<TextBox>(OnReceiverGotFocus);
@@ -211,12 +217,48 @@ public partial class BoxplotViewModel : ObservableObject
         LegendPositions = new List<string> { "None", "Left", "Right", "Top", "Bottom" };
         SaveNames = new List<string> { "box_plot", "jitter", "tufte_boxplot", "violin" };
 
-        OnResetClick();
+        if (boxplotToDuplicate is null)
+            OnResetClick();
+        else
+            DuplicateBoxplot(boxplotToDuplicate);
     }
 
     private string BoolToUpperCaseString(bool value)
     {
         return value ? "TRUE" : "FALSE";
+    }
+
+    private void DuplicateBoxplot(BoxplotViewModel boxplotToDuplicate)
+    {
+        Comment = boxplotToDuplicate.Comment;
+        DataFrame = boxplotToDuplicate.DataFrame;
+        FacetBy = boxplotToDuplicate.FacetBy;
+        FacetByType = boxplotToDuplicate.FacetByType;
+        Factor = boxplotToDuplicate.Factor;
+        GroupToConnectSummary = boxplotToDuplicate.GroupToConnectSummary;
+        IsAddPoints = boxplotToDuplicate.IsAddPoints;
+        IsBoxPlot = boxplotToDuplicate.IsBoxPlot;
+        IsBoxPlotExtra = boxplotToDuplicate.IsBoxPlotExtra;
+        IsComment = boxplotToDuplicate.IsComment;
+        IsGroupToConnect = boxplotToDuplicate.IsGroupToConnect;
+        IsHorizontalBoxPlot = boxplotToDuplicate.IsHorizontalBoxPlot;
+        IsJitter = boxplotToDuplicate.IsJitter;
+        IsLegend = boxplotToDuplicate.IsLegend;
+        IsSaveGraph = boxplotToDuplicate.IsSaveGraph;
+        IsSingle = boxplotToDuplicate.IsSingle;
+        IsTufte = boxplotToDuplicate.IsTufte;
+        IsVarWidth = boxplotToDuplicate.IsVarWidth;
+        IsViolin = boxplotToDuplicate.IsViolin;
+        IsWidth = boxplotToDuplicate.IsWidth;
+        JitterExtra = boxplotToDuplicate.JitterExtra;
+        LegendPosition = boxplotToDuplicate.LegendPosition;
+        MultipleVariables = boxplotToDuplicate.MultipleVariables;
+        SaveName = boxplotToDuplicate.SaveName;
+        SecondFactor = boxplotToDuplicate.SecondFactor;
+        SingleVariable = boxplotToDuplicate.SingleVariable;
+        Transparency = boxplotToDuplicate.Transparency;
+        Width = boxplotToDuplicate.Width;
+        WidthExtra = boxplotToDuplicate.WidthExtra;
     }
 
     private bool GetIsFactorFactor()
@@ -277,8 +319,8 @@ public partial class BoxplotViewModel : ObservableObject
         }
         else
         {
-            _columnsListBox.SelectionMode |= SelectionMode.Single;
             _addAllOption.IsEnabled = false;
+            _columnsListBox.SelectionMode |= SelectionMode.Single;
         }
     }
 
@@ -314,6 +356,7 @@ public partial class BoxplotViewModel : ObservableObject
         IsTufte = false;
         IsVarWidth = false;
         IsViolin = false;
+        IsWidth = false;
         JitterExtra = "0.20";
         LegendPosition = LegendPositions[0];
         MultipleVariables = "";
@@ -363,7 +406,7 @@ public partial class BoxplotViewModel : ObservableObject
             {"isTufte", BoolToUpperCaseString(IsTufte)},
             {"isVarWidth", BoolToUpperCaseString(IsVarWidth)},
             {"isViolin", BoolToUpperCaseString(IsViolin)},
-            {"isWidth", BoolToUpperCaseString(GetIsFactorNumeric())},
+            {"isWidth", BoolToUpperCaseString(GetIsFactorNumeric() && IsWidth)},
             {"jitterExtra", JitterExtra},
             {"legendPosition", $"\"{LegendPosition.ToLower()}\""},
             {"saveName", SaveName},

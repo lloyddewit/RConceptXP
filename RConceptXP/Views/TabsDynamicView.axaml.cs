@@ -20,7 +20,7 @@ public partial class TabsDynamicView : UserControl
         DataContext = _tabViewModels;
     }
 
-    public void AddNewTab()
+    public void AddNewTab(BoxplotViewModel? boxplotToDuplicate = null)
     {
         var tabControl = this.FindControl<TabControl>("tabs") ??
             throw new Exception("Cannot find tabs by name");
@@ -42,10 +42,20 @@ public partial class TabsDynamicView : UserControl
             count++;
         } while (headers.Contains(header));
 
-        var newTab = new TabsDynamicViewModel(header, new BoxplotView());
+        var newTab = new TabsDynamicViewModel(header, new BoxplotView(boxplotToDuplicate));
+        newTab.TabCreated += OnTabCreated;
         newTab.TabDeleted += OnTabDeleted;
+        newTab.TabDuplicated += OnTabDuplicated;
         _tabViewModels.Add(newTab);
         tabControl.SelectedIndex = _tabViewModels.Count - 1;
+    }
+
+    private void OnTabCreated(object? sender, EventArgs e)
+    {
+        if (sender is TabsDynamicViewModel tab)
+        {
+            AddNewTab();
+        }
     }
 
     private void OnTabDeleted(object? sender, EventArgs e)
@@ -53,6 +63,14 @@ public partial class TabsDynamicView : UserControl
         if (sender is TabsDynamicViewModel tab)
         {
             _tabViewModels.Remove(tab);
+        }
+    }
+
+    private void OnTabDuplicated(object? sender, EventArgs e)
+    {
+        if (sender is TabsDynamicViewModel tab)
+        {
+            AddNewTab(tab.TabBoxPlotViewModel);
         }
     }
 }
