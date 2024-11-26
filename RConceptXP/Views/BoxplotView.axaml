@@ -2,19 +2,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="410" d:DesignHeight="495"
+             mc:Ignorable="d" d:DesignWidth="410" d:DesignHeight="515"
              x:Class="RConceptXP.Views.BoxplotView"
         xmlns:i="using:Avalonia.Xaml.Interactivity"
         xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
         xmlns:vm="clr-namespace:RConceptXP.ViewModels"
         x:DataType="vm:BoxplotViewModel"
-        Width="410"
-        Height="495"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch">
 
-    <DockPanel Width="410" Height="495" Margin="10 10 10 10">
-        <StackPanel Margin="11" DockPanel.Dock="Top">
+    <Border Grid.Row="0" Grid.Column="1"
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    CornerRadius="5"
+                    Padding="5">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top">
 
             <!-- Radio buttons -->
             <UniformGrid Columns="3">
@@ -502,7 +505,7 @@
         </StackPanel>
 
         <!-- Standard dialog buttons -->
-        <UniformGrid Columns="5" Margin="10 5 10 10" DockPanel.Dock="Bottom">
+        <UniformGrid Columns="5" Margin="5 5 5 5" DockPanel.Dock="Bottom">
 
             <SplitButton
                 Classes="accent"
@@ -550,4 +553,5 @@
         <!-- fill the rest of the dock panel to ensure buttons are at the bottom-->
         <Rectangle/>
     </DockPanel>
+        </Border>
 </UserControl>
