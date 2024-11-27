@@ -18,6 +18,7 @@ namespace RConceptXP.ViewModels;
 //todo support empty list of columns (test that selector buttons enable/disable correctly and no crashes)
 public partial class BoxplotViewModel : ObservableObject
 {
+    public RelayCommand OnMainTabRightClickCommand { get; }
     public RelayCommand<TextBox> OnReceiverGotFocusCommand { get; }
     public RelayCommand OnResetClickCommand { get; }
     public RelayCommand OnSelectorAddAllClickCommand { get; }
@@ -130,6 +131,9 @@ public partial class BoxplotViewModel : ObservableObject
     private string _secondFactor;
 
     [ObservableProperty]
+    private int _selectedTabIndex;
+
+    [ObservableProperty]
     private string _transparency;
 
     [ObservableProperty]
@@ -208,6 +212,7 @@ public partial class BoxplotViewModel : ObservableObject
         _selectorMediator = new SelectorMediator(receivers);
 
         // initialize other command controls
+        OnMainTabRightClickCommand = new RelayCommand(OnMainTabRightClick);
         OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
         OnResetClickCommand = new RelayCommand(OnResetClick);
 
@@ -255,6 +260,7 @@ public partial class BoxplotViewModel : ObservableObject
         MultipleVariables = boxplotToDuplicate.MultipleVariables;
         SaveName = boxplotToDuplicate.SaveName;
         SecondFactor = boxplotToDuplicate.SecondFactor;
+        SelectedTabIndex = boxplotToDuplicate.SelectedTabIndex;
         SingleVariable = boxplotToDuplicate.SingleVariable;
         Transparency = boxplotToDuplicate.Transparency;
         Width = boxplotToDuplicate.Width;
@@ -290,6 +296,11 @@ public partial class BoxplotViewModel : ObservableObject
             return !string.IsNullOrEmpty(SingleVariable);
         else
             return !string.IsNullOrEmpty(MultipleVariables);
+    }
+
+    private void OnMainTabRightClick()
+    {
+        SelectedTabIndex = 0;
     }
 
     private void OnReceiverGotFocus(TextBox? receiver)
@@ -362,6 +373,7 @@ public partial class BoxplotViewModel : ObservableObject
         MultipleVariables = "";
         SaveName = "plot1";
         SecondFactor = "";
+        SelectedTabIndex = 0;
         SingleVariable = "";
         Transparency = "1.00";
         Width = "0.25";

@@ -29,6 +29,15 @@
                                 />
                             <Separator />
                             <MenuItem
+                                Header="Copy"
+                                IsEnabled="False"
+                                />
+                            <MenuItem
+                                Header="Paste"
+                                IsEnabled="False"
+                                />
+                            <Separator />
+                            <MenuItem
                                 Header="Save"
                                 IsEnabled="False"
                                 />

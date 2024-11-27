@@ -47,8 +47,27 @@
                 />
             </UniformGrid>
 
-            <TabControl Margin="0 5 0 0">
+            <TabControl Margin="0 5 0 0" SelectedIndex="{Binding SelectedTabIndex}>">
                 <TabItem Header="Main">
+                    <TabItem.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuItem
+                                Header="Copy"
+                                IsEnabled="False"
+                                />
+                            <MenuItem
+                                Header="Paste"
+                                IsEnabled="False"
+                                />
+                        </MenuFlyout>
+                    </TabItem.ContextFlyout>
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerPressed">
+                            <ia:InvokeCommandAction 
+                                Command="{Binding OnMainTabRightClickCommand}" 
+                                CommandParameter="0" />
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
                     <StackPanel>
                         <!-- Main area -->
                         <StackPanel Orientation="Horizontal">
@@ -478,24 +497,157 @@
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Data">
+                    <TabItem.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuItem
+                                Header="Copy"
+                                IsEnabled="False"
+                                />
+                            <MenuItem
+                                Header="Paste"
+                                IsEnabled="False"
+                                />
+                        </MenuFlyout>
+                    </TabItem.ContextFlyout>
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerPressed">
+                            <ia:InvokeCommandAction
+                                Command="{Binding OnMainTabRightClickCommand}"
+                                CommandParameter="1" />
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
                     <TextBlock Text="Data content goes here." />
                 </TabItem>
                 <TabItem Header="Plot">
+                    <TabItem.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuItem
+                                Header="Copy"
+                                IsEnabled="False"
+                                />
+                            <MenuItem
+                                Header="Paste"
+                                IsEnabled="False"
+                                />
+                        </MenuFlyout>
+                    </TabItem.ContextFlyout>
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerPressed">
+                            <ia:InvokeCommandAction
+                                Command="{Binding OnMainTabRightClickCommand}"
+                                CommandParameter="2" />
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
                     <TextBlock Text="Plot content goes here." />
                 </TabItem>
                 <TabItem Header="Boxplot">
+                    <TabItem.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuItem
+                                Header="Copy"
+                                IsEnabled="False"
+                                />
+                            <MenuItem
+                                Header="Paste"
+                                IsEnabled="False"
+                                />
+                        </MenuFlyout>
+                    </TabItem.ContextFlyout>
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerPressed">
+                            <ia:InvokeCommandAction
+                                Command="{Binding OnMainTabRightClickCommand}"
+                                CommandParameter="3" />
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
                     <TextBlock Text="Boxplot content goes here." />
                 </TabItem>
                 <TabItem Header="Summary">
+                    <TabItem.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuItem
+                                Header="Copy"
+                                IsEnabled="False"
+                                />
+                            <MenuItem
+                                Header="Paste"
+                                IsEnabled="False"
+                                />
+                        </MenuFlyout>
+                    </TabItem.ContextFlyout>
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerPressed">
+                            <ia:InvokeCommandAction
+                                Command="{Binding OnMainTabRightClickCommand}"
+                                CommandParameter="4" />
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
                     <TextBlock Text="Summary content goes here." />
                 </TabItem>
                 <TabItem Header="Tufte">
+                    <TabItem.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuItem
+                                Header="Copy"
+                                IsEnabled="False"
+                                />
+                            <MenuItem
+                                Header="Paste"
+                                IsEnabled="False"
+                                />
+                        </MenuFlyout>
+                    </TabItem.ContextFlyout>
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerPressed">
+                            <ia:InvokeCommandAction
+                                Command="{Binding OnMainTabRightClickCommand}"
+                                CommandParameter="5" />
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
                     <TextBlock Text="Tufte content goes here." />
                 </TabItem>
                 <TabItem Header="Jitter">
+                    <TabItem.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuItem
+                                Header="Copy"
+                                IsEnabled="False"
+                                />
+                            <MenuItem
+                                Header="Paste"
+                                IsEnabled="False"
+                                />
+                        </MenuFlyout>
+                    </TabItem.ContextFlyout>
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerPressed">
+                            <ia:InvokeCommandAction
+                                Command="{Binding OnMainTabRightClickCommand}"
+                                CommandParameter="6" />
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
                     <TextBlock Text="Jitter content goes here." />
                 </TabItem>
                 <TabItem Header="Violin">
+                    <TabItem.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuItem
+                                Header="Copy"
+                                IsEnabled="False"
+                                />
+                            <MenuItem
+                                Header="Paste"
+                                IsEnabled="False"
+                                />
+                        </MenuFlyout>
+                    </TabItem.ContextFlyout>
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior EventName="PointerPressed">
+                            <ia:InvokeCommandAction
+                                Command="{Binding OnMainTabRightClickCommand}"
+                                CommandParameter="7" />
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
                     <TextBlock Text="Violin content goes here." />
                 </TabItem>
             </TabControl>
