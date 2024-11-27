@@ -6,6 +6,7 @@
              x:Class="RConceptXP.Views.BoxplotView"
         xmlns:i="using:Avalonia.Xaml.Interactivity"
         xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:vm="clr-namespace:RConceptXP.ViewModels"
         x:DataType="vm:BoxplotViewModel"
         HorizontalAlignment="Stretch"
@@ -63,9 +64,11 @@
                     </TabItem.ContextFlyout>
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="PointerPressed">
-                            <ia:InvokeCommandAction 
-                                Command="{Binding OnMainTabRightClickCommand}" 
-                                CommandParameter="0" />
+                            <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
+                                <ia:InvokeCommandAction.CommandParameter>
+                                    <sys:Int32>0</sys:Int32>
+                                </ia:InvokeCommandAction.CommandParameter>
+                            </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <StackPanel>
@@ -511,9 +514,11 @@
                     </TabItem.ContextFlyout>
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="PointerPressed">
-                            <ia:InvokeCommandAction
-                                Command="{Binding OnMainTabRightClickCommand}"
-                                CommandParameter="1" />
+                            <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
+                                <ia:InvokeCommandAction.CommandParameter>
+                                    <sys:Int32>1</sys:Int32>
+                                </ia:InvokeCommandAction.CommandParameter>
+                            </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <TextBlock Text="Data content goes here." />
@@ -533,9 +538,11 @@
                     </TabItem.ContextFlyout>
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="PointerPressed">
-                            <ia:InvokeCommandAction
-                                Command="{Binding OnMainTabRightClickCommand}"
-                                CommandParameter="2" />
+                            <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
+                                <ia:InvokeCommandAction.CommandParameter>
+                                    <sys:Int32>2</sys:Int32>
+                                </ia:InvokeCommandAction.CommandParameter>
+                            </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <TextBlock Text="Plot content goes here." />
@@ -555,9 +562,11 @@
                     </TabItem.ContextFlyout>
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="PointerPressed">
-                            <ia:InvokeCommandAction
-                                Command="{Binding OnMainTabRightClickCommand}"
-                                CommandParameter="3" />
+                            <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
+                                <ia:InvokeCommandAction.CommandParameter>
+                                    <sys:Int32>3</sys:Int32>
+                                </ia:InvokeCommandAction.CommandParameter>
+                            </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <TextBlock Text="Boxplot content goes here." />
@@ -577,9 +586,11 @@
                     </TabItem.ContextFlyout>
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="PointerPressed">
-                            <ia:InvokeCommandAction
-                                Command="{Binding OnMainTabRightClickCommand}"
-                                CommandParameter="4" />
+                            <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
+                                <ia:InvokeCommandAction.CommandParameter>
+                                    <sys:Int32>4</sys:Int32>
+                                </ia:InvokeCommandAction.CommandParameter>
+                            </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <TextBlock Text="Summary content goes here." />
@@ -599,9 +610,11 @@
                     </TabItem.ContextFlyout>
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="PointerPressed">
-                            <ia:InvokeCommandAction
-                                Command="{Binding OnMainTabRightClickCommand}"
-                                CommandParameter="5" />
+                            <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
+                                <ia:InvokeCommandAction.CommandParameter>
+                                    <sys:Int32>5</sys:Int32>
+                                </ia:InvokeCommandAction.CommandParameter>
+                            </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <TextBlock Text="Tufte content goes here." />
@@ -621,9 +634,11 @@
                     </TabItem.ContextFlyout>
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="PointerPressed">
-                            <ia:InvokeCommandAction
-                                Command="{Binding OnMainTabRightClickCommand}"
-                                CommandParameter="6" />
+                            <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
+                                <ia:InvokeCommandAction.CommandParameter>
+                                    <sys:Int32>6</sys:Int32>
+                                </ia:InvokeCommandAction.CommandParameter>
+                            </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <TextBlock Text="Jitter content goes here." />
@@ -643,9 +658,11 @@
                     </TabItem.ContextFlyout>
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior EventName="PointerPressed">
-                            <ia:InvokeCommandAction
-                                Command="{Binding OnMainTabRightClickCommand}"
-                                CommandParameter="7" />
+                            <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
+                                <ia:InvokeCommandAction.CommandParameter>
+                                    <sys:Int32>7</sys:Int32>
+                                </ia:InvokeCommandAction.CommandParameter>
+                            </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <TextBlock Text="Violin content goes here." />
