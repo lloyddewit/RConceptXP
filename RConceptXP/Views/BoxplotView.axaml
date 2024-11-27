@@ -571,7 +571,7 @@
                     </i:Interaction.Behaviors>
                     <TextBlock Text="Boxplot content goes here." />
                 </TabItem>
-                <TabItem Header="Summary">
+                <TabItem Header="Summary" IsVisible="{Binding #isBoxplot.IsChecked}">
                     <TabItem.ContextFlyout>
                         <MenuFlyout>
                             <MenuItem
@@ -619,7 +619,7 @@
                     </i:Interaction.Behaviors>
                     <TextBlock Text="Tufte content goes here." />
                 </TabItem>
-                <TabItem Header="Jitter">
+                <TabItem Header="Jitter" IsVisible="{Binding #isJitter.IsChecked}">
                     <TabItem.ContextFlyout>
                         <MenuFlyout>
                             <MenuItem
@@ -643,7 +643,7 @@
                     </i:Interaction.Behaviors>
                     <TextBlock Text="Jitter content goes here." />
                 </TabItem>
-                <TabItem Header="Violin">
+                <TabItem Header="Violin" IsVisible="{Binding #isViolin.IsChecked}">
                     <TabItem.ContextFlyout>
                         <MenuFlyout>
                             <MenuItem
