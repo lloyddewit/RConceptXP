@@ -85,7 +85,7 @@
                 <ColumnDefinition Width="410"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="595"/>
+                <RowDefinition Height="550"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <views:TabsDynamicView 

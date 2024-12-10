@@ -18,6 +18,7 @@ namespace RConceptXP.ViewModels;
 //todo support empty list of columns (test that selector buttons enable/disable correctly and no crashes)
 public partial class BoxplotViewModel : ObservableObject
 {
+    public RelayCommand<int> OnMainTabRightClickCommand { get; }
     public RelayCommand<TextBox> OnReceiverGotFocusCommand { get; }
     public RelayCommand OnResetClickCommand { get; }
     public RelayCommand OnSelectorAddAllClickCommand { get; }
@@ -28,37 +29,8 @@ public partial class BoxplotViewModel : ObservableObject
     public bool IsWidthEnabled => GetIsFactorNumeric();
     public SelectionModel<string> Selection { get; }
 
-
     [ObservableProperty]
     private List<string> _columnNames = [];
-
-    [ObservableProperty]
-    private string _factor;
-    partial void OnFactorChanged(string value) => OnPropertyChanged(nameof(IsWidthEnabled));
-
-    [ObservableProperty]
-    private string _saveName;
-    partial void OnSaveNameChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
-
-    [ObservableProperty]
-    private List<string> _saveNames;
-
-    [ObservableProperty]
-    private bool _isSaveGraph;
-    partial void OnIsSaveGraphChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
-
-    [ObservableProperty]
-    private bool _isSingle;
-    partial void OnIsSingleChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
-
-    [ObservableProperty]
-    private string _singleVariable;
-    partial void OnSingleVariableChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
-
-    [ObservableProperty]
-    private string _multipleVariables;
-    partial void OnMultipleVariablesChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
-
 
     [ObservableProperty]
     private string _comment;
@@ -75,6 +47,9 @@ public partial class BoxplotViewModel : ObservableObject
     [ObservableProperty]
     private List<string> _facetByTypes;
 
+    [ObservableProperty]
+    private string _factor;
+    partial void OnFactorChanged(string value) => OnPropertyChanged(nameof(IsWidthEnabled));
     [ObservableProperty]
     private List<string> _groupToConnectSummaries;
 
@@ -106,6 +81,14 @@ public partial class BoxplotViewModel : ObservableObject
     private bool _isLegend;
 
     [ObservableProperty]
+    private bool _isSaveGraph;
+    partial void OnIsSaveGraphChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
+
+    [ObservableProperty]
+    private bool _isSingle;
+    partial void OnIsSingleChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
+
+    [ObservableProperty]
     private bool _isTufte;
 
     [ObservableProperty]
@@ -127,7 +110,25 @@ public partial class BoxplotViewModel : ObservableObject
     private List<string> _legendPositions;
 
     [ObservableProperty]
+    private string _multipleVariables;
+    partial void OnMultipleVariablesChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
+
+    [ObservableProperty]
+    private string _saveName;
+    partial void OnSaveNameChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
+
+    [ObservableProperty]
+    private List<string> _saveNames;
+
+    [ObservableProperty]
     private string _secondFactor;
+
+    [ObservableProperty]
+    private int _selectedTabIndex;
+
+    [ObservableProperty]
+    private string _singleVariable;
+    partial void OnSingleVariableChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private string _transparency;
@@ -139,16 +140,14 @@ public partial class BoxplotViewModel : ObservableObject
     private string _widthExtra;
 
 
-    private SelectorMediator _selectorMediator;
-
-    private ListBox _columnsListBox;
     private MenuItem _addAllOption;
-
-    private TextBox _singleVariableTextBox;
-    private TextBox _multipleVariableTextBox;
-    private TextBox _factorTextBox;
-    private TextBox _secondFactorTextBox;
+    private ListBox _columnsListBox;
     private TextBox _facetByTextBox;
+    private TextBox _factorTextBox;
+    private TextBox _multipleVariableTextBox;
+    private TextBox _secondFactorTextBox;
+    private SelectorMediator _selectorMediator;
+    private TextBox _singleVariableTextBox;
 
     // Disable the warning 'non-nullable field must contain a non-null value when exiting
     // constructor'. We need to disable because otherwise many incorrect warnings are generated
@@ -208,6 +207,7 @@ public partial class BoxplotViewModel : ObservableObject
         _selectorMediator = new SelectorMediator(receivers);
 
         // initialize other command controls
+        OnMainTabRightClickCommand = new RelayCommand<int>(OnMainTabRightClick);
         OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
         OnResetClickCommand = new RelayCommand(OnResetClick);
 
@@ -255,6 +255,7 @@ public partial class BoxplotViewModel : ObservableObject
         MultipleVariables = boxplotToDuplicate.MultipleVariables;
         SaveName = boxplotToDuplicate.SaveName;
         SecondFactor = boxplotToDuplicate.SecondFactor;
+        SelectedTabIndex = boxplotToDuplicate.SelectedTabIndex;
         SingleVariable = boxplotToDuplicate.SingleVariable;
         Transparency = boxplotToDuplicate.Transparency;
         Width = boxplotToDuplicate.Width;
@@ -290,6 +291,11 @@ public partial class BoxplotViewModel : ObservableObject
             return !string.IsNullOrEmpty(SingleVariable);
         else
             return !string.IsNullOrEmpty(MultipleVariables);
+    }
+
+    private void OnMainTabRightClick(int tabIndex)
+    {
+        SelectedTabIndex = tabIndex;
     }
 
     private void OnReceiverGotFocus(TextBox? receiver)
@@ -362,6 +368,7 @@ public partial class BoxplotViewModel : ObservableObject
         MultipleVariables = "";
         SaveName = "plot1";
         SecondFactor = "";
+        SelectedTabIndex = 0;
         SingleVariable = "";
         Transparency = "1.00";
         Width = "0.25";
