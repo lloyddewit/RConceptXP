@@ -29,37 +29,8 @@ public partial class BoxplotViewModel : ObservableObject
     public bool IsWidthEnabled => GetIsFactorNumeric();
     public SelectionModel<string> Selection { get; }
 
-
     [ObservableProperty]
     private List<string> _columnNames = [];
-
-    [ObservableProperty]
-    private string _factor;
-    partial void OnFactorChanged(string value) => OnPropertyChanged(nameof(IsWidthEnabled));
-
-    [ObservableProperty]
-    private string _saveName;
-    partial void OnSaveNameChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
-
-    [ObservableProperty]
-    private List<string> _saveNames;
-
-    [ObservableProperty]
-    private bool _isSaveGraph;
-    partial void OnIsSaveGraphChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
-
-    [ObservableProperty]
-    private bool _isSingle;
-    partial void OnIsSingleChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
-
-    [ObservableProperty]
-    private string _singleVariable;
-    partial void OnSingleVariableChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
-
-    [ObservableProperty]
-    private string _multipleVariables;
-    partial void OnMultipleVariablesChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
-
 
     [ObservableProperty]
     private string _comment;
@@ -76,6 +47,9 @@ public partial class BoxplotViewModel : ObservableObject
     [ObservableProperty]
     private List<string> _facetByTypes;
 
+    [ObservableProperty]
+    private string _factor;
+    partial void OnFactorChanged(string value) => OnPropertyChanged(nameof(IsWidthEnabled));
     [ObservableProperty]
     private List<string> _groupToConnectSummaries;
 
@@ -107,6 +81,14 @@ public partial class BoxplotViewModel : ObservableObject
     private bool _isLegend;
 
     [ObservableProperty]
+    private bool _isSaveGraph;
+    partial void OnIsSaveGraphChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
+
+    [ObservableProperty]
+    private bool _isSingle;
+    partial void OnIsSingleChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
+
+    [ObservableProperty]
     private bool _isTufte;
 
     [ObservableProperty]
@@ -128,10 +110,25 @@ public partial class BoxplotViewModel : ObservableObject
     private List<string> _legendPositions;
 
     [ObservableProperty]
+    private string _multipleVariables;
+    partial void OnMultipleVariablesChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
+
+    [ObservableProperty]
+    private string _saveName;
+    partial void OnSaveNameChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
+
+    [ObservableProperty]
+    private List<string> _saveNames;
+
+    [ObservableProperty]
     private string _secondFactor;
 
     [ObservableProperty]
     private int _selectedTabIndex;
+
+    [ObservableProperty]
+    private string _singleVariable;
+    partial void OnSingleVariableChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private string _transparency;
@@ -143,16 +140,14 @@ public partial class BoxplotViewModel : ObservableObject
     private string _widthExtra;
 
 
-    private SelectorMediator _selectorMediator;
-
-    private ListBox _columnsListBox;
     private MenuItem _addAllOption;
-
-    private TextBox _singleVariableTextBox;
-    private TextBox _multipleVariableTextBox;
-    private TextBox _factorTextBox;
-    private TextBox _secondFactorTextBox;
+    private ListBox _columnsListBox;
     private TextBox _facetByTextBox;
+    private TextBox _factorTextBox;
+    private TextBox _multipleVariableTextBox;
+    private TextBox _secondFactorTextBox;
+    private SelectorMediator _selectorMediator;
+    private TextBox _singleVariableTextBox;
 
     // Disable the warning 'non-nullable field must contain a non-null value when exiting
     // constructor'. We need to disable because otherwise many incorrect warnings are generated
