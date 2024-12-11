@@ -10,67 +10,7 @@
 
     <Grid RowDefinitions="Auto, Auto, *, Auto">
         <!-- Menu bar -->
-        <Menu Grid.Row="0">
-            <MenuItem Header="File">
-            </MenuItem>
-            <MenuItem Header="Edit">
-            </MenuItem>
-            <MenuItem Header="Prepare">
-            </MenuItem>
-            <MenuItem Header="Describe">
-                <MenuItem Header="One Variable"/>
-                <MenuItem Header="Two/Three Variable"/>
-                <MenuItem Header="Graphs">
-                    <MenuItem Header="Bar Chart..."/>
-                    <MenuItem Header="Boxplot..." Command="{Binding OpenBoxplotCommand}"/>
-                    <MenuItem Header="Histogram..."/>
-                    <MenuItem Header="Scatter Plot..."/>
-                    <MenuItem Header="Line Plot..."/>
-                    <Separator/>
-                    <MenuItem Header="Heatmap..."/>
-                    <Separator/>
-                    <MenuItem Header="Mosaic Plot..."/>
-                    <MenuItem Header="Cumulative Distribution..."/>
-                    <MenuItem Header="Parallel Coordinate Plot..."/>
-                </MenuItem>
-                <MenuItem Header="Tables..."/>
-                <MenuItem Header="General"/>
-                <Separator/>
-                <MenuItem Header="Multivariate"/>
-                <Separator/>
-                <MenuItem Header="Use Table..."/>
-                <MenuItem Header="Use Graph..."/>
-                <MenuItem Header="Combine Graphs..."/>
-                <MenuItem Header="View Graph..."/>
-            </MenuItem>
-            <MenuItem Header="Model">
-            </MenuItem>
-            <MenuItem Header="Structured">
-            </MenuItem>
-            <MenuItem Header="Climatic">
-                <MenuItem Header="Tool Bar"/>
-                <MenuItem Header="Status Bar"/>
-            </MenuItem>
-            <MenuItem Header="Procurement">
-                <MenuItem Header="Tool Bar"/>
-                <MenuItem Header="Status Bar"/>
-            </MenuItem>
-            <MenuItem Header="Experiments">
-                <MenuItem Header="Tool Bar"/>
-                <MenuItem Header="Status Bar"/>
-            </MenuItem>
-            <MenuItem Header="Tools">
-                <MenuItem Header="Tool Bar"/>
-                <MenuItem Header="Status Bar"/>
-            </MenuItem>
-            <MenuItem Header="View">
-                <MenuItem Header="Tool Bar"/>
-                <MenuItem Header="Status Bar"/>
-            </MenuItem>
-            <MenuItem Header="Help">
-                <MenuItem Header="About"/>
-            </MenuItem>
-        </Menu>
+        <views:MainMenu Grid.Row="0"/>
 
         <!-- Tool bar -->
         <Grid Grid.Row="1" Background="{StaticResource BackgroundTextBlock}" Height="40"
