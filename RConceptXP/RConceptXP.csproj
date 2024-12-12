@@ -33,6 +33,9 @@
     <Compile Update="Views\BoxplotView.axaml.cs">
       <DependentUpon>BoxplotView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\DialogMainButtonsView.axaml.cs">
+      <DependentUpon>DialogMainButtonsView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\TabsDynamicView.axaml.cs">
       <DependentUpon>TabsDynamicView.axaml</DependentUpon>
     </Compile>

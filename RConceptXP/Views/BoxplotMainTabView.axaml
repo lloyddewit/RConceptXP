@@ -1,0 +1,34 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             mc:Ignorable="d" d:DesignWidth="410" d:DesignHeight="50"
+             x:Class="RConceptXP.Views.BoxplotMainTabView"
+             xmlns:vm="clr-namespace:RConceptXP.ViewModels"
+             x:DataType="vm:BoxplotViewModel">
+
+
+    <!-- Save graph -->
+    <StackPanel Orientation="Horizontal">
+    </StackPanel>
+
+    <!-- Comment -->
+    <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+        <CheckBox
+            Classes="accent"
+            Content="Comment"
+            IsChecked="true"
+            Name="isComment"
+        />
+        <TextBox
+            Classes="theme-soft accent"
+            IsVisible="{Binding #isComment.IsChecked}"
+            Margin="5 0 0 0"
+            Text="{Binding Comment}"
+            Width="227"
+        />
+    </StackPanel>
+
+</UserControl>

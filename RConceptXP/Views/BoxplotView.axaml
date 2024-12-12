@@ -645,7 +645,7 @@
         </StackPanel>
 
         <!-- Standard dialog buttons -->
-        <views:DialogMainButtons  DockPanel.Dock="Bottom"/>
+        <views:DialogMainButtonsView  DockPanel.Dock="Bottom"/>
 
         <!-- fill the rest of the dock panel to ensure buttons are at the bottom-->
         <Rectangle/>

@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace RConceptXP.Views;
 
-public partial class DialogMainButtons : UserControl
+public partial class DialogMainButtonsView : UserControl
 {
-    public DialogMainButtons()
+    public DialogMainButtonsView()
     {
         InitializeComponent();
     }
