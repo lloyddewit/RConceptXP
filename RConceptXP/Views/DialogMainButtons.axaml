@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="410" d:DesignHeight="50"
+             x:Class="RConceptXP.Views.DialogMainButtons"
+             xmlns:vm="clr-namespace:RConceptXP.ViewModels"
+             x:DataType="vm:BoxplotViewModel">
+    
+    <UniformGrid Columns="5" Margin="5 5 5 5">
+
+        <SplitButton
+            Classes="accent"
+            Content="OK"
+            HorizontalAlignment="Left"
+            IsEnabled="{Binding IsOkEnabled}"
+            Margin="0 0 0 0"
+            Name="ok"
+            Width="80"
+                >
+            <SplitButton.Flyout>
+                <MenuFlyout Placement="Bottom">
+                    <MenuItem Header="OK and Close"/>
+                    <MenuItem Header="OK and Keep"/>
+                </MenuFlyout>
+            </SplitButton.Flyout>
+        </SplitButton>
+        <Button
+            Classes="accent"
+            Command="{Binding OnResetClickCommand}"
+            Content="Reset"
+            HorizontalAlignment="Right"
+            Width="60"
+                />
+        <Button Classes="accent" Content="Close" HorizontalAlignment="Center" Width="60"/>
+        <Button Classes="accent" Content="Help" HorizontalAlignment="Left" Width="60"/>
+        <SplitButton
+            Classes="accent"
+            Command="{Binding OnToScriptClickCommand}"
+            Content="To Script"
+            HorizontalAlignment="Right"
+            IsEnabled="{Binding #ok.IsEnabled}"
+            Margin="30 0 0 0"
+            Width="80"
+                >
+            <SplitButton.Flyout>
+                <MenuFlyout Placement="Bottom">
+                    <MenuItem Header="To Script and Close"/>
+                    <MenuItem Header="To Script and Keep"/>
+                </MenuFlyout>
+            </SplitButton.Flyout>
+        </SplitButton>
+    </UniformGrid>
+</UserControl>
