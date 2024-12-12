@@ -18,10 +18,10 @@ public partial class TabsDynamicViewModel : ObservableObject
     public BoxplotViewModel? TabBoxPlotViewModel { get; }
 
     [ObservableProperty]
-    private string _header;
+    private BoxplotView? _content;
 
     [ObservableProperty]
-    private BoxplotView? _content;
+    private string _header;
 
     public TabsDynamicViewModel(string header, BoxplotView? content)
     {

@@ -18,10 +18,5 @@ public partial class BoxplotView : UserControl
     {
         InitializeComponent();
         DataContext = new BoxplotViewModel(this, boxplotToDuplicate);
-    }
-
-    private void InitializeComponent()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
+    }    
 }
