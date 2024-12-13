@@ -154,25 +154,25 @@ public partial class BoxplotViewModel : ObservableObject
     // for the observable properties that are initialised in the constructor via the
     // 'OnResetClick' method.
 #pragma warning disable CS8618
-    public BoxplotViewModel(BoxplotView boxplotView, BoxplotViewModel? boxplotToDuplicate)
+    public BoxplotViewModel(BoxplotMainTabView boxplotMainTabView, BoxplotViewModel? boxplotToDuplicate)
 #pragma warning restore CS8618
     {
         // initialize receiver controls
         OnReceiverGotFocusCommand = new RelayCommand<TextBox>(OnReceiverGotFocus);
 
-        _columnsListBox = boxplotView.FindControl<ListBox>("columns") ??
+        _columnsListBox = boxplotMainTabView.FindControl<ListBox>("columns") ??
             throw new Exception("Cannot find columns ListBox by name");
-        _addAllOption = boxplotView.FindControl<MenuItem>("addAllOption") ??
+        _addAllOption = boxplotMainTabView.FindControl<MenuItem>("addAllOption") ??
             throw new Exception("Cannot find addAllOption MenuItem by name");
-        _singleVariableTextBox = boxplotView.FindControl<TextBox>("singleVariableTextBox") ??
+        _singleVariableTextBox = boxplotMainTabView.FindControl<TextBox>("singleVariableTextBox") ??
             throw new Exception("Cannot find singleVariableTextBox by name");
-        _multipleVariableTextBox = boxplotView.FindControl<TextBox>("multipleVariableTextBox") ??
+        _multipleVariableTextBox = boxplotMainTabView.FindControl<TextBox>("multipleVariableTextBox") ??
             throw new Exception("Cannot find multipleVariableTextBox by name");
-        _factorTextBox = boxplotView.FindControl<TextBox>("factorTextBox") ??
+        _factorTextBox = boxplotMainTabView.FindControl<TextBox>("factorTextBox") ??
             throw new Exception("Cannot find factor textBox by name");
-        _secondFactorTextBox = boxplotView.FindControl<TextBox>("secondFactorTextBox") ??
+        _secondFactorTextBox = boxplotMainTabView.FindControl<TextBox>("secondFactorTextBox") ??
             throw new Exception("Cannot find secondFactorTextBox by name");
-        _facetByTextBox = boxplotView.FindControl<TextBox>("facetByTextBox") ??
+        _facetByTextBox = boxplotMainTabView.FindControl<TextBox>("facetByTextBox") ??
             throw new Exception("Cannot find facetByTextBox by name");
 
         // Note: We need to catch delete and backspace key presses in receivers so that the user
