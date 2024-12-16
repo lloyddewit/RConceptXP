@@ -49,6 +49,7 @@
                 />
             </UniformGrid>
 
+            <!-- Tabs -->
             <TabControl Margin="0 5 0 0" SelectedIndex="{Binding SelectedTabIndex}>">
                 <TabItem Header="Main">
                     <TabItem.ContextFlyout>
@@ -249,7 +250,7 @@
         <!-- Standard dialog buttons -->
         <views:DialogMainButtonsView  DockPanel.Dock="Bottom"/>
 
-        <!-- fill the rest of the dock panel to ensure buttons are at the bottom-->
+        <!-- Fill the rest of the dock panel to ensure buttons are at the bottom-->
         <Rectangle/>
     </DockPanel>
     </Border>

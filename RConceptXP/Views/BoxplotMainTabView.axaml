@@ -14,11 +14,13 @@
             <StackPanel>
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
+                        <!-- Data frame selector -->
                         <StackPanel>
                             <TextBlock Text="Data Frame:"/>
                             <ComboBox  Classes="accent" SelectedIndex="0">
                                 <ComboBoxItem>survey</ComboBoxItem>
                             </ComboBox>
+                            <!-- Columns selector -->
                             <ListBox
                                 Background="{StaticResource BackgroundTextBlock}"
                                 Classes="accent"
@@ -30,39 +32,42 @@
                                 SelectionMode="AlwaysSelected,Single,Toggle"
                                                 />
                         </StackPanel>
-                        <StackPanel Margin="10 0 0 0">
-                            <SplitButton
-                                Classes="accent"
-                                Command="{Binding OnSelectorAddClickCommand}"
-                                Content="Add"
-                                IsEnabled="{Binding !!#columns.ItemCount}"
-                                Margin="0 50 0 0">
-                                <SplitButton.Flyout>
-                                    <MenuFlyout Placement="Bottom">
-                                        <MenuItem
-                                            Command="{Binding OnSelectorAddClickCommand}"
-                                            Header="Add Selected"
+
+                        <!-- Add button -->
+                        <SplitButton
+                            Classes="accent"
+                            Command="{Binding OnSelectorAddClickCommand}"
+                            Content="Add"
+                            IsEnabled="{Binding !!#columns.ItemCount}"
+                            Margin="5 0 0 0">
+                            <SplitButton.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <MenuItem
+                                        Command="{Binding OnSelectorAddClickCommand}"
+                                        Header="Add Selected"
                                                             />
-                                        <MenuItem
-                                            Command="{Binding OnSelectorAddAllClickCommand}"
-                                            Header="Add All"
-                                            IsEnabled="False"
-                                            Name="addAllOption"
+                                    <MenuItem
+                                        Command="{Binding OnSelectorAddAllClickCommand}"
+                                        Header="Add All"
+                                        IsEnabled="False"
+                                        Name="addAllOption"
                                                             />
-                                        <Separator/>
-                                        <MenuItem Header="Help"/>
-                                    </MenuFlyout>
-                                </SplitButton.Flyout>
-                            </SplitButton>
-                        </StackPanel>
+                                    <Separator/>
+                                    <MenuItem Header="Help"/>
+                                </MenuFlyout>
+                            </SplitButton.Flyout>
+                        </SplitButton>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Margin="0 20 0 0">
+
+                <StackPanel Margin="0 10 0 0">
+                    <!-- Horizontal plot -->
                     <CheckBox
                         Classes="accent"
                         Content="Horizontal Plot"
                         IsChecked="{Binding IsHorizontalBoxPlot}"
                                         />
+                    <!-- Group to connect -->
                     <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
                         <CheckBox
                             Classes="accent"
@@ -80,6 +85,8 @@
                             SelectedItem="{Binding GroupToConnectSummary, Mode=TwoWay}"
                                             />
                     </StackPanel>
+
+                    <!-- Width -->
                     <StackPanel
                         IsVisible="{Binding !IsJitter}"
                         Margin="0 5 0 0"
@@ -108,6 +115,8 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Margin="50 20 0 0">
+
+                <!-- Single/multiple variables -->
                 <TextBlock Text="Variable(s):"/>
                 <UniformGrid Columns="2">
                     <RadioButton
@@ -182,6 +191,8 @@
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
+
+                <!-- Factor -->
                 <TextBlock Text="Factor (Optional):" Margin="0 10 0 0"/>
                 <TextBox
                     Classes="theme-soft accent"
@@ -203,6 +214,8 @@
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
+
+                <!-- Second factor -->
                 <TextBlock Text="Second Factor (Optional):" Margin="0 5 0 0"/>
                 <TextBox
                     Classes="theme-soft accent"
@@ -223,7 +236,9 @@
                         </ia:EventTriggerBehavior>
                     </i:Interaction.Behaviors>
                 </TextBox>
+                
                 <Grid RowDefinitions="22, Auto">
+                    <!-- Variable width -->
                     <CheckBox
                         Grid.Row="0"
                         Classes="accent"
@@ -237,6 +252,8 @@
                             </MultiBinding>
                         </CheckBox.IsVisible>
                     </CheckBox>
+
+                    <!-- Tufte boxplots -->
                     <CheckBox
                         Grid.Row="1"
                         Classes="accent"
