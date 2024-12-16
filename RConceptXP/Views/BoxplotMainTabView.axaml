@@ -407,22 +407,5 @@
                                 >
             </AutoCompleteBox>
         </StackPanel>
-
-        <!-- Comment -->
-        <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
-            <CheckBox
-                Classes="accent"
-                Content="Comment"
-                IsChecked="true"
-                Name="isComment"
-                                />
-            <TextBox
-                Classes="theme-soft accent"
-                IsVisible="{Binding #isComment.IsChecked}"
-                Margin="5 0 0 0"
-                Text="{Binding Comment}"
-                Width="227"
-                                />
-        </StackPanel>
     </StackPanel>
 </UserControl>
