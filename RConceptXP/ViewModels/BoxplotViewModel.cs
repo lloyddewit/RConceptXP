@@ -172,7 +172,9 @@ public partial class BoxplotViewModel : ObservableObject
             throw new Exception("Cannot find factor textBox by name");
         _secondFactorTextBox = boxplotMainTabView.FindControl<TextBox>("secondFactorTextBox") ??
             throw new Exception("Cannot find secondFactorTextBox by name");
-        _facetByTextBox = boxplotMainTabView.FindControl<TextBox>("facetByTextBox") ??
+        var graphLegendFacetSaveView = boxplotMainTabView.FindControl<GraphLegendFacetSaveView>("GraphLegendFacetSaveView") ??
+            throw new Exception("Cannot find facetByTextBox by name");
+        _facetByTextBox = graphLegendFacetSaveView.FindControl<TextBox>("facetByTextBox") ??
             throw new Exception("Cannot find facetByTextBox by name");
 
         // Note: We need to catch delete and backspace key presses in receivers so that the user

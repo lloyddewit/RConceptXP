@@ -6,10 +6,11 @@
              xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
              mc:Ignorable="d" d:DesignWidth="410" d:DesignHeight="495"
              x:Class="RConceptXP.Views.BoxplotMainTabView"
+             xmlns:views="clr-namespace:RConceptXP.Views"
              xmlns:vm="clr-namespace:RConceptXP.ViewModels"
              x:DataType="vm:BoxplotViewModel">
 
-    <StackPanel Margin="5 0 0 0">
+    <StackPanel>
         <StackPanel Orientation="Horizontal">
             <StackPanel>
                 <StackPanel>
@@ -329,83 +330,7 @@
             </StackPanel>
         </StackPanel>
 
-        <!-- Legend and Facet By -->
-        <Grid ColumnDefinitions="Auto,130, Auto, Auto"
-              RowDefinitions="Auto Auto">
-            <TextBlock Grid.Row="0" Grid.Column="2" Text="Facet By:"/>
-            <CheckBox
-                Classes="accent"
-                Content="Legend"
-                Grid.Column="0"
-                Grid.Row="1"
-                IsChecked="{Binding IsLegend}"
-                Name="isLegend"
-                                />
-            <ComboBox
-                Classes="theme-soft accent"
-                Grid.Column="1"
-                Grid.Row="1"
-                IsVisible="{Binding #isLegend.IsChecked}"
-                ItemsSource="{Binding LegendPositions, Mode=OneTime}"
-                SelectedIndex="0"
-                SelectedItem="{Binding LegendPosition, Mode=TwoWay}"
-                                >
-            </ComboBox>
-            <TextBox
-                Classes="theme-soft accent"
-                Grid.Row="1"
-                Grid.Column="2"
-                Height="25"
-                IsReadOnly="True"
-                Margin="0 5 0 0"
-                Name="facetByTextBox"
-                Text="{Binding FacetBy}"
-                Width="90"
-                                >
-                <i:Interaction.Behaviors>
-                    <ia:EventTriggerBehavior
-                        EventName="GotFocus"
-                        SourceObject="{Binding #facetByTextBox}">
-                        <ia:InvokeCommandAction
-                            Command="{Binding OnReceiverGotFocusCommand}"
-                            CommandParameter="{Binding ElementName=facetByTextBox}"/>
-                    </ia:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
-            </TextBox>
-            <ComboBox
-                Classes="theme-soft accent"
-                Grid.Row="1"
-                Grid.Column="3"
-                ItemsSource="{Binding FacetByTypes, Mode=OneTime}"
-                Margin="5 5 0 0"
-                Name="facetByComboBox"
-                SelectedItem="{Binding FacetByType, Mode=TwoWay}"
-                SelectedIndex="0"
-                Width="90"
-                                >
-            </ComboBox>
-        </Grid>
-
-        <!-- Save graph -->
-        <StackPanel Orientation="Horizontal">
-            <CheckBox
-                Classes="accent"
-                Content="Save Graph"
-                IsChecked="{Binding IsSaveGraph}"
-                Margin="0 5 0 0"
-                Name="isSaveGraph"
-                                />
-            <AutoCompleteBox
-                ItemsSource="{Binding SaveNames, Mode=OneTime}"
-                Classes="theme-soft accent"
-                IsVisible="{Binding #isSaveGraph.IsChecked}"
-                Margin="5 5 0 0"
-                Name="SaveGraphAutoCompleteBox"
-                Text="{Binding SaveName}"
-                VerticalAlignment="Center"
-                Width="220"
-                                >
-            </AutoCompleteBox>
-        </StackPanel>
+        <!-- Legend, facet by and save graph  -->
+        <views:GraphLegendFacetSaveView Name="GraphLegendFacetSaveView"/>
     </StackPanel>
 </UserControl>
