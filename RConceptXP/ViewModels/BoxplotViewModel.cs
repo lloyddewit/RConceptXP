@@ -160,10 +160,13 @@ public partial class BoxplotViewModel : ObservableObject
         // initialize receiver controls
         OnReceiverGotFocusCommand = new RelayCommand<TextBox>(OnReceiverGotFocus);
 
-        _columnsListBox = boxplotMainTabView.FindControl<ListBox>("columns") ??
+        var columnSelectorView = boxplotMainTabView.FindControl<ColumnSelectorView>("columnSelectorView") ??
+            throw new Exception("Cannot find columnSelectorView by name");
+        _columnsListBox = columnSelectorView.FindControl<ListBox>("columns") ??
             throw new Exception("Cannot find columns ListBox by name");
-        _addAllOption = boxplotMainTabView.FindControl<MenuItem>("addAllOption") ??
+        _addAllOption = columnSelectorView.FindControl<MenuItem>("addAllOption") ??
             throw new Exception("Cannot find addAllOption MenuItem by name");
+
         _singleVariableTextBox = boxplotMainTabView.FindControl<TextBox>("singleVariableTextBox") ??
             throw new Exception("Cannot find singleVariableTextBox by name");
         _multipleVariableTextBox = boxplotMainTabView.FindControl<TextBox>("multipleVariableTextBox") ??
@@ -172,8 +175,9 @@ public partial class BoxplotViewModel : ObservableObject
             throw new Exception("Cannot find factor textBox by name");
         _secondFactorTextBox = boxplotMainTabView.FindControl<TextBox>("secondFactorTextBox") ??
             throw new Exception("Cannot find secondFactorTextBox by name");
-        var graphLegendFacetSaveView = boxplotMainTabView.FindControl<GraphLegendFacetSaveView>("GraphLegendFacetSaveView") ??
-            throw new Exception("Cannot find facetByTextBox by name");
+
+        var graphLegendFacetSaveView = boxplotMainTabView.FindControl<GraphLegendFacetSaveView>("graphLegendFacetSaveView") ??
+            throw new Exception("Cannot find graphLegendFacetSaveView by name");
         _facetByTextBox = graphLegendFacetSaveView.FindControl<TextBox>("facetByTextBox") ??
             throw new Exception("Cannot find facetByTextBox by name");
 

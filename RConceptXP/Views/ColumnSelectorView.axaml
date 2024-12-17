@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Class="RConceptXP.Views.ColumnSelectorView"
+             xmlns:vm="clr-namespace:RConceptXP.ViewModels"
+             x:DataType="vm:BoxplotViewModel">
+
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <!-- Data frame selector -->
+            <StackPanel>
+                <TextBlock Text="Data Frame:"/>
+                <ComboBox  Classes="accent" SelectedIndex="0">
+                    <ComboBoxItem>survey</ComboBoxItem>
+                </ComboBox>
+                <!-- Columns selector -->
+                <ListBox
+                    Background="{StaticResource BackgroundTextBlock}"
+                    Classes="accent"
+                    Height="80"
+                    ItemsSource="{Binding ColumnNames}"
+                    Margin="0 5 0 0"
+                    Name="columns"
+                    Selection="{Binding Selection}"
+                    SelectionMode="AlwaysSelected,Single,Toggle"
+                    />
+            </StackPanel>
+
+            <!-- Add button -->
+            <SplitButton
+                Classes="accent"
+                Command="{Binding OnSelectorAddClickCommand}"
+                Content="Add"
+                IsEnabled="{Binding !!#columns.ItemCount}"
+                Margin="5 0 0 0">
+                <SplitButton.Flyout>
+                    <MenuFlyout Placement="Bottom">
+                        <MenuItem
+                            Command="{Binding OnSelectorAddClickCommand}"
+                            Header="Add Selected"
+                            />
+                        <MenuItem
+                            Command="{Binding OnSelectorAddAllClickCommand}"
+                            Header="Add All"
+                            IsEnabled="False"
+                            Name="addAllOption"
+                            />
+                        <Separator/>
+                        <MenuItem Header="Help"/>
+                    </MenuFlyout>
+                </SplitButton.Flyout>
+            </SplitButton>
+        </StackPanel>
+    </StackPanel>
+</UserControl>
