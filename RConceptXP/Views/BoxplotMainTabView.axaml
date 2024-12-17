@@ -30,7 +30,7 @@
                         Content="Group to Connect"
                         IsChecked="{Binding IsGroupToConnect}"
                         Name="groupToConnect"
-                                            />
+                        />
                     <ComboBox
                         Classes="theme-soft accent"
                         IsVisible="{Binding #groupToConnect.IsChecked}"
@@ -39,7 +39,7 @@
                         Width="70"
                         SelectedIndex="0"
                         SelectedItem="{Binding GroupToConnectSummary, Mode=TwoWay}"
-                                            />
+                        />
                 </StackPanel>
 
                 <!-- Width -->
@@ -47,14 +47,14 @@
                     IsVisible="{Binding !IsJitter}"
                     Margin="0 5 0 0"
                     Orientation="Horizontal"
-                                        >
+                    >
                     <CheckBox
                         Classes="accent"
                         Content="Width"
                         IsChecked="{Binding IsWidth}"
                         IsEnabled="{Binding IsWidthEnabled}"
                         Name="isWidth"
-                                            />
+                        />
                     <TextBox
                         Classes="theme-soft accent"
                         Grid.Row="1"
@@ -66,9 +66,40 @@
                         Margin="5 0 0 0"
                         Text="{Binding Width}"
                         Width="60"
-                                            />
+                        />
                 </StackPanel>
+                
+                <!-- Add boxplot -->
+                <StackPanel
+                    IsVisible="{Binding !IsBoxPlot}"
+                    Margin="0 5 0 0"
+                    Orientation="Horizontal"
+                    >
+                    <CheckBox
+                        Classes="accent"
+                        Content="Add Boxplot"
+                        IsChecked="{Binding IsBoxPlotExtra}"
+                        Name="addBoxplot"
+                        />
+                    <TextBlock
+                        Margin="10 5 0 0"
+                        IsVisible="{Binding #addBoxplot.IsChecked}"
+                        Text="Width:"
+                        />
+                    <NumericUpDown
+                        Classes="theme-soft accent"
+                        FormatString="0.00"
+                        Increment="0.01"
+                        IsVisible="{Binding #addBoxplot.IsChecked}"
+                        Margin="5 0 0 0"
+                        Maximum="1"
+                        Minimum="0"
+                        Value="{Binding WidthExtra}"
+                        Width="60"/>
+                </StackPanel>
+
             </StackPanel>
+            
             <StackPanel Margin="50 20 0 0">
 
                 <!-- Single/multiple variables -->
@@ -80,7 +111,7 @@
                         GroupName="VariablesType"
                         IsChecked="{Binding IsSingle}"
                         Name="singleOption"
-                                        >
+                        >
                         <i:Interaction.Behaviors>
                             <ia:EventTriggerBehavior
                                 EventName="Checked"
@@ -97,7 +128,7 @@
                         GroupName="VariablesType"
                         IsChecked="{Binding !IsSingle}"
                         Name="multipleOption"
-                                        >
+                        >
                         <i:Interaction.Behaviors>
                             <ia:EventTriggerBehavior
                                 EventName="Checked"
@@ -116,7 +147,7 @@
                     Margin="0 5 0 0"
                     Name="singleVariableTextBox"
                     Text="{Binding SingleVariable}"
-                                    >
+                    >
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior
                             EventName="GotFocus"
@@ -135,7 +166,7 @@
                     Margin="0 5 0 0"
                     Name="multipleVariableTextBox"
                     Text="{Binding MultipleVariables}"
-                                    >
+                    >
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior
                             EventName="GotFocus"
@@ -158,7 +189,7 @@
                     Name="factorTextBox"
                     Text="{Binding Factor}"
                     Width="100"
-                                    >
+                    >
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior
                             EventName="GotFocus"
@@ -180,7 +211,7 @@
                     Name="secondFactorTextBox"
                     Text="{Binding SecondFactor}"
                     Width="100"
-                                    >
+                    >
                     <i:Interaction.Behaviors>
                         <ia:EventTriggerBehavior
                             EventName="GotFocus"
@@ -217,38 +248,9 @@
                         IsVisible="{Binding IsBoxPlot}"
                         Margin="0 5 0 0"
                         Name="isTufte"
-                                        />
+                        />
                 </Grid>
             </StackPanel>
-        </StackPanel>
-
-        <!-- Add boxplot -->
-        <StackPanel
-            IsVisible="{Binding !IsBoxPlot}"
-            Margin="0 5 0 0"
-            Orientation="Horizontal"
-                            >
-            <CheckBox
-                Classes="accent"
-                Content="Add Boxplot"
-                IsChecked="{Binding IsBoxPlotExtra}"
-                Name="addBoxplot"
-                                />
-            <TextBlock
-                Margin="10 5 0 0"
-                IsVisible="{Binding #addBoxplot.IsChecked}"
-                Text="Width:"
-                                />
-            <NumericUpDown
-                Classes="theme-soft accent"
-                FormatString="0.00"
-                Increment="0.01"
-                IsVisible="{Binding #addBoxplot.IsChecked}"
-                Margin="5 0 0 0"
-                Maximum="1"
-                Minimum="0"
-                Value="{Binding WidthExtra}"
-                Width="60"/>
         </StackPanel>
 
         <!-- Add points -->
@@ -258,7 +260,7 @@
                 Content="Add Points"
                 IsChecked="{Binding IsAddPoints}"
                 Name="isAddPoints"
-                                />
+                />
             <StackPanel Orientation="Horizontal" IsVisible="{Binding #isAddPoints.IsChecked}" >
                 <TextBlock Text="Jitter:" Margin="10 0 0 0" VerticalAlignment="Center"/>
                 <NumericUpDown
@@ -269,7 +271,7 @@
                     Minimum="0"
                     Value="{Binding JitterExtra}"
                     Width="60"
-                                    />
+                    />
                 <TextBlock Text="Transparency:" Margin="10 0 0 0" VerticalAlignment="Center"/>
                 <NumericUpDown
                     Classes="theme-soft accent"
@@ -280,7 +282,7 @@
                     Minimum="0"
                     Value="{Binding Transparency}"
                     Width="60"
-                                    />
+                    />
             </StackPanel>
         </StackPanel>
 
