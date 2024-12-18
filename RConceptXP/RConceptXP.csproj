@@ -36,6 +36,12 @@
     <Compile Update="Views\DialogMainButtonsView.axaml.cs">
       <DependentUpon>DialogMainButtonsView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\MainMenuView.axaml.cs">
+      <DependentUpon>MainMenuView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MainWindowView.axaml.cs">
+      <DependentUpon>MainWindowView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\TabsDynamicView.axaml.cs">
       <DependentUpon>TabsDynamicView.axaml</DependentUpon>
     </Compile>

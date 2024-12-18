@@ -10,7 +10,7 @@
 
     <Grid RowDefinitions="Auto, Auto, *, Auto">
         <!-- Menu bar -->
-        <views:MainMenu Grid.Row="0"/>
+        <views:MainMenuView Grid.Row="0"/>
 
         <!-- Tool bar -->
         <Grid Grid.Row="1" Background="{StaticResource BackgroundTextBlock}" Height="40"

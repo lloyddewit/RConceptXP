@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:RConceptXP.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="400"
-             x:Class="RConceptXP.Views.MainMenu"
+             x:Class="RConceptXP.Views.MainMenuView"
              x:DataType="vm:MainViewModel">
     <StackPanel>
     <Menu>

@@ -21,7 +21,7 @@ public partial class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
+            desktop.MainWindow = new MainWindowView
             {
                 //todo commented out line below because it requires mainView to be passed as parameter to MainViewModel. Still needed?
                 //DataContext = new MainViewModel() 
