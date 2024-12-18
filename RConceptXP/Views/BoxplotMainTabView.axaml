@@ -1,0 +1,221 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             mc:Ignorable="d" d:DesignWidth="410" d:DesignHeight="495"
+             x:Class="RConceptXP.Views.BoxplotMainTabView"
+             xmlns:views="clr-namespace:RConceptXP.Views"
+             xmlns:vm="clr-namespace:RConceptXP.ViewModels"
+             x:DataType="vm:BoxplotViewModel">
+
+    <StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <!-- Data frame and column selector -->
+                <views:ColumnSelectorView Name="columnSelectorView"/>
+
+                <!-- Horizontal plot -->
+                <CheckBox
+                    Classes="accent"
+                    Content="Horizontal Plot"
+                    IsChecked="{Binding IsHorizontalBoxPlot}"
+                    Margin="0 10 0 0"
+                    />
+                
+                <!-- Group to connect -->
+                <StackPanel Margin="0 5 0 0" Orientation="Horizontal">
+                    <CheckBox
+                        Classes="accent"
+                        Content="Group to Connect"
+                        IsChecked="{Binding IsGroupToConnect}"
+                        Name="groupToConnect"
+                        />
+                    <ComboBox
+                        Classes="theme-soft accent"
+                        IsVisible="{Binding #groupToConnect.IsChecked}"
+                        ItemsSource="{Binding GroupToConnectSummaries, Mode=OneTime}"
+                        Margin="10 0 0 0"
+                        Width="70"
+                        SelectedIndex="0"
+                        SelectedItem="{Binding GroupToConnectSummary, Mode=TwoWay}"
+                        />
+                </StackPanel>
+
+                <!-- Width -->
+                <StackPanel
+                    IsVisible="{Binding !IsJitter}"
+                    Margin="0 5 0 0"
+                    Orientation="Horizontal"
+                    >
+                    <CheckBox
+                        Classes="accent"
+                        Content="Width"
+                        IsChecked="{Binding IsWidth}"
+                        IsEnabled="{Binding IsWidthEnabled}"
+                        Name="isWidth"
+                        />
+                    <TextBox
+                        Classes="theme-soft accent"
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Height="25"
+                        TextAlignment="Right"
+                        IsEnabled="{Binding #isWidth.IsEnabled}"
+                        IsVisible="{Binding #isWidth.IsChecked}"
+                        Margin="5 0 0 0"
+                        Text="{Binding Width}"
+                        Width="60"
+                        />
+                </StackPanel>
+                
+                <!-- Add boxplot -->
+                <StackPanel
+                    IsVisible="{Binding !IsBoxPlot}"
+                    Margin="0 5 0 0"
+                    Orientation="Horizontal"
+                    >
+                    <CheckBox
+                        Classes="accent"
+                        Content="Add Boxplot"
+                        IsChecked="{Binding IsBoxPlotExtra}"
+                        Name="addBoxplot"
+                        />
+                    <TextBlock
+                        Margin="10 5 0 0"
+                        IsVisible="{Binding #addBoxplot.IsChecked}"
+                        Text="Width:"
+                        />
+                    <NumericUpDown
+                        Classes="theme-soft accent"
+                        FormatString="0.00"
+                        Increment="0.01"
+                        IsVisible="{Binding #addBoxplot.IsChecked}"
+                        Margin="5 0 0 0"
+                        Maximum="1"
+                        Minimum="0"
+                        Value="{Binding WidthExtra}"
+                        Width="60"/>
+                </StackPanel>
+
+            </StackPanel>
+            
+            <StackPanel Margin="30 0 0 0">
+
+                <!-- Single/multiple variables -->
+                <views:SingleMultipleReceiverView Name="singleMultipleReceiverView"/>
+
+                <!-- Factor -->
+                <TextBlock Text="Factor (Optional):" Margin="0 10 0 0"/>
+                <TextBox
+                    Classes="theme-soft accent"
+                    HorizontalAlignment="Left"
+                    IsEnabled="{Binding IsSingle}"
+                    IsReadOnly="True"
+                    Margin="0 5 0 0"
+                    Name="factorTextBox"
+                    Text="{Binding Factor}"
+                    Width="100"
+                    >
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior
+                            EventName="GotFocus"
+                            SourceObject="{Binding #factorTextBox}">
+                            <ia:InvokeCommandAction
+                                Command="{Binding OnReceiverGotFocusCommand}"
+                                CommandParameter="{Binding ElementName=factorTextBox}"/>
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
+
+                <!-- Second factor -->
+                <TextBlock Text="Second Factor (Optional):" Margin="0 5 0 0"/>
+                <TextBox
+                    Classes="theme-soft accent"
+                    HorizontalAlignment="Left"
+                    IsReadOnly="True"
+                    Margin="0 5 0 0"
+                    Name="secondFactorTextBox"
+                    Text="{Binding SecondFactor}"
+                    Width="100"
+                    >
+                    <i:Interaction.Behaviors>
+                        <ia:EventTriggerBehavior
+                            EventName="GotFocus"
+                            SourceObject="{Binding #secondFactorTextBox}">
+                            <ia:InvokeCommandAction
+                                Command="{Binding OnReceiverGotFocusCommand}"
+                                CommandParameter="{Binding ElementName=secondFactorTextBox}"/>
+                        </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </TextBox>
+                
+                <Grid RowDefinitions="22, Auto">
+                    <!-- Variable width -->
+                    <CheckBox
+                        Grid.Row="0"
+                        Classes="accent"
+                        Content="Variable Width"
+                        IsChecked="{Binding IsVarWidth}"
+                        Margin="0 5 0 0">
+                        <CheckBox.IsVisible>
+                            <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                <Binding Path="IsBoxPlot" />
+                                <Binding Path="!#isTufte.IsChecked" />
+                            </MultiBinding>
+                        </CheckBox.IsVisible>
+                    </CheckBox>
+
+                    <!-- Tufte boxplots -->
+                    <CheckBox
+                        Grid.Row="1"
+                        Classes="accent"
+                        Content="Tufte Boxplots"
+                        IsChecked="{Binding IsTufte}"
+                        IsVisible="{Binding IsBoxPlot}"
+                        Margin="0 5 0 0"
+                        Name="isTufte"
+                        />
+                </Grid>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Add points -->
+        <StackPanel IsVisible="{Binding !IsJitter}" Orientation="Horizontal" Margin="0 5 0 0">
+            <CheckBox
+                Classes="accent"
+                Content="Add Points"
+                IsChecked="{Binding IsAddPoints}"
+                Name="isAddPoints"
+                />
+            <StackPanel Orientation="Horizontal" IsVisible="{Binding #isAddPoints.IsChecked}" >
+                <TextBlock Text="Jitter:" Margin="10 0 0 0" VerticalAlignment="Center"/>
+                <NumericUpDown
+                    Classes="theme-soft accent"
+                    FormatString="0.00"
+                    Increment="0.01"
+                    Margin="5 0 0 0"
+                    Minimum="0"
+                    Value="{Binding JitterExtra}"
+                    Width="60"
+                    />
+                <TextBlock Text="Transparency:" Margin="10 0 0 0" VerticalAlignment="Center"/>
+                <NumericUpDown
+                    Classes="theme-soft accent"
+                    FormatString="0.00"
+                    Increment="0.01"
+                    Margin="5 0 0 0"
+                    Maximum="1"
+                    Minimum="0"
+                    Value="{Binding Transparency}"
+                    Width="60"
+                    />
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Legend, facet by and save graph  -->
+        <views:GraphLegendFacetSaveView Name="graphLegendFacetSaveView"/>
+        
+    </StackPanel>
+</UserControl>

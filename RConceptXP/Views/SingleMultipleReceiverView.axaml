@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="140" d:DesignHeight="110"
+             x:Class="RConceptXP.Views.SingleMultipleReceiverView"
+             xmlns:vm="clr-namespace:RConceptXP.ViewModels"
+             x:DataType="vm:BoxplotViewModel">
+
+    <StackPanel Width="130">
+        
+        <!-- Single/multiple radio buttons -->
+        <TextBlock Text="Variable(s):"/>
+        <UniformGrid Columns="2">
+            <RadioButton
+                Classes="accent"
+                Content="Single"
+                GroupName="VariablesType"
+                IsChecked="{Binding IsSingle}"
+                Name="singleOption"
+                >
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior
+                        EventName="Checked"
+                        SourceObject="{Binding #singleOption}">
+                        <ia:InvokeCommandAction
+                            Command="{Binding OnReceiverGotFocusCommand}"
+                            CommandParameter="{Binding #singleVariableTextBox}"/>
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </RadioButton>
+            <RadioButton
+                Content="Multiple"
+                Classes="accent"
+                GroupName="VariablesType"
+                IsChecked="{Binding !IsSingle}"
+                Name="multipleOption"
+                >
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior
+                        EventName="Checked"
+                        SourceObject="{Binding #multipleOption}">
+                        <ia:InvokeCommandAction
+                            Command="{Binding OnReceiverGotFocusCommand}"
+                            CommandParameter="{Binding #multipleVariableTextBox}"/>
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </RadioButton>
+        </UniformGrid>
+        
+        <!-- Single receiver -->
+        <TextBox
+            Classes="accent"
+            IsReadOnly="True"
+            IsVisible="{Binding #singleOption.IsChecked}"
+            Margin="0 5 0 0"
+            Name="singleVariableTextBox"
+            Text="{Binding SingleVariable}"
+            >
+            <i:Interaction.Behaviors>
+                <ia:EventTriggerBehavior
+                    EventName="GotFocus"
+                    SourceObject="{Binding #singleVariableTextBox}">
+                    <ia:InvokeCommandAction
+                        Command="{Binding OnReceiverGotFocusCommand}"
+                        CommandParameter="{Binding #singleVariableTextBox}"/>
+                </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </TextBox>
+        
+        <!-- Multiple receiver -->
+        <TextBox
+            Classes="accent"
+            Height="70"
+            IsReadOnly="True"
+            IsVisible="{Binding #multipleOption.IsChecked}"
+            Margin="0 5 0 0"
+            Name="multipleVariableTextBox"
+            Text="{Binding MultipleVariables}"
+            >
+            <i:Interaction.Behaviors>
+                <ia:EventTriggerBehavior
+                    EventName="GotFocus"
+                    SourceObject="{Binding #multipleVariableTextBox}">
+                    <ia:InvokeCommandAction
+                        Command="{Binding OnReceiverGotFocusCommand}"
+                        CommandParameter="{Binding #multipleVariableTextBox}"/>
+                </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </TextBox>
+
+    </StackPanel>
+</UserControl>
