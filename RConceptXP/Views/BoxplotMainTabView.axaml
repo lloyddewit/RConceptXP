@@ -101,7 +101,7 @@
 
             </StackPanel>
             
-            <StackPanel Margin="30 20 0 0">
+            <StackPanel Margin="30 0 0 0">
 
                 <!-- Single/multiple variables -->
                 <views:SingleMultipleReceiverView Name="singleMultipleReceiverView"/>
