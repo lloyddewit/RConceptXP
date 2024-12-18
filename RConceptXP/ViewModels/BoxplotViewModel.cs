@@ -167,10 +167,13 @@ public partial class BoxplotViewModel : ObservableObject
         _addAllOption = columnSelectorView.FindControl<MenuItem>("addAllOption") ??
             throw new Exception("Cannot find addAllOption MenuItem by name");
 
-        _singleVariableTextBox = boxplotMainTabView.FindControl<TextBox>("singleVariableTextBox") ??
+        var singleMultipleReceiverView = boxplotMainTabView.FindControl<SingleMultipleReceiverView>("singleMultipleReceiverView") ??
+            throw new Exception("Cannot find singleMultipleReceiverView by name");
+        _singleVariableTextBox = singleMultipleReceiverView.FindControl<TextBox>("singleVariableTextBox") ??
             throw new Exception("Cannot find singleVariableTextBox by name");
-        _multipleVariableTextBox = boxplotMainTabView.FindControl<TextBox>("multipleVariableTextBox") ??
+        _multipleVariableTextBox = singleMultipleReceiverView.FindControl<TextBox>("multipleVariableTextBox") ??
             throw new Exception("Cannot find multipleVariableTextBox by name");
+
         _factorTextBox = boxplotMainTabView.FindControl<TextBox>("factorTextBox") ??
             throw new Exception("Cannot find factor textBox by name");
         _secondFactorTextBox = boxplotMainTabView.FindControl<TextBox>("secondFactorTextBox") ??
