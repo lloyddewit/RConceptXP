@@ -18,6 +18,7 @@ namespace RConceptXP.ViewModels;
 //todo support empty list of columns (test that selector buttons enable/disable correctly and no crashes)
 public partial class BoxplotViewModel : ObservableObject
 {
+    public RelayCommand OnDataOptionsClickCommand { get; }
     public RelayCommand<int> OnMainTabRightClickCommand { get; }
     public RelayCommand<TextBox> OnReceiverGotFocusCommand { get; }
     public RelayCommand OnResetClickCommand { get; }
@@ -216,6 +217,7 @@ public partial class BoxplotViewModel : ObservableObject
         _selectorMediator = new SelectorMediator(receivers);
 
         // initialize other command controls
+        OnDataOptionsClickCommand = new RelayCommand(OnDataOptionsClick);
         OnMainTabRightClickCommand = new RelayCommand<int>(OnMainTabRightClick);
         OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
         OnResetClickCommand = new RelayCommand(OnResetClick);
@@ -300,6 +302,11 @@ public partial class BoxplotViewModel : ObservableObject
             return !string.IsNullOrEmpty(SingleVariable);
         else
             return !string.IsNullOrEmpty(MultipleVariables);
+    }
+
+    private void OnDataOptionsClick()
+    {
+        //todo implement
     }
 
     private void OnMainTabRightClick(int tabIndex)
