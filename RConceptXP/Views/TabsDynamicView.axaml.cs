@@ -63,7 +63,8 @@ public partial class TabsDynamicView : UserControl
 
     private void OnDataOptionsOpened(object? sender, EventArgs e)
     {
-        
+        DataOptionsView newDataOptionsView = new DataOptionsView();
+        AddNewTab(newDataOptionsView, "DataOptions");
     }
 
     private void OnTabCreated(object? sender, EventArgs e)
