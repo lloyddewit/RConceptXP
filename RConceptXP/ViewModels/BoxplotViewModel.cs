@@ -18,6 +18,8 @@ namespace RConceptXP.ViewModels;
 //todo support empty list of columns (test that selector buttons enable/disable correctly and no crashes)
 public partial class BoxplotViewModel : ObservableObject
 {
+    public event EventHandler? DataOptionsOpened;
+
     public RelayCommand OnDataOptionsClickCommand { get; }
     public RelayCommand<int> OnMainTabRightClickCommand { get; }
     public RelayCommand<TextBox> OnReceiverGotFocusCommand { get; }
@@ -306,7 +308,7 @@ public partial class BoxplotViewModel : ObservableObject
 
     private void OnDataOptionsClick()
     {
-        //todo implement
+        DataOptionsOpened?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnMainTabRightClick(int tabIndex)

@@ -21,6 +21,7 @@ public partial class MainViewModel : ViewModelBase
 
     private void OpenBoxplot()
     {
-        _dialogTabs.AddNewTab();
+        BoxplotView newBoxplotView = _dialogTabs.GetNewBoxplotView(null);
+        _dialogTabs.AddNewTab(newBoxplotView, "Boxplot");
     }
 }
