@@ -19,11 +19,12 @@ public partial class TabsDynamicView : UserControl
         DataContext = _tabViewModels;
     }
 
-    public void AddNewTab(UserControl newView, string titleStem)
+    public void AddNewTab(UserControl newView, string titleStem, bool isSingleton = false)
     {
         var tabControl = this.FindControl<TabControl>("tabs") ??
             throw new Exception("Cannot find tabs by name");
 
+        // create a list of headers to check for duplicates
         var headers = new List<string>();
         foreach (var item in tabControl.Items)
         {
@@ -33,18 +34,31 @@ public partial class TabsDynamicView : UserControl
             }
         }
 
-        int count = 1;
-        string header = "";
-        do
-        {
-            header = $"{titleStem}{count}";
-            count++;
-        } while (headers.Contains(header));
+        // if the new tab is a singleton, check if it already exists
+        if (isSingleton && headers.Contains(titleStem))
+            return;
 
+        // for non-singletons, create a unique header
+        string header = titleStem;
+        if (!isSingleton)
+        {
+            int count = 1;
+            do
+            {
+                header = $"{titleStem}{count}";
+                count++;
+            } while (headers.Contains(header));
+        }
+
+        // create and add the new tab
         var newTab = new TabsDynamicViewModel(header, newView);
+
+        newTab.IsNewCommandEnabled = !isSingleton;
+        newTab.IsDuplicateCommandEnabled = !isSingleton;
+
         newTab.TabCreated += OnTabCreated;
-        newTab.TabDeleted += OnTabDeleted;
         newTab.TabDuplicated += OnTabDuplicated;
+        newTab.TabDeleted += OnTabDeleted;
         _tabViewModels.Add(newTab);
         tabControl.SelectedIndex = _tabViewModels.Count - 1;
     }
@@ -64,7 +78,7 @@ public partial class TabsDynamicView : UserControl
     private void OnDataOptionsOpened(object? sender, EventArgs e)
     {
         DataOptionsView newDataOptionsView = new DataOptionsView();
-        AddNewTab(newDataOptionsView, "DataOptions");
+        AddNewTab(newDataOptionsView, "DataOptions", true);
     }
 
     private void OnTabCreated(object? sender, EventArgs e)

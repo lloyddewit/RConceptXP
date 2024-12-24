@@ -18,10 +18,12 @@
                             <MenuItem
                                 Header="New"
                                 Command="{Binding OnCreateTabCommand}"
+                                IsEnabled="{Binding IsNewCommandEnabled}"
                                 />
                             <MenuItem
                                 Header="Duplicate"
                                 Command="{Binding OnDuplicateTabCommand}"
+                                IsEnabled="{Binding IsDuplicateCommandEnabled}"
                                 />
                             <MenuItem
                                 Header="Delete"

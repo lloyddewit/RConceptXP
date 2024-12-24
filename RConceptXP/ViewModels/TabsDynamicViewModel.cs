@@ -23,6 +23,12 @@ public partial class TabsDynamicViewModel : ObservableObject
     [ObservableProperty]
     private string _header;
 
+    [ObservableProperty]
+    private bool _isNewCommandEnabled = false;
+
+    [ObservableProperty]
+    private bool _isDuplicateCommandEnabled = false;
+
     public TabsDynamicViewModel(string header, UserControl? content)
     {
         Header = header;
