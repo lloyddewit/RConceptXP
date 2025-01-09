@@ -9,15 +9,15 @@ public partial class BoxplotView : UserControl
     public BoxplotViewModel? BoxplotViewModel => DataContext as BoxplotViewModel;
 
     // The axaml file needs a parameterless constructor
-    public BoxplotView() : this(null)
+    public BoxplotView() : this(new MainViewModel(new MainView()), null)
     {
     }
 
-    public BoxplotView(BoxplotViewModel? boxplotToDuplicate)
+    public BoxplotView(MainViewModel mainViewModel, BoxplotViewModel? boxplotToDuplicate)
     {
         InitializeComponent();
         var boxplotMainTabView = this.FindControl<BoxplotMainTabView>("mainTab") ??
             throw new Exception("Cannot find boxplotMainTabView by name");
-        DataContext = new BoxplotViewModel(boxplotMainTabView, boxplotToDuplicate);
+        DataContext = new BoxplotViewModel(mainViewModel, boxplotMainTabView, boxplotToDuplicate);
     }    
 }

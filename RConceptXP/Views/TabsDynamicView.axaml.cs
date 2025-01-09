@@ -9,7 +9,11 @@ namespace RConceptXP.Views;
 
 public partial class TabsDynamicView : UserControl
 {
-    private ObservableCollection<TabsDynamicViewModel> _tabViewModels;
+    public MainViewModel? MainViewModel = null;
+
+    public event EventHandler? TabDeleted;
+
+    private ObservableCollection<TabsDynamicViewModel> _tabViewModels;    
 
     public TabsDynamicView()
     {
@@ -18,7 +22,7 @@ public partial class TabsDynamicView : UserControl
         _tabViewModels = new ObservableCollection<TabsDynamicViewModel> { };
         DataContext = _tabViewModels;
     }
-
+    
     public void AddNewTab(UserControl newView, string titleStem, bool isSingleton = false)
     {
         var tabControl = this.FindControl<TabControl>("tabs") ??
@@ -34,7 +38,7 @@ public partial class TabsDynamicView : UserControl
             }
         }
 
-        // if the new tab is a singleton, check if it already exists
+        // if the new tab is a singleton and it already exists, then do nothing
         if (isSingleton && headers.Contains(titleStem))
             return;
 
@@ -65,7 +69,13 @@ public partial class TabsDynamicView : UserControl
 
     public BoxplotView GetNewBoxplotView(BoxplotViewModel? boxplotToDuplicate = null)
     {
-        var newBoxplotView = new BoxplotView(boxplotToDuplicate);
+        // if MainViewModel is null, throw an exception
+        if (MainViewModel is null)
+        {
+            throw new Exception("MainViewModel is null");
+        }
+
+        var newBoxplotView = new BoxplotView(MainViewModel, boxplotToDuplicate);
         var newBoxplotViewModel = newBoxplotView.DataContext as BoxplotViewModel;
         if (newBoxplotViewModel is null)
         {
@@ -99,6 +109,8 @@ public partial class TabsDynamicView : UserControl
             return;
 
         _tabViewModels.Remove(tabDynamicViewModel);
+
+        TabDeleted?.Invoke(this, new TabDeletedEventArgs(tabDynamicViewModel.Header));
     }
 
     private void OnTabDuplicated(object? sender, EventArgs e)

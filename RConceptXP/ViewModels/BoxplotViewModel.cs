@@ -30,6 +30,7 @@ public partial class BoxplotViewModel : ObservableObject
 
     public bool IsOkEnabled => GetIsOkEnabled();
     public bool IsWidthEnabled => GetIsFactorNumeric();
+    public MainViewModel MainViewModel => _mainViewModel;
     public SelectionModel<string> Selection { get; }
 
     [ObservableProperty]
@@ -147,6 +148,7 @@ public partial class BoxplotViewModel : ObservableObject
     private ListBox _columnsListBox;
     private TextBox _facetByTextBox;
     private TextBox _factorTextBox;
+    private MainViewModel _mainViewModel;
     private TextBox _multipleVariableTextBox;
     private TextBox _secondFactorTextBox;
     private SelectorMediator _selectorMediator;
@@ -157,9 +159,11 @@ public partial class BoxplotViewModel : ObservableObject
     // for the observable properties that are initialised in the constructor via the
     // 'OnResetClick' method.
 #pragma warning disable CS8618
-    public BoxplotViewModel(BoxplotMainTabView boxplotMainTabView, BoxplotViewModel? boxplotToDuplicate)
+    public BoxplotViewModel(MainViewModel mainViewModel, BoxplotMainTabView boxplotMainTabView, BoxplotViewModel? boxplotToDuplicate)
 #pragma warning restore CS8618
     {
+        _mainViewModel = mainViewModel;
+
         // initialize receiver controls
         OnReceiverGotFocusCommand = new RelayCommand<TextBox>(OnReceiverGotFocus);
 

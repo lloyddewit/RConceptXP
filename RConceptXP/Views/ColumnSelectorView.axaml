@@ -60,6 +60,7 @@
                     Command="{Binding OnDataOptionsClickCommand}"
                     Content="Data Options" 
                     FontSize="10" 
+                    IsEnabled="{Binding !MainViewModel.DataOptionsTabExists}"
                     Margin="0 30 0 0"/>
 
             </StackPanel>
