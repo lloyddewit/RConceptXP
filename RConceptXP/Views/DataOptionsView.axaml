@@ -28,25 +28,33 @@
                         Content="Rows"
                         GroupName="RowColumnType"
                         HorizontalAlignment="Right"
-                        IsChecked="{Binding IsRows}"
+                        IsChecked="true"
                         Name="isRows"
                 />
                     <RadioButton
                         Classes="accent"
                         Content="Columns"
                         GroupName="RowColumnType"
-                        HorizontalAlignment="Center"
-                        IsChecked="{Binding IsColumns}"
+                        HorizontalAlignment="Left"
+                        Margin="10"
                         Name="isColumns"
                 />
                 </UniformGrid>
 
-                <views:DataOptionsRowsView/>
-                <TextBlock Text="Columns content goes here." IsVisible="{Binding IsColumns}"/>
+                <!-- Row filters -->
+                <views:DataOptionsRowsView 
+                    IsVisible="{Binding #isRows.IsChecked}"
+                    />
+
+                <!-- Row filters -->
+                <TextBlock 
+                    IsVisible="{Binding #isColumns.IsChecked}"
+                    Text="Columns content goes here." 
+                    />
             </StackPanel>
 
             <!-- Standard dialog buttons -->
-            <views:DialogMainButtonsView  DockPanel.Dock="Bottom"  IsVisible="{Binding IsRows}"/>
+            <views:DialogMainButtonsView  DockPanel.Dock="Bottom"/>
 
             <!-- Fill the rest of the dock panel to ensure buttons are at the bottom-->
             <Rectangle/>

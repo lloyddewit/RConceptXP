@@ -81,14 +81,7 @@ public partial class TabsDynamicView : UserControl
         {
             throw new Exception("DataContext of newBoxplotView is not BoxplotViewModel");
         }
-        newBoxplotViewModel.DataOptionsOpened += OnDataOptionsOpened;
         return newBoxplotView;
-    }
-
-    private void OnDataOptionsOpened(object? sender, EventArgs e)
-    {
-        DataOptionsView newDataOptionsView = new DataOptionsView();
-        AddNewTab(newDataOptionsView, "DataOptions", true);
     }
 
     private void OnTabCreated(object? sender, EventArgs e)
