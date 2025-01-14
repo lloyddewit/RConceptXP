@@ -17,97 +17,13 @@
 
             <!-- Filters tab -->
             <TabItem Header="Filters">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-
-                        <!-- Data frame and filter selector -->
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal">                                
-                                <StackPanel>
-                                    
-                                    <!-- Data frame selector -->
-                                    <TextBlock Text="Data Frame:"/>
-                                    <ComboBox  Classes="accent" SelectedIndex="0">
-                                        <ComboBoxItem>survey</ComboBoxItem>
-                                    </ComboBox>
-
-                                    <!-- Columns selector -->
-                                    <ListBox
-                                        Background="{StaticResource BackgroundTextBlock}"
-                                        Classes="accent"
-                                        Height="80"
-                                        ItemsSource="{Binding ColumnNames}"
-                                        Margin="0 5 0 0"
-                                        Name="columns"
-                                        Selection="{Binding Selection}"
-                                        SelectionMode="AlwaysSelected,Single,Toggle"
-                                        />
-                                </StackPanel>
-
-                                <!-- Add button -->
-                                <Button
-                                    Classes="accent"
-                                    Command="{Binding OnSelectorAddClickCommand}"
-                                    Content="Add"
-                                    IsEnabled="{Binding !!#columns.ItemCount}"
-                                    Margin="5 0 0 0"
-                                    >
-                                </Button>
-
-                                <StackPanel Margin="10 0 0 0">
-
-                                    <!-- Filter -->
-                                    <TextBlock Text="Filter:"/>
-                                    <TextBox
-                                        Classes="theme-soft accent"
-                                        HorizontalAlignment="Left"
-                                        IsReadOnly="True"
-                                        Margin="0 5 0 0"
-                                        Text="{Binding Filter}"
-                                        Width="120"
-                                        >
-                                    </TextBox>
-
-                                    <!-- Remove filter button -->
-                                    <Button
-                                        Classes="accent"
-                                        Command="{Binding OnSelectorRemoveFilterClickCommand}"
-                                        Content="Remove Current Filter"
-                                        IsEnabled="{Binding IsFilterSelected}"
-                                        Margin="0 7 0 0"
-                                        >
-                                    </Button>
-
-                                </StackPanel>
-                            </StackPanel>
-                        </StackPanel>
-
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-
-                        <!-- Selected filter preview -->
-                        <TextBlock
-                        Margin="0 10 0 0"
-                        Text="Selected Filter Preview:"
-                        />
-                        <TextBox
-                            Classes="theme-soft accent"
-                            HorizontalAlignment="Left"
-                            IsReadOnly="True"
-                            Margin="5 5 0 0"
-                            Name="filterPreviewTextBox"
-                            Text="{Binding Filter}"
-                            Width="155"
-                            >
-                        </TextBox>
-                        
-                    </StackPanel>
-                </StackPanel>
+                <views:DataOptionsFiltersView/>
             </TabItem>
 
             <TabItem Header="New Filter">
-                <TextBlock Text="New filter content goes here." />
+                <views:DataOptionsNewFilterView/>
             </TabItem>
+            
         </TabControl>
 
     </StackPanel>
