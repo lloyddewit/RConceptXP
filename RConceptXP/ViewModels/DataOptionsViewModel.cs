@@ -16,6 +16,9 @@ public partial class DataOptionsViewModel : ObservableObject
     private string _filter;
 
     [ObservableProperty]
+    private bool _isColumnSelected;
+
+    [ObservableProperty]
     private bool _isFilterSelected;
 
     public RelayCommand OnSelectorAddClickCommand { get; }
@@ -29,6 +32,7 @@ public partial class DataOptionsViewModel : ObservableObject
 
         ColumnNames = ColumnNamesAll;
         Filter = "";
+        IsColumnSelected = false;
         IsFilterSelected = false;
         OnSelectorAddClickCommand = new RelayCommand(OnSelectorAddClick);
         OnSelectorRemoveFilterClickCommand = new RelayCommand(OnSelectorRemoveFilterClick);

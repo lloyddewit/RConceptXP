@@ -30,7 +30,7 @@
                         HorizontalAlignment="Right"
                         IsChecked="true"
                         Name="isRows"
-                />
+                        />
                     <RadioButton
                         Classes="accent"
                         Content="Columns"
@@ -38,7 +38,7 @@
                         HorizontalAlignment="Left"
                         Margin="10"
                         Name="isColumns"
-                />
+                        />
                 </UniformGrid>
 
                 <!-- Row filters -->
@@ -46,10 +46,9 @@
                     IsVisible="{Binding #isRows.IsChecked}"
                     />
 
-                <!-- Row filters -->
-                <TextBlock 
+                <!-- Column filters -->
+                <views:DataOptionsColumnsView
                     IsVisible="{Binding #isColumns.IsChecked}"
-                    Text="Columns content goes here." 
                     />
             </StackPanel>
 

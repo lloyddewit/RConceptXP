@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             mc:Ignorable="d" d:DesignWidth="410" d:DesignHeight="495"
+             x:Class="RConceptXP.Views.DataOptionsColumnsView"
+             xmlns:views="clr-namespace:RConceptXP.Views"
+             xmlns:vm="clr-namespace:RConceptXP.ViewModels"
+             x:DataType="vm:DataOptionsViewModel">
+
+    <StackPanel>
+
+        <!-- Tabs -->
+        <TabControl Margin="0 5 0 0">
+
+            <!-- Selections tab -->
+            <TabItem Header="Selections">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+
+                        <!-- Data frame and filter selector -->
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel>
+
+                                    <!-- Data frame selector -->
+                                    <TextBlock Text="Data Frame:"/>
+                                    <ComboBox  Classes="accent" SelectedIndex="0">
+                                        <ComboBoxItem>survey</ComboBoxItem>
+                                    </ComboBox>
+
+                                    <!-- Columns selector -->
+                                    <ListBox
+                                        Background="{StaticResource BackgroundTextBlock}"
+                                        Classes="accent"
+                                        Height="80"
+                                        ItemsSource="{Binding ColumnNames}"
+                                        Margin="0 5 0 0"
+                                        Name="columns"
+                                        Selection="{Binding Selection}"
+                                        SelectionMode="AlwaysSelected,Single,Toggle"
+                                        />
+                                </StackPanel>
+
+                                <!-- Add button -->
+                                <Button
+                                    Classes="accent"
+                                    Command="{Binding OnSelectorAddClickCommand}"
+                                    Content="Add"
+                                    IsEnabled="{Binding !!#columns.ItemCount}"
+                                    Margin="5 0 0 0"
+                                    >
+                                </Button>
+
+                                <StackPanel Margin="10 0 0 0">
+
+                                    <!-- Selection -->
+                                    <TextBlock Text="Selection:"/>
+                                    <TextBox
+                                        Classes="theme-soft accent"
+                                        HorizontalAlignment="Left"
+                                        IsReadOnly="True"
+                                        Margin="0 5 0 0"
+                                        Text="{Binding Selection}"
+                                        Width="140"
+                                        >
+                                    </TextBox>
+
+                                    <!-- Remove selection button -->
+                                    <Button
+                                        Classes="accent"
+                                        Command="{Binding OnSelectorRemoveFilterClickCommand}"
+                                        Content="Remove Current Selection"
+                                        IsEnabled="{Binding IsColumnSelected}"
+                                        Margin="0 7 0 0"
+                                        >
+                                    </Button>
+
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Header="New Selection">
+                <TextBlock Text="New selection content goes here." />
+            </TabItem>
+        </TabControl>
+
+    </StackPanel>
+</UserControl>
