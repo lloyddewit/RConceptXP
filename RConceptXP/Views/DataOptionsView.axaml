@@ -22,7 +22,7 @@
             <StackPanel DockPanel.Dock="Top">
 
                 <!-- Radio buttons -->
-                <UniformGrid Columns="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <RadioButton
                         Classes="accent"
                         Content="Rows"
@@ -36,10 +36,10 @@
                         Content="Columns"
                         GroupName="RowColumnType"
                         HorizontalAlignment="Left"
-                        Margin="10"
+                        Margin="10 0 0 0"
                         Name="isColumns"
                         />
-                </UniformGrid>
+                </StackPanel>
 
                 <!-- Row filters -->
                 <views:DataOptionsRowsView 
