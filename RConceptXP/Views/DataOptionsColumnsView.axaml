@@ -87,7 +87,7 @@
             </TabItem>
 
             <TabItem Header="New Selection">
-                <TextBlock Text="New selection content goes here." />
+                <views:DataOptionsNewSelectionView/>
             </TabItem>
         </TabControl>
 
