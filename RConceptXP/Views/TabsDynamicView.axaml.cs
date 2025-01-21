@@ -9,7 +9,11 @@ namespace RConceptXP.Views;
 
 public partial class TabsDynamicView : UserControl
 {
-    private ObservableCollection<TabsDynamicViewModel> _tabViewModels;
+    public MainViewModel? MainViewModel = null;
+
+    public event EventHandler? TabDeleted;
+
+    private ObservableCollection<TabsDynamicViewModel> _tabViewModels;    
 
     public TabsDynamicView()
     {
@@ -18,12 +22,13 @@ public partial class TabsDynamicView : UserControl
         _tabViewModels = new ObservableCollection<TabsDynamicViewModel> { };
         DataContext = _tabViewModels;
     }
-
-    public void AddNewTab(BoxplotViewModel? boxplotToDuplicate = null)
+    
+    public void AddNewTab(UserControl newView, string titleStem, bool isSingleton = false)
     {
         var tabControl = this.FindControl<TabControl>("tabs") ??
             throw new Exception("Cannot find tabs by name");
 
+        // create a list of headers to check for duplicates
         var headers = new List<string>();
         foreach (var item in tabControl.Items)
         {
@@ -33,43 +38,83 @@ public partial class TabsDynamicView : UserControl
             }
         }
 
-        int count = 1;
-        string header = "";
-        do
-        {
-            header = $"Boxplot{count}";
-            count++;
-        } while (headers.Contains(header));
+        // if the new tab is a singleton and it already exists, then do nothing
+        if (isSingleton && headers.Contains(titleStem))
+            return;
 
-        var newTab = new TabsDynamicViewModel(header, new BoxplotView(boxplotToDuplicate));
+        // for non-singletons, create a unique header
+        string header = titleStem;
+        if (!isSingleton)
+        {
+            int count = 1;
+            do
+            {
+                header = $"{titleStem}{count}";
+                count++;
+            } while (headers.Contains(header));
+        }
+
+        // create and add the new tab
+        var newTab = new TabsDynamicViewModel(header, newView);
+
+        newTab.IsNewCommandEnabled = !isSingleton;
+        newTab.IsDuplicateCommandEnabled = !isSingleton;
+
         newTab.TabCreated += OnTabCreated;
-        newTab.TabDeleted += OnTabDeleted;
         newTab.TabDuplicated += OnTabDuplicated;
+        newTab.TabDeleted += OnTabDeleted;
         _tabViewModels.Add(newTab);
         tabControl.SelectedIndex = _tabViewModels.Count - 1;
     }
 
+    public BoxplotView GetNewBoxplotView(BoxplotViewModel? boxplotToDuplicate = null)
+    {
+        // if MainViewModel is null, throw an exception
+        if (MainViewModel is null)
+        {
+            throw new Exception("MainViewModel is null");
+        }
+
+        var newBoxplotView = new BoxplotView(MainViewModel, boxplotToDuplicate);
+        var newBoxplotViewModel = newBoxplotView.DataContext as BoxplotViewModel;
+        if (newBoxplotViewModel is null)
+        {
+            throw new Exception("DataContext of newBoxplotView is not BoxplotViewModel");
+        }
+        return newBoxplotView;
+    }
+
     private void OnTabCreated(object? sender, EventArgs e)
     {
-        if (sender is TabsDynamicViewModel tab)
+        if (sender is not TabsDynamicViewModel tabDynamicViewModel)
+            return;
+
+        if (tabDynamicViewModel.TabViewModel is BoxplotViewModel)
         {
-            AddNewTab();
+            BoxplotView newBoxplotView = GetNewBoxplotView();
+            AddNewTab(newBoxplotView, "Boxplot");
         }
     }
 
     private void OnTabDeleted(object? sender, EventArgs e)
     {
-        if (sender is TabsDynamicViewModel tab)
-        {
-            _tabViewModels.Remove(tab);
-        }
+        if (sender is not TabsDynamicViewModel tabDynamicViewModel)
+            return;
+
+        _tabViewModels.Remove(tabDynamicViewModel);
+
+        TabDeleted?.Invoke(this, new TabDeletedEventArgs(tabDynamicViewModel.Header));
     }
 
     private void OnTabDuplicated(object? sender, EventArgs e)
     {
-        if (sender is TabsDynamicViewModel tab)
+        if (sender is not TabsDynamicViewModel tabDynamicViewModel)
+            return;
+
+        if (tabDynamicViewModel.TabViewModel is BoxplotViewModel)
         {
-            AddNewTab(tab.TabBoxPlotViewModel);
+            UserControl newView = GetNewBoxplotView((BoxplotViewModel?)tabDynamicViewModel.TabViewModel);
+            AddNewTab(newView, "Boxplot");
         }
     }
 }

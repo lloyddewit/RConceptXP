@@ -1,0 +1,166 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             mc:Ignorable="d" d:DesignWidth="410" d:DesignHeight="495"
+             x:Class="RConceptXP.Views.DataOptionsNewSelectionView"
+             xmlns:views="clr-namespace:RConceptXP.Views"
+             xmlns:vm="clr-namespace:RConceptXP.ViewModels"
+             x:DataType="vm:DataOptionsViewModel">
+
+    <StackPanel>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+
+                <!-- Data frame and filter selector -->
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+
+                            <!-- Data frame selector -->
+                            <TextBlock Text="Data Frame:"/>
+                            <ComboBox  Classes="accent" SelectedIndex="0">
+                                <ComboBoxItem>survey</ComboBoxItem>
+                            </ComboBox>
+
+                            <!-- Columns selector -->
+                            <ListBox
+                                Background="{StaticResource BackgroundTextBlock}"
+                                Classes="accent"
+                                Height="80"
+                                ItemsSource="{Binding ColumnNames}"
+                                Margin="0 5 0 0"
+                                Name="columns"
+                                Selection="{Binding Selection}"
+                                SelectionMode="AlwaysSelected,Single,Toggle"
+                                        />
+                        </StackPanel>
+
+                        <!-- Add button -->
+                        <Button
+                            Classes="accent"
+                            Command="{Binding OnSelectorAddClickCommand}"
+                            Content="Add"
+                            IsEnabled="{Binding !!#columns.ItemCount}"
+                            Margin="5 0 0 0"
+                                    >
+                        </Button>
+
+                        <StackPanel Margin="10 0 0 0">
+
+                            <!-- Select by -->
+                            <TextBlock Text="Select By:"/>
+                            <TextBox
+                                Classes="theme-soft accent"
+                                HorizontalAlignment="Left"
+                                IsReadOnly="True"
+                                Margin="0 5 0 0"
+                                Text="{Binding Filter}"
+                                Width="120"
+                                        >
+                            </TextBox>
+
+                            <!-- Add not -->
+                            <CheckBox
+                                Classes="accent"
+                                Content="Add Not"
+                                Margin="0 5 0 0"
+                        />
+
+                            <!-- Add condition button -->
+                            <Button
+                                Classes="accent"
+                                Command="{Binding OnSelectorRemoveFilterClickCommand}"
+                                Content="Add Condition"
+                                Margin="0 7 0 0"
+                                        >
+                            </Button>
+
+                        </StackPanel>
+
+                        <!-- Select by -->
+                        <StackPanel Margin="5 0 0 0">
+                        <TextBlock Text="Selected Columns:"/>
+                        <TextBox
+                            Classes="theme-soft accent"
+                            HorizontalAlignment="Left"
+                            Height="110"
+                            IsReadOnly="True"
+                            Margin="0 5 0 0"
+                            Text="{Binding Filter}"
+                            Width="120"
+                                        >
+                        </TextBox>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <!-- Variables and conditions -->
+                <TextBox
+                    Classes="theme-soft accent"
+                    Text="Operation | Value"
+                    Height="170"
+                    HorizontalAlignment="Left"
+                    IsReadOnly="True"
+                    Margin="0 10 0 0"
+                    Name="conditionsListTextBox"
+                    Width="155"
+                    >
+                </TextBox>
+
+                <StackPanel Margin="5">
+                    <!-- All combined with -->
+                    <TextBlock
+                        Margin="0 10 0 0"
+                        Text="All Combined With:"
+                        />
+                    <RadioButton
+                        Classes="accent"
+                        Content="Or"
+                        GroupName="CombineType"
+                        IsChecked="true"
+                        Margin="0 5 0 0"
+                        />
+                    <RadioButton
+                        Classes="accent"
+                        Content="And"
+                        GroupName="CombineType"
+                        Margin="0 5 0 0"
+                        />
+
+                    <!-- Clear condition -->
+                    <Button
+                        Classes="accent"
+                        Content="Clear Conditions"
+                        Margin="0 10 0 0"
+                        >
+                    </Button>
+
+                </StackPanel>
+            </StackPanel>
+
+
+            <!-- New filter name -->
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                Margin="0 10 0 0"
+                Text="New Selection Name:"
+                />
+                <AutoCompleteBox
+                    ItemsSource="{Binding FilterNames, Mode=OneTime}"
+                    Classes="theme-soft accent"
+                    Margin="5 5 0 0"
+                    Name="newFilterNameAutoCompleteBox"
+                    Text="{Binding NewFilterName}"
+                    VerticalAlignment="Center"
+                    Width="183">
+                </AutoCompleteBox>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

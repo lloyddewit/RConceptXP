@@ -13,10 +13,26 @@
         <views:MainMenuView Grid.Row="0"/>
 
         <!-- Tool bar -->
-        <Grid Grid.Row="1" Background="{StaticResource BackgroundTextBlock}" Height="40"
-              ColumnDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *">
-            <Button Grid.Column="2" Classes="accent" Content="Boxplot" Command="{Binding OpenBoxplotCommand}" Margin="10 0 0 0"/>
-        </Grid>
+        <StackPanel
+            Grid.Row="1"
+            Background="{StaticResource BackgroundTextBlock}"
+            Height="40"
+            Orientation="Horizontal"
+            >
+            <Button
+                Classes="accent"
+                Content="Boxplot"
+                Command="{Binding OpenBoxplotCommand}"
+                Margin="10 0 0 0"
+                />
+            <Button
+                Classes="accent"
+                Content="Data Options"
+                Command="{Binding OpenDataOptionsCommand}"
+                IsEnabled="{Binding !DataOptionsTabExists}"
+                Margin="10 0 0 0"
+                />
+        </StackPanel>
 
         <!-- Working area -->
         <Grid Grid.Row="2">

@@ -27,30 +27,43 @@
                     />
             </StackPanel>
 
-            <!-- Add button -->
-            <SplitButton
-                Classes="accent"
-                Command="{Binding OnSelectorAddClickCommand}"
-                Content="Add"
-                IsEnabled="{Binding !!#columns.ItemCount}"
-                Margin="5 0 0 0">
-                <SplitButton.Flyout>
-                    <MenuFlyout Placement="Bottom">
-                        <MenuItem
-                            Command="{Binding OnSelectorAddClickCommand}"
-                            Header="Add Selected"
+            <StackPanel Margin="5 45 0 0">
+                
+                <!-- Add button -->
+                <SplitButton
+                    Classes="accent"
+                    Command="{Binding OnSelectorAddClickCommand}"
+                    Content="Add"
+                    IsEnabled="{Binding !!#columns.ItemCount}"
+                    >
+                    <SplitButton.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuItem
+                                Command="{Binding OnSelectorAddClickCommand}"
+                                Header="Add Selected"
                             />
-                        <MenuItem
-                            Command="{Binding OnSelectorAddAllClickCommand}"
-                            Header="Add All"
-                            IsEnabled="False"
-                            Name="addAllOption"
+                            <MenuItem
+                                Command="{Binding OnSelectorAddAllClickCommand}"
+                                Header="Add All"
+                                IsEnabled="False"
+                                Name="addAllOption"
                             />
-                        <Separator/>
-                        <MenuItem Header="Help"/>
-                    </MenuFlyout>
-                </SplitButton.Flyout>
-            </SplitButton>
+                            <Separator/>
+                            <MenuItem Header="Help"/>
+                        </MenuFlyout>
+                    </SplitButton.Flyout>
+                </SplitButton>
+
+                <!-- Data options button -->
+                <Button 
+                    Classes="accent" 
+                    Command="{Binding OnDataOptionsClickCommand}"
+                    Content="Data Options" 
+                    FontSize="10" 
+                    IsEnabled="{Binding !MainViewModel.DataOptionsTabExists}"
+                    Margin="0 30 0 0"/>
+
+            </StackPanel>
         </StackPanel>
     </StackPanel>
 </UserControl>

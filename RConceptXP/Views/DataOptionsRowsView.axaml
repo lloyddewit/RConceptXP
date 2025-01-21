@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="using:Avalonia.Xaml.Interactivity"
+             xmlns:ia="using:Avalonia.Xaml.Interactions.Core"
+             mc:Ignorable="d" d:DesignWidth="410" d:DesignHeight="495"
+             x:Class="RConceptXP.Views.DataOptionsRowsView"
+             xmlns:views="clr-namespace:RConceptXP.Views"
+             xmlns:vm="clr-namespace:RConceptXP.ViewModels"
+             x:DataType="vm:DataOptionsViewModel">
+
+    <StackPanel>
+
+        <!-- Tabs -->
+        <TabControl Margin="0 5 0 0">
+
+            <!-- Filters tab -->
+            <TabItem Header="Filters">
+                <views:DataOptionsFiltersView/>
+            </TabItem>
+
+            <TabItem Header="New Filter">
+                <views:DataOptionsNewFilterView/>
+            </TabItem>
+            
+        </TabControl>
+
+    </StackPanel>
+</UserControl>

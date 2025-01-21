@@ -18,6 +18,9 @@ namespace RConceptXP.ViewModels;
 //todo support empty list of columns (test that selector buttons enable/disable correctly and no crashes)
 public partial class BoxplotViewModel : ObservableObject
 {
+    public event EventHandler? DataOptionsOpened;
+
+    public RelayCommand OnDataOptionsClickCommand { get; }
     public RelayCommand<int> OnMainTabRightClickCommand { get; }
     public RelayCommand<TextBox> OnReceiverGotFocusCommand { get; }
     public RelayCommand OnResetClickCommand { get; }
@@ -27,6 +30,7 @@ public partial class BoxplotViewModel : ObservableObject
 
     public bool IsOkEnabled => GetIsOkEnabled();
     public bool IsWidthEnabled => GetIsFactorNumeric();
+    public MainViewModel MainViewModel => _mainViewModel;
     public SelectionModel<string> Selection { get; }
 
     [ObservableProperty]
@@ -144,6 +148,7 @@ public partial class BoxplotViewModel : ObservableObject
     private ListBox _columnsListBox;
     private TextBox _facetByTextBox;
     private TextBox _factorTextBox;
+    private MainViewModel _mainViewModel;
     private TextBox _multipleVariableTextBox;
     private TextBox _secondFactorTextBox;
     private SelectorMediator _selectorMediator;
@@ -154,9 +159,11 @@ public partial class BoxplotViewModel : ObservableObject
     // for the observable properties that are initialised in the constructor via the
     // 'OnResetClick' method.
 #pragma warning disable CS8618
-    public BoxplotViewModel(BoxplotMainTabView boxplotMainTabView, BoxplotViewModel? boxplotToDuplicate)
+    public BoxplotViewModel(MainViewModel mainViewModel, BoxplotMainTabView boxplotMainTabView, BoxplotViewModel? boxplotToDuplicate)
 #pragma warning restore CS8618
     {
+        _mainViewModel = mainViewModel;
+
         // initialize receiver controls
         OnReceiverGotFocusCommand = new RelayCommand<TextBox>(OnReceiverGotFocus);
 
@@ -216,6 +223,7 @@ public partial class BoxplotViewModel : ObservableObject
         _selectorMediator = new SelectorMediator(receivers);
 
         // initialize other command controls
+        OnDataOptionsClickCommand = new RelayCommand(OnDataOptionsClick);
         OnMainTabRightClickCommand = new RelayCommand<int>(OnMainTabRightClick);
         OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
         OnResetClickCommand = new RelayCommand(OnResetClick);
@@ -300,6 +308,11 @@ public partial class BoxplotViewModel : ObservableObject
             return !string.IsNullOrEmpty(SingleVariable);
         else
             return !string.IsNullOrEmpty(MultipleVariables);
+    }
+
+    private void OnDataOptionsClick()
+    {
+        DataOptionsOpened?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnMainTabRightClick(int tabIndex)
