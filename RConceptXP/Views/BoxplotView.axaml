@@ -149,6 +149,12 @@
                     <TextBlock Text="Summary content goes here." />
                 </TabItem>
                 <TabItem Header="Tufte">
+                    <TabItem.IsVisible>
+                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <Binding Path="#isBoxplot.IsChecked" />
+                            <Binding Path="IsTufte" />
+                        </MultiBinding>
+                    </TabItem.IsVisible>
                     <TabItem.ContextFlyout>
                         <MenuFlyout>
                             <MenuItem
