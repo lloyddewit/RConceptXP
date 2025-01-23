@@ -54,6 +54,7 @@ public partial class BoxplotViewModel : ObservableObject
     [ObservableProperty]
     private string _factor;
     partial void OnFactorChanged(string value) => OnPropertyChanged(nameof(IsWidthEnabled));
+
     [ObservableProperty]
     private List<string> _groupToConnectSummaries;
 
