@@ -2,12 +2,9 @@
 using Avalonia.Controls.Selection;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media.TextFormatting.Unicode;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json;
 using RConceptXP.Views;
-using RInsightF461;
 using RConceptXP.Services;
 using System.Collections.Generic;
 using System.IO;
@@ -53,7 +50,6 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private string _factor;
-    partial void OnFactorChanged(string value) => OnPropertyChanged(nameof(IsWidthEnabled));
 
     [ObservableProperty]
     private List<string> _groupToConnectSummaries;
@@ -87,11 +83,9 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private bool _isSaveGraph;
-    partial void OnIsSaveGraphChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private bool _isSingle;
-    partial void OnIsSingleChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private bool _isTufte;
@@ -116,11 +110,9 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private string _multipleVariables;
-    partial void OnMultipleVariablesChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private string _saveName;
-    partial void OnSaveNameChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private List<string> _saveNames;
@@ -133,7 +125,6 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private string _singleVariable;
-    partial void OnSingleVariableChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private string _transparency;
@@ -144,6 +135,65 @@ public partial class BoxplotViewModel : ObservableObject
     [ObservableProperty]
     private string _widthExtra;
 
+    partial void OnColumnNamesChanged(List<string> value) => OnPropertyChangedAction();
+    partial void OnCommentChanged(string value) => OnPropertyChangedAction();
+    partial void OnDataFrameChanged(string value) => OnPropertyChangedAction();
+    partial void OnFacetByChanged(string value) => OnPropertyChangedAction();
+    partial void OnFacetByTypeChanged(string value) => OnPropertyChangedAction();
+    partial void OnFacetByTypesChanged(List<string> value) => OnPropertyChangedAction();
+    partial void OnFactorChanged(string value)
+    {
+        OnPropertyChangedAction();
+        OnPropertyChanged(nameof(IsWidthEnabled));
+    }
+    partial void OnGroupToConnectSummariesChanged(List<string> value) => OnPropertyChangedAction();
+    partial void OnGroupToConnectSummaryChanged(string value) => OnPropertyChangedAction();
+    partial void OnIsAddPointsChanged(bool value) => OnPropertyChangedAction();
+    partial void OnIsBoxPlotChanged(bool value) => OnPropertyChangedAction();
+    partial void OnIsBoxPlotExtraChanged(bool value) => OnPropertyChangedAction();
+    partial void OnIsCommentChanged(bool value) => OnPropertyChangedAction();
+    partial void OnIsGroupToConnectChanged(bool value) => OnPropertyChangedAction();
+    partial void OnIsHorizontalBoxPlotChanged(bool value) => OnPropertyChangedAction();
+    partial void OnIsJitterChanged(bool value) => OnPropertyChangedAction();
+    partial void OnIsLegendChanged(bool value) => OnPropertyChangedAction();
+    partial void OnIsSaveGraphChanged(bool value)
+    {
+        OnPropertyChangedAction();
+        OnPropertyChanged(nameof(IsOkEnabled));
+    }
+    partial void OnIsSingleChanged(bool value)
+    {
+        OnPropertyChangedAction();
+        OnPropertyChanged(nameof(IsOkEnabled));
+    }
+    partial void OnIsTufteChanged(bool value) => OnPropertyChangedAction();
+    partial void OnIsVarWidthChanged(bool value) => OnPropertyChangedAction();
+    partial void OnIsViolinChanged(bool value) => OnPropertyChangedAction();
+    partial void OnIsWidthChanged(bool value) => OnPropertyChangedAction();
+    partial void OnJitterExtraChanged(string value) => OnPropertyChangedAction();
+    partial void OnLegendPositionChanged(string value) => OnPropertyChangedAction();
+    partial void OnLegendPositionsChanged(List<string> value) => OnPropertyChangedAction();
+    partial void OnMultipleVariablesChanged(string value)
+    {
+        OnPropertyChangedAction();
+        OnPropertyChanged(nameof(IsOkEnabled));
+    }
+    partial void OnSaveNameChanged(string value)
+    {
+        OnPropertyChangedAction();
+        OnPropertyChanged(nameof(IsOkEnabled));
+    }
+    partial void OnSaveNamesChanged(List<string> value) => OnPropertyChangedAction();
+    partial void OnSecondFactorChanged(string value) => OnPropertyChangedAction();
+    partial void OnSelectedTabIndexChanged(int value) => OnPropertyChangedAction();
+    partial void OnSingleVariableChanged(string value)
+    {
+        OnPropertyChangedAction();
+        OnPropertyChanged(nameof(IsOkEnabled));
+    }
+    partial void OnTransparencyChanged(string value) => OnPropertyChangedAction();
+    partial void OnWidthChanged(string value) => OnPropertyChangedAction();
+    partial void OnWidthExtraChanged(string value) => OnPropertyChangedAction();
 
     private MenuItem _addAllOption;
     private ListBox _columnsListBox;
@@ -321,6 +371,21 @@ public partial class BoxplotViewModel : ObservableObject
         SelectedTabIndex = tabIndex;
     }
 
+    private bool isUndoSnapshotSuspended = true;
+    private List<BoxplotDataTransfer> undoStack = new();
+
+    private void OnPropertyChangedAction()
+    {
+        // if undo snapshots suspended, then do nothing
+        if (isUndoSnapshotSuspended)
+            return;
+
+        // create a new boxplot data transfer object
+        BoxplotDataTransfer boxplotData = new BoxplotDataTransfer(this);
+
+        // add the new object to the undo stack
+    }
+
     private void OnReceiverGotFocus(TextBox? receiver)
     {
         ArgumentNullException.ThrowIfNull(receiver, nameof(receiver));
@@ -366,36 +431,37 @@ public partial class BoxplotViewModel : ObservableObject
 
     private void OnResetClick()
     {
-        Comment = "Dialog: Boxplot Options";
-        DataFrame = "survey"; // todo hard coded for testing
-        FacetBy = "";
-        FacetByType = FacetByTypes[0];
-        Factor = "";
+        BoxplotDataTransfer boxplotData = new BoxplotDataTransfer();
+        Comment = boxplotData.Comment;
+        DataFrame = boxplotData.DataFrame;
+        FacetBy = boxplotData.FacetBy;
+        FacetByType = FacetByTypes[0]; ;
+        Factor = boxplotData.Factor;
         GroupToConnectSummary = GroupToConnectSummaries[0];
-        IsAddPoints = false;
-        IsBoxPlot = true;
-        IsBoxPlotExtra = false;
-        IsComment = true;
-        IsGroupToConnect = false;
-        IsHorizontalBoxPlot = false;
-        IsJitter = false;
-        IsLegend = false;
-        IsSaveGraph = false;
-        IsSingle = true;
-        IsTufte = false;
-        IsVarWidth = false;
-        IsViolin = false;
-        IsWidth = false;
-        JitterExtra = "0.20";
+        IsAddPoints = boxplotData.IsAddPoints;
+        IsBoxPlot = boxplotData.IsBoxPlot;
+        IsBoxPlotExtra = boxplotData.IsBoxPlotExtra;
+        IsComment = boxplotData.IsComment;
+        IsGroupToConnect = boxplotData.IsGroupToConnect;
+        IsHorizontalBoxPlot = boxplotData.IsHorizontalBoxPlot;
+        IsJitter = boxplotData.IsJitter;
+        IsLegend = boxplotData.IsLegend;
+        IsSaveGraph = boxplotData.IsSaveGraph;
+        IsSingle = boxplotData.IsSingle;
+        IsTufte = boxplotData.IsTufte;
+        IsVarWidth = boxplotData.IsVarWidth;
+        IsViolin = boxplotData.IsViolin;
+        IsWidth = boxplotData.IsWidth;
+        JitterExtra = boxplotData.JitterExtra;
         LegendPosition = LegendPositions[0];
-        MultipleVariables = "";
-        SaveName = "plot1";
-        SecondFactor = "";
-        SelectedTabIndex = 0;
-        SingleVariable = "";
-        Transparency = "1.00";
-        Width = "0.25";
-        WidthExtra = "0.5";
+        MultipleVariables = boxplotData.MultipleVariables;
+        SaveName = boxplotData.SaveName;
+        SecondFactor = boxplotData.SecondFactor;
+        SelectedTabIndex = boxplotData.SelectedTabIndex;
+        SingleVariable = boxplotData.SingleVariable;
+        Transparency = boxplotData.Transparency;
+        Width = boxplotData.Width;
+        WidthExtra = boxplotData.WidthExtra;
     }
 
     private void OnSelectorAddAllClick()
