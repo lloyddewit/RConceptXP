@@ -14,7 +14,7 @@
             <CheckBox
                 Classes="accent"
                 Content="Comment"
-                IsChecked="true"
+                IsChecked="{Binding IsComment}"
                 Name="isComment"
                 />
             <TextBox
@@ -51,8 +51,19 @@
                 HorizontalAlignment="Right"
                 Width="60"
                 />
-            <Button Classes="accent" Content="Close" HorizontalAlignment="Center" Width="60"/>
-            <Button Classes="accent" Content="Help" HorizontalAlignment="Left" Width="60"/>
+            <Button 
+                Classes="accent" 
+                Command="{Binding OnUndoClickCommand}"
+                Content="Undo" 
+                HorizontalAlignment="Center" 
+                Width="60"
+                />
+            <Button 
+                Classes="accent" 
+                Command="{Binding OnRedoClickCommand}"
+                Content="Redo" 
+                HorizontalAlignment="Left" 
+                Width="60"/>
             <SplitButton
                 Classes="accent"
                 Command="{Binding OnToScriptClickCommand}"

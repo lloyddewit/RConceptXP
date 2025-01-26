@@ -9,6 +9,7 @@ using RConceptXP.Services;
 using System.Collections.Generic;
 using System.IO;
 using System;
+using System.Linq;
 
 namespace RConceptXP.ViewModels;
 
@@ -20,10 +21,12 @@ public partial class BoxplotViewModel : ObservableObject
     public RelayCommand OnDataOptionsClickCommand { get; }
     public RelayCommand<int> OnMainTabRightClickCommand { get; }
     public RelayCommand<TextBox> OnReceiverGotFocusCommand { get; }
+    public RelayCommand OnRedoClickCommand { get; }
     public RelayCommand OnResetClickCommand { get; }
     public RelayCommand OnSelectorAddAllClickCommand { get; }
     public RelayCommand OnSelectorAddClickCommand { get; }
     public RelayCommand OnToScriptClickCommand { get; }
+    public RelayCommand OnUndoClickCommand { get; }
 
     public bool IsOkEnabled => GetIsOkEnabled();
     public bool IsWidthEnabled => GetIsFactorNumeric();
@@ -276,8 +279,10 @@ public partial class BoxplotViewModel : ObservableObject
         // initialize other command controls
         OnDataOptionsClickCommand = new RelayCommand(OnDataOptionsClick);
         OnMainTabRightClickCommand = new RelayCommand<int>(OnMainTabRightClick);
-        OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
+        OnRedoClickCommand = new RelayCommand(OnRedoClick);
         OnResetClickCommand = new RelayCommand(OnResetClick);
+        OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
+        OnUndoClickCommand = new RelayCommand(OnUndoClick);
 
         // initialize one-way data bindings (set only once here and never changed)
         FacetByTypes = new List<string> { "Facet Wrap", "Facet Row", "Facet Column", "None" };
@@ -298,6 +303,9 @@ public partial class BoxplotViewModel : ObservableObject
 
     private void DuplicateBoxplot(BoxplotViewModel boxplotToDuplicate)
     {
+        // suspend data snapshots during duplication (snapshots are used for undo and redo)
+        isSnapshotActive = false;
+
         Comment = boxplotToDuplicate.Comment;
         DataFrame = boxplotToDuplicate.DataFrame;
         FacetBy = boxplotToDuplicate.FacetBy;
@@ -328,6 +336,10 @@ public partial class BoxplotViewModel : ObservableObject
         Transparency = boxplotToDuplicate.Transparency;
         Width = boxplotToDuplicate.Width;
         WidthExtra = boxplotToDuplicate.WidthExtra;
+
+        // resume data snapshots and ensure this duplication is stored in a snaphot
+        isSnapshotActive = true;
+        OnPropertyChangedAction();
     }
 
     private bool GetIsFactorFactor()
@@ -371,19 +383,25 @@ public partial class BoxplotViewModel : ObservableObject
         SelectedTabIndex = tabIndex;
     }
 
-    private bool isUndoSnapshotSuspended = true;
-    private List<BoxplotDataTransfer> undoStack = new();
+    //todo implement undo/redo
+    private bool isSnapshotActive = false;
+    private Stack<BoxplotDataTransfer> undoStack = new();
+    private Stack<BoxplotDataTransfer> redoStack = new();
 
     private void OnPropertyChangedAction()
     {
         // if undo snapshots suspended, then do nothing
-        if (isUndoSnapshotSuspended)
+        if (!isSnapshotActive)
             return;
 
         // create a new boxplot data transfer object
         BoxplotDataTransfer boxplotData = new BoxplotDataTransfer(this);
 
         // add the new object to the undo stack
+        undoStack.Push(boxplotData);
+
+        // clear the redo stack
+        redoStack.Clear();
     }
 
     private void OnReceiverGotFocus(TextBox? receiver)
@@ -395,14 +413,20 @@ public partial class BoxplotViewModel : ObservableObject
         List<string> ColumnNamesFactor = new() { "village", "variety", "fertgrp" };
         List<string> ColumnNamesNonFactor = new() { "field", "size", "fert", "yield" };
 
+        // note: We only change ColumnNames when it is essential.
+        //       This is to avoid triggering unnecessary undo/redo snapshots
         _selectorMediator.SetFocus(receiver);
         if (receiver == _factorTextBox)
         {
-            ColumnNames = ColumnNamesAll;
+            if (!ColumnNames.SequenceEqual(ColumnNamesAll))
+                ColumnNames = ColumnNamesAll;
         }
         else if (receiver == _secondFactorTextBox || receiver == _facetByTextBox)
-            ColumnNames = ColumnNamesFactor;
-        else
+        {
+            if (!ColumnNames.SequenceEqual(ColumnNamesFactor))
+                ColumnNames = ColumnNamesFactor;
+        }
+        else if (!ColumnNames.SequenceEqual(ColumnNamesNonFactor))
             ColumnNames = ColumnNamesNonFactor;
 
         _columnsListBox.SelectionMode = SelectionMode.AlwaysSelected | SelectionMode.Toggle;
@@ -429,8 +453,17 @@ public partial class BoxplotViewModel : ObservableObject
         }
     }
 
+    //todo
+    private void OnRedoClick()
+    {
+
+    }
+
     private void OnResetClick()
     {
+        // suspend data snapshots during reset (snapshots are used for undo and redo)
+        isSnapshotActive = false;
+
         BoxplotDataTransfer boxplotData = new BoxplotDataTransfer();
         Comment = boxplotData.Comment;
         DataFrame = boxplotData.DataFrame;
@@ -462,6 +495,10 @@ public partial class BoxplotViewModel : ObservableObject
         Transparency = boxplotData.Transparency;
         Width = boxplotData.Width;
         WidthExtra = boxplotData.WidthExtra;
+
+        // resume data snapshots and ensure this reset is stored in a snaphot
+        isSnapshotActive = true;
+        OnPropertyChanged();
     }
 
     private void OnSelectorAddAllClick()
@@ -556,5 +593,54 @@ public partial class BoxplotViewModel : ObservableObject
             File.WriteAllText(strFilePath, rScript);
         }
         //todo end -------
+    }
+
+    //todo
+    private void OnUndoClick()
+    {
+        if (undoStack.Count < 2)
+            return;
+
+        // move the current state from the undo stack to the redo stack
+        redoStack.Push(undoStack.Pop());
+
+        // find the state that we want to undo to
+        BoxplotDataTransfer boxplotData = undoStack.Peek();
+
+        // suspend data snapshots during undo
+        isSnapshotActive = false;
+
+        Comment = boxplotData.Comment;
+        DataFrame = boxplotData.DataFrame;
+        FacetBy = boxplotData.FacetBy;
+        FacetByType = boxplotData.FacetByType;
+        Factor = boxplotData.Factor;
+        GroupToConnectSummary = boxplotData.GroupToConnectSummary;
+        IsAddPoints = boxplotData.IsAddPoints;
+        IsBoxPlot = boxplotData.IsBoxPlot;
+        IsBoxPlotExtra = boxplotData.IsBoxPlotExtra;
+        IsComment = boxplotData.IsComment;
+        IsGroupToConnect = boxplotData.IsGroupToConnect;
+        IsHorizontalBoxPlot = boxplotData.IsHorizontalBoxPlot;
+        IsJitter = boxplotData.IsJitter;
+        IsLegend = boxplotData.IsLegend;
+        IsSaveGraph = boxplotData.IsSaveGraph;
+        IsSingle = boxplotData.IsSingle;
+        IsTufte = boxplotData.IsTufte;
+        IsVarWidth = boxplotData.IsVarWidth;
+        IsViolin = boxplotData.IsViolin;
+        IsWidth = boxplotData.IsWidth;
+        JitterExtra = boxplotData.JitterExtra;
+        LegendPosition = boxplotData.LegendPosition;
+        MultipleVariables = boxplotData.MultipleVariables;
+        SaveName = boxplotData.SaveName;
+        SecondFactor = boxplotData.SecondFactor;
+        SelectedTabIndex = boxplotData.SelectedTabIndex;
+        SingleVariable = boxplotData.SingleVariable;
+        Transparency = boxplotData.Transparency;
+        Width = boxplotData.Width;
+        WidthExtra = boxplotData.WidthExtra;
+
+        isSnapshotActive = true;
     }
 }
