@@ -109,4 +109,42 @@ internal class BoxplotDataTransfer : ICloneable
     {
         return this.MemberwiseClone();
     }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not BoxplotDataTransfer other)
+            return false;
+
+        return Comment == other.Comment &&
+                   DataFrame == other.DataFrame &&
+                   FacetBy == other.FacetBy &&
+                   FacetByType == other.FacetByType &&
+                   Factor == other.Factor &&
+                   GroupToConnectSummary == other.GroupToConnectSummary &&
+                   IsAddPoints == other.IsAddPoints &&
+                   IsBoxPlot == other.IsBoxPlot &&
+                   IsBoxPlotExtra == other.IsBoxPlotExtra &&
+                   IsComment == other.IsComment &&
+                   IsGroupToConnect == other.IsGroupToConnect &&
+                   IsHorizontalBoxPlot == other.IsHorizontalBoxPlot &&
+                   IsJitter == other.IsJitter &&
+                   IsLegend == other.IsLegend &&
+                   IsSaveGraph == other.IsSaveGraph &&
+                   IsSingle == other.IsSingle &&
+                   IsTufte == other.IsTufte &&
+                   IsVarWidth == other.IsVarWidth &&
+                   IsViolin == other.IsViolin &&
+                   IsWidth == other.IsWidth &&
+                   JitterExtra == other.JitterExtra &&
+                   LegendPosition == other.LegendPosition &&
+                   MultipleVariables == other.MultipleVariables &&
+                   SaveName == other.SaveName &&
+                   SecondFactor == other.SecondFactor &&
+                   SelectedTabIndex == other.SelectedTabIndex &&
+                   SingleVariable == other.SingleVariable &&
+                   Transparency == other.Transparency &&
+                   Width == other.Width &&
+                   WidthExtra == other.WidthExtra;
+    }
+
 }

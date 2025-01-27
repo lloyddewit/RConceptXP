@@ -397,6 +397,10 @@ public partial class BoxplotViewModel : ObservableObject
         // create a new boxplot data transfer object
         BoxplotDataTransfer boxplotData = new BoxplotDataTransfer(this);
 
+        // if current state is the same as the last snapshot, then do nothing
+        if (undoStack.Count > 0 && boxplotData.Equals(undoStack.Peek()))
+            return;
+
         // add the new object to the undo stack
         undoStack.Push(boxplotData);
 
@@ -465,40 +469,14 @@ public partial class BoxplotViewModel : ObservableObject
         isSnapshotActive = false;
 
         BoxplotDataTransfer boxplotData = new BoxplotDataTransfer();
-        Comment = boxplotData.Comment;
-        DataFrame = boxplotData.DataFrame;
-        FacetBy = boxplotData.FacetBy;
-        FacetByType = FacetByTypes[0]; ;
-        Factor = boxplotData.Factor;
-        GroupToConnectSummary = GroupToConnectSummaries[0];
-        IsAddPoints = boxplotData.IsAddPoints;
-        IsBoxPlot = boxplotData.IsBoxPlot;
-        IsBoxPlotExtra = boxplotData.IsBoxPlotExtra;
-        IsComment = boxplotData.IsComment;
-        IsGroupToConnect = boxplotData.IsGroupToConnect;
-        IsHorizontalBoxPlot = boxplotData.IsHorizontalBoxPlot;
-        IsJitter = boxplotData.IsJitter;
-        IsLegend = boxplotData.IsLegend;
-        IsSaveGraph = boxplotData.IsSaveGraph;
-        IsSingle = boxplotData.IsSingle;
-        IsTufte = boxplotData.IsTufte;
-        IsVarWidth = boxplotData.IsVarWidth;
-        IsViolin = boxplotData.IsViolin;
-        IsWidth = boxplotData.IsWidth;
-        JitterExtra = boxplotData.JitterExtra;
-        LegendPosition = LegendPositions[0];
-        MultipleVariables = boxplotData.MultipleVariables;
-        SaveName = boxplotData.SaveName;
-        SecondFactor = boxplotData.SecondFactor;
-        SelectedTabIndex = boxplotData.SelectedTabIndex;
-        SingleVariable = boxplotData.SingleVariable;
-        Transparency = boxplotData.Transparency;
-        Width = boxplotData.Width;
-        WidthExtra = boxplotData.WidthExtra;
+        boxplotData.GroupToConnectSummary = GroupToConnectSummaries[0];
+        boxplotData.FacetByType = FacetByTypes[0];
+        boxplotData.LegendPosition = LegendPositions[0];
+        SetStateFromTransferObject(boxplotData);
 
         // resume data snapshots and ensure this reset is stored in a snaphot
         isSnapshotActive = true;
-        OnPropertyChanged();
+        OnPropertyChangedAction();
     }
 
     private void OnSelectorAddAllClick()
@@ -610,6 +588,13 @@ public partial class BoxplotViewModel : ObservableObject
         // suspend data snapshots during undo
         isSnapshotActive = false;
 
+        SetStateFromTransferObject(boxplotData);
+
+        isSnapshotActive = true;
+    }
+
+    private void SetStateFromTransferObject(BoxplotDataTransfer boxplotData)
+    {
         Comment = boxplotData.Comment;
         DataFrame = boxplotData.DataFrame;
         FacetBy = boxplotData.FacetBy;
@@ -640,7 +625,7 @@ public partial class BoxplotViewModel : ObservableObject
         Transparency = boxplotData.Transparency;
         Width = boxplotData.Width;
         WidthExtra = boxplotData.WidthExtra;
-
-        isSnapshotActive = true;
     }
+
+
 }
