@@ -6,7 +6,7 @@
         xmlns:views="clr-namespace:RConceptXP.Views"
         mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="768"
         x:Class="RConceptXP.Views.MainWindowView"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/Images/avalonia-logo.ico"
         Title="RConceptXP">
         <views:MainView />
 </Window>
