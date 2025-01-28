@@ -147,4 +147,42 @@ internal class BoxplotDataTransfer : ICloneable
                    WidthExtra == other.WidthExtra;
     }
 
+    // If we override the Equals method then we also need to override the GetHashCodeMethod
+    // (or we get a compilation warning).
+    public override int GetHashCode()
+    {
+        HashCode hash = new();
+        hash.Add(Comment);
+        hash.Add(DataFrame);
+        hash.Add(FacetBy);
+        hash.Add(FacetByType);
+        hash.Add(Factor);
+        hash.Add(GroupToConnectSummary);
+        hash.Add(IsAddPoints);
+        hash.Add(IsBoxPlot);
+        hash.Add(IsBoxPlotExtra);
+        hash.Add(IsComment);
+        hash.Add(IsGroupToConnect);
+        hash.Add(IsHorizontalBoxPlot);
+        hash.Add(IsJitter);
+        hash.Add(IsLegend);
+        hash.Add(IsSaveGraph);
+        hash.Add(IsSingle);
+        hash.Add(IsTufte);
+        hash.Add(IsVarWidth);
+        hash.Add(IsViolin);
+        hash.Add(IsWidth);
+        hash.Add(JitterExtra);
+        hash.Add(LegendPosition);
+        hash.Add(MultipleVariables);
+        hash.Add(SaveName);
+        hash.Add(SecondFactor);
+        hash.Add(SelectedTabIndex);
+        hash.Add(SingleVariable);
+        hash.Add(Transparency);
+        hash.Add(Width);
+        hash.Add(WidthExtra);
+        return hash.ToHashCode();
+    }
+
 }
