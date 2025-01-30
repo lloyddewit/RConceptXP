@@ -415,13 +415,13 @@ public partial class BoxplotViewModel : ObservableObject
             // use a temporary stack to reverse the order
             Stack<BoxplotDataTransfer> tempStack = new Stack<BoxplotDataTransfer>();
 
-            // transfer all but the last undo items to the temporary stack
+            // transfer all but the undo items (except the oldest item) to the temporary stack
             while (undoStack.Count > 1)
             {
                 tempStack.Push(undoStack.Pop());
             }
 
-            // remove the bottom undo item
+            // remove the oldest undo item
             undoStack.Pop();
 
             // transfer the remaining items back to the original undo stack
@@ -490,7 +490,21 @@ public partial class BoxplotViewModel : ObservableObject
     //todo
     private void OnRedoClick()
     {
+        if (redoStack.Count < 1)
+            return;
 
+        // find the state that we want to redo to
+        BoxplotDataTransfer boxplotData = redoStack.Peek();
+
+        // move this state to the undo stack (so we can undo it later)
+        undoStack.Push(redoStack.Pop());
+
+        // suspend data snapshots during redo
+        isSnapshotActive = false;
+
+        SetStateFromTransferObject(boxplotData);
+
+        isSnapshotActive = true;
     }
 
     private void OnResetClick()
