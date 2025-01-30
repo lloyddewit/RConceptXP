@@ -93,7 +93,7 @@
                         <ia:EventTriggerBehavior EventName="PointerPressed">
                             <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
                                 <ia:InvokeCommandAction.CommandParameter>
-                                    <sys:Int32>2</sys:Int32>
+                                    <sys:Int32>1</sys:Int32>
                                 </ia:InvokeCommandAction.CommandParameter>
                             </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
@@ -117,7 +117,7 @@
                         <ia:EventTriggerBehavior EventName="PointerPressed">
                             <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
                                 <ia:InvokeCommandAction.CommandParameter>
-                                    <sys:Int32>3</sys:Int32>
+                                    <sys:Int32>2</sys:Int32>
                                 </ia:InvokeCommandAction.CommandParameter>
                             </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
@@ -141,7 +141,7 @@
                         <ia:EventTriggerBehavior EventName="PointerPressed">
                             <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
                                 <ia:InvokeCommandAction.CommandParameter>
-                                    <sys:Int32>4</sys:Int32>
+                                    <sys:Int32>3</sys:Int32>
                                 </ia:InvokeCommandAction.CommandParameter>
                             </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
@@ -171,7 +171,7 @@
                         <ia:EventTriggerBehavior EventName="PointerPressed">
                             <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
                                 <ia:InvokeCommandAction.CommandParameter>
-                                    <sys:Int32>5</sys:Int32>
+                                    <sys:Int32>4</sys:Int32>
                                 </ia:InvokeCommandAction.CommandParameter>
                             </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
@@ -195,7 +195,7 @@
                         <ia:EventTriggerBehavior EventName="PointerPressed">
                             <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
                                 <ia:InvokeCommandAction.CommandParameter>
-                                    <sys:Int32>6</sys:Int32>
+                                    <sys:Int32>5</sys:Int32>
                                 </ia:InvokeCommandAction.CommandParameter>
                             </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
@@ -219,7 +219,7 @@
                         <ia:EventTriggerBehavior EventName="PointerPressed">
                             <ia:InvokeCommandAction Command="{Binding OnMainTabRightClickCommand}">
                                 <ia:InvokeCommandAction.CommandParameter>
-                                    <sys:Int32>7</sys:Int32>
+                                    <sys:Int32>6</sys:Int32>
                                 </ia:InvokeCommandAction.CommandParameter>
                             </ia:InvokeCommandAction>
                         </ia:EventTriggerBehavior>
