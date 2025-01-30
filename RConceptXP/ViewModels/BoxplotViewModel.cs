@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Linq;
+using System.Collections;
 
 namespace RConceptXP.ViewModels;
 
@@ -400,6 +401,35 @@ public partial class BoxplotViewModel : ObservableObject
         // if current state is the same as the last snapshot, then do nothing
         if (undoStack.Count > 0 && boxplotData.Equals(undoStack.Peek()))
             return;
+
+        // if we are halfway through a radio button change, then do nothing
+        // (radio button changes trigger 2 events: one to set the current radio button to false
+        //  and the second to set the new radio button to true)
+        if (!IsBoxPlot && !IsJitter && !IsViolin)
+            return;
+
+        // if the undo stack is at its maximum size, remove the oldest snapshot
+        // todo use config item for max undo stack size
+        if (undoStack.Count >= 20)
+        {
+            // use a temporary stack to reverse the order
+            Stack<BoxplotDataTransfer> tempStack = new Stack<BoxplotDataTransfer>();
+
+            // transfer all but the last undo items to the temporary stack
+            while (undoStack.Count > 1)
+            {
+                tempStack.Push(undoStack.Pop());
+            }
+
+            // remove the bottom undo item
+            undoStack.Pop();
+
+            // transfer the remaining items back to the original undo stack
+            while (tempStack.Count > 0)
+            {
+                undoStack.Push(tempStack.Pop());
+            }
+        }            
 
         // add the new object to the undo stack
         undoStack.Push(boxplotData);
