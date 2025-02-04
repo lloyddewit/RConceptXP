@@ -86,6 +86,9 @@ public partial class BoxplotViewModel : ObservableObject
     private bool _isLegend;
 
     [ObservableProperty]
+    private bool _isRedoEnabled;
+
+    [ObservableProperty]
     private bool _isSaveGraph;
 
     [ObservableProperty]
@@ -102,6 +105,9 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private bool _isWidth;
+
+    [ObservableProperty]
+    private bool _isUndoEnabled;
 
     [ObservableProperty]
     private string _jitterExtra;
@@ -139,65 +145,65 @@ public partial class BoxplotViewModel : ObservableObject
     [ObservableProperty]
     private string _widthExtra;
 
-    partial void OnColumnNamesChanged(List<string> value) => OnPropertyChangedAction();
-    partial void OnCommentChanged(string value) => OnPropertyChangedAction();
-    partial void OnDataFrameChanged(string value) => OnPropertyChangedAction();
-    partial void OnFacetByChanged(string value) => OnPropertyChangedAction();
-    partial void OnFacetByTypeChanged(string value) => OnPropertyChangedAction();
-    partial void OnFacetByTypesChanged(List<string> value) => OnPropertyChangedAction();
+    partial void OnColumnNamesChanged(List<string> value) => UpdateUndoRedoSnapshots();
+    partial void OnCommentChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnDataFrameChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnFacetByChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnFacetByTypeChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnFacetByTypesChanged(List<string> value) => UpdateUndoRedoSnapshots();
     partial void OnFactorChanged(string value)
     {
-        OnPropertyChangedAction();
+        UpdateUndoRedoSnapshots();
         OnPropertyChanged(nameof(IsWidthEnabled));
     }
-    partial void OnGroupToConnectSummariesChanged(List<string> value) => OnPropertyChangedAction();
-    partial void OnGroupToConnectSummaryChanged(string value) => OnPropertyChangedAction();
-    partial void OnIsAddPointsChanged(bool value) => OnPropertyChangedAction();
-    partial void OnIsBoxPlotChanged(bool value) => OnPropertyChangedAction();
-    partial void OnIsBoxPlotExtraChanged(bool value) => OnPropertyChangedAction();
-    partial void OnIsCommentChanged(bool value) => OnPropertyChangedAction();
-    partial void OnIsGroupToConnectChanged(bool value) => OnPropertyChangedAction();
-    partial void OnIsHorizontalBoxPlotChanged(bool value) => OnPropertyChangedAction();
-    partial void OnIsJitterChanged(bool value) => OnPropertyChangedAction();
-    partial void OnIsLegendChanged(bool value) => OnPropertyChangedAction();
+    partial void OnGroupToConnectSummariesChanged(List<string> value) => UpdateUndoRedoSnapshots();
+    partial void OnGroupToConnectSummaryChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnIsAddPointsChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsBoxPlotChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsBoxPlotExtraChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsCommentChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsGroupToConnectChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsHorizontalBoxPlotChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsJitterChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsLegendChanged(bool value) => UpdateUndoRedoSnapshots();
     partial void OnIsSaveGraphChanged(bool value)
     {
-        OnPropertyChangedAction();
+        UpdateUndoRedoSnapshots();
         OnPropertyChanged(nameof(IsOkEnabled));
     }
     partial void OnIsSingleChanged(bool value)
     {
-        OnPropertyChangedAction();
+        UpdateUndoRedoSnapshots();
         OnPropertyChanged(nameof(IsOkEnabled));
     }
-    partial void OnIsTufteChanged(bool value) => OnPropertyChangedAction();
-    partial void OnIsVarWidthChanged(bool value) => OnPropertyChangedAction();
-    partial void OnIsViolinChanged(bool value) => OnPropertyChangedAction();
-    partial void OnIsWidthChanged(bool value) => OnPropertyChangedAction();
-    partial void OnJitterExtraChanged(string value) => OnPropertyChangedAction();
-    partial void OnLegendPositionChanged(string value) => OnPropertyChangedAction();
-    partial void OnLegendPositionsChanged(List<string> value) => OnPropertyChangedAction();
+    partial void OnIsTufteChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsVarWidthChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsViolinChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsWidthChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnJitterExtraChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnLegendPositionChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnLegendPositionsChanged(List<string> value) => UpdateUndoRedoSnapshots();
     partial void OnMultipleVariablesChanged(string value)
     {
-        OnPropertyChangedAction();
+        UpdateUndoRedoSnapshots();
         OnPropertyChanged(nameof(IsOkEnabled));
     }
     partial void OnSaveNameChanged(string value)
     {
-        OnPropertyChangedAction();
+        UpdateUndoRedoSnapshots();
         OnPropertyChanged(nameof(IsOkEnabled));
     }
-    partial void OnSaveNamesChanged(List<string> value) => OnPropertyChangedAction();
-    partial void OnSecondFactorChanged(string value) => OnPropertyChangedAction();
-    partial void OnSelectedTabIndexChanged(int value) => OnPropertyChangedAction();
+    partial void OnSaveNamesChanged(List<string> value) => UpdateUndoRedoSnapshots();
+    partial void OnSecondFactorChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnSelectedTabIndexChanged(int value) => UpdateUndoRedoSnapshots();
     partial void OnSingleVariableChanged(string value)
     {
-        OnPropertyChangedAction();
+        UpdateUndoRedoSnapshots();
         OnPropertyChanged(nameof(IsOkEnabled));
     }
-    partial void OnTransparencyChanged(string value) => OnPropertyChangedAction();
-    partial void OnWidthChanged(string value) => OnPropertyChangedAction();
-    partial void OnWidthExtraChanged(string value) => OnPropertyChangedAction();
+    partial void OnTransparencyChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnWidthChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnWidthExtraChanged(string value) => UpdateUndoRedoSnapshots();
 
     private MenuItem _addAllOption;
     private ListBox _columnsListBox;
@@ -340,7 +346,7 @@ public partial class BoxplotViewModel : ObservableObject
 
         // resume data snapshots and ensure this duplication is stored in a snaphot
         isSnapshotActive = true;
-        OnPropertyChangedAction();
+        UpdateUndoRedoSnapshots();
     }
 
     private bool GetIsFactorFactor()
@@ -389,7 +395,7 @@ public partial class BoxplotViewModel : ObservableObject
     private Stack<BoxplotDataTransfer> undoStack = new();
     private Stack<BoxplotDataTransfer> redoStack = new();
 
-    private void OnPropertyChangedAction()
+    private void UpdateUndoRedoSnapshots()
     {
         // if undo snapshots suspended, then do nothing
         if (!isSnapshotActive)
@@ -433,9 +439,11 @@ public partial class BoxplotViewModel : ObservableObject
 
         // add the new object to the undo stack
         undoStack.Push(boxplotData);
+        IsUndoEnabled = undoStack.Count > 1;
 
         // clear the redo stack
         redoStack.Clear();
+        IsRedoEnabled = false;
     }
 
     private void OnReceiverGotFocus(TextBox? receiver)
@@ -498,6 +506,9 @@ public partial class BoxplotViewModel : ObservableObject
 
         // move this state to the undo stack (so we can undo it later)
         undoStack.Push(redoStack.Pop());
+        IsRedoEnabled = redoStack.Count > 0;
+        IsUndoEnabled = undoStack.Count > 1;
+
 
         // suspend data snapshots during redo
         isSnapshotActive = false;
@@ -520,7 +531,7 @@ public partial class BoxplotViewModel : ObservableObject
 
         // resume data snapshots and ensure this reset is stored in a snaphot
         isSnapshotActive = true;
-        OnPropertyChangedAction();
+        UpdateUndoRedoSnapshots();
     }
 
     private void OnSelectorAddAllClick()
@@ -625,6 +636,8 @@ public partial class BoxplotViewModel : ObservableObject
 
         // move the current state from the undo stack to the redo stack
         redoStack.Push(undoStack.Pop());
+        IsRedoEnabled = true;
+        IsUndoEnabled = undoStack.Count > 1;
 
         // find the state that we want to undo to
         BoxplotDataTransfer boxplotData = undoStack.Peek();

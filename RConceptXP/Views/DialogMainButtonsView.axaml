@@ -56,6 +56,7 @@
                     Classes="accent"
                     Command="{Binding OnUndoClickCommand}"
                     HorizontalAlignment="Right"
+                    IsEnabled="{Binding IsUndoEnabled}"
                     Width="30"
                     >
                     <Image Source="{SvgImage /Assets/Images/undo.svg}"/>
@@ -64,6 +65,7 @@
                     Classes="accent"
                     Command="{Binding OnRedoClickCommand}"
                     HorizontalAlignment="Left"
+                    IsEnabled="{Binding IsRedoEnabled}"
                     Margin="5"
                     Width="30"
                     >
