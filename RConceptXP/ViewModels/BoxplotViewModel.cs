@@ -215,6 +215,10 @@ public partial class BoxplotViewModel : ObservableObject
     private SelectorMediator _selectorMediator;
     private TextBox _singleVariableTextBox;
 
+    private bool isSnapshotActive = false;
+    private Stack<BoxplotDataTransfer> redoStack = new();
+    private Stack<BoxplotDataTransfer> undoStack = new();
+
     // Disable the warning 'non-nullable field must contain a non-null value when exiting
     // constructor'. We need to disable because otherwise many incorrect warnings are generated
     // for the observable properties that are initialised in the constructor via the
@@ -390,62 +394,6 @@ public partial class BoxplotViewModel : ObservableObject
         SelectedTabIndex = tabIndex;
     }
 
-    //todo implement undo/redo
-    private bool isSnapshotActive = false;
-    private Stack<BoxplotDataTransfer> undoStack = new();
-    private Stack<BoxplotDataTransfer> redoStack = new();
-
-    private void UpdateUndoRedoSnapshots()
-    {
-        // if undo snapshots suspended, then do nothing
-        if (!isSnapshotActive)
-            return;
-
-        // create a new boxplot data transfer object
-        BoxplotDataTransfer boxplotData = new BoxplotDataTransfer(this);
-
-        // if current state is the same as the last snapshot, then do nothing
-        if (undoStack.Count > 0 && boxplotData.Equals(undoStack.Peek()))
-            return;
-
-        // if we are halfway through a radio button change, then do nothing
-        // (radio button changes trigger 2 events: one to set the current radio button to false
-        //  and the second to set the new radio button to true)
-        if (!IsBoxPlot && !IsJitter && !IsViolin)
-            return;
-
-        // if the undo stack is at its maximum size, remove the oldest snapshot
-        // todo use config item for max undo stack size
-        if (undoStack.Count >= 20)
-        {
-            // use a temporary stack to reverse the order
-            Stack<BoxplotDataTransfer> tempStack = new Stack<BoxplotDataTransfer>();
-
-            // transfer all but the undo items (except the oldest item) to the temporary stack
-            while (undoStack.Count > 1)
-            {
-                tempStack.Push(undoStack.Pop());
-            }
-
-            // remove the oldest undo item
-            undoStack.Pop();
-
-            // transfer the remaining items back to the original undo stack
-            while (tempStack.Count > 0)
-            {
-                undoStack.Push(tempStack.Pop());
-            }
-        }            
-
-        // add the new object to the undo stack
-        undoStack.Push(boxplotData);
-        IsUndoEnabled = undoStack.Count > 1;
-
-        // clear the redo stack
-        redoStack.Clear();
-        IsRedoEnabled = false;
-    }
-
     private void OnReceiverGotFocus(TextBox? receiver)
     {
         ArgumentNullException.ThrowIfNull(receiver, nameof(receiver));
@@ -495,7 +443,6 @@ public partial class BoxplotViewModel : ObservableObject
         }
     }
 
-    //todo
     private void OnRedoClick()
     {
         if (redoStack.Count < 1)
@@ -628,7 +575,6 @@ public partial class BoxplotViewModel : ObservableObject
         //todo end -------
     }
 
-    //todo
     private void OnUndoClick()
     {
         if (undoStack.Count < 2)
@@ -684,5 +630,54 @@ public partial class BoxplotViewModel : ObservableObject
         WidthExtra = boxplotData.WidthExtra;
     }
 
+    private void UpdateUndoRedoSnapshots()
+    {
+        // if undo snapshots suspended, then do nothing
+        if (!isSnapshotActive)
+            return;
 
+        // create a new boxplot data transfer object
+        BoxplotDataTransfer boxplotData = new BoxplotDataTransfer(this);
+
+        // if current state is the same as the last snapshot, then do nothing
+        if (undoStack.Count > 0 && boxplotData.Equals(undoStack.Peek()))
+            return;
+
+        // if we are halfway through a radio button change, then do nothing
+        // (radio button changes trigger 2 events: one to set the current radio button to false
+        //  and the second to set the new radio button to true)
+        if (!IsBoxPlot && !IsJitter && !IsViolin)
+            return;
+
+        // if the undo stack is at its maximum size, remove the oldest snapshot
+        // todo use config item for max undo stack size
+        if (undoStack.Count >= 20)
+        {
+            // use a temporary stack to reverse the order
+            Stack<BoxplotDataTransfer> tempStack = new Stack<BoxplotDataTransfer>();
+
+            // transfer all but the undo items (except the oldest item) to the temporary stack
+            while (undoStack.Count > 1)
+            {
+                tempStack.Push(undoStack.Pop());
+            }
+
+            // remove the oldest undo item
+            undoStack.Pop();
+
+            // transfer the remaining items back to the original undo stack
+            while (tempStack.Count > 0)
+            {
+                undoStack.Push(tempStack.Pop());
+            }
+        }
+
+        // add the new object to the undo stack
+        undoStack.Push(boxplotData);
+        IsUndoEnabled = undoStack.Count > 1;
+
+        // clear the redo stack
+        redoStack.Clear();
+        IsRedoEnabled = false;
+    }
 }
