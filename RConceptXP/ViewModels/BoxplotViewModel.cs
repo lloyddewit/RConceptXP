@@ -2,16 +2,15 @@
 using Avalonia.Controls.Selection;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media.TextFormatting.Unicode;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json;
 using RConceptXP.Views;
-using RInsightF461;
 using RConceptXP.Services;
 using System.Collections.Generic;
 using System.IO;
 using System;
+using System.Linq;
+using System.Collections;
 
 namespace RConceptXP.ViewModels;
 
@@ -23,10 +22,12 @@ public partial class BoxplotViewModel : ObservableObject
     public RelayCommand OnDataOptionsClickCommand { get; }
     public RelayCommand<int> OnMainTabRightClickCommand { get; }
     public RelayCommand<TextBox> OnReceiverGotFocusCommand { get; }
+    public RelayCommand OnRedoClickCommand { get; }
     public RelayCommand OnResetClickCommand { get; }
     public RelayCommand OnSelectorAddAllClickCommand { get; }
     public RelayCommand OnSelectorAddClickCommand { get; }
     public RelayCommand OnToScriptClickCommand { get; }
+    public RelayCommand OnUndoClickCommand { get; }
 
     public bool IsOkEnabled => GetIsOkEnabled();
     public bool IsWidthEnabled => GetIsFactorNumeric();
@@ -53,7 +54,7 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private string _factor;
-    partial void OnFactorChanged(string value) => OnPropertyChanged(nameof(IsWidthEnabled));
+
     [ObservableProperty]
     private List<string> _groupToConnectSummaries;
 
@@ -85,12 +86,13 @@ public partial class BoxplotViewModel : ObservableObject
     private bool _isLegend;
 
     [ObservableProperty]
+    private bool _isRedoEnabled;
+
+    [ObservableProperty]
     private bool _isSaveGraph;
-    partial void OnIsSaveGraphChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private bool _isSingle;
-    partial void OnIsSingleChanged(bool value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private bool _isTufte;
@@ -105,6 +107,9 @@ public partial class BoxplotViewModel : ObservableObject
     private bool _isWidth;
 
     [ObservableProperty]
+    private bool _isUndoEnabled;
+
+    [ObservableProperty]
     private string _jitterExtra;
 
     [ObservableProperty]
@@ -115,11 +120,9 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private string _multipleVariables;
-    partial void OnMultipleVariablesChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private string _saveName;
-    partial void OnSaveNameChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private List<string> _saveNames;
@@ -132,7 +135,6 @@ public partial class BoxplotViewModel : ObservableObject
 
     [ObservableProperty]
     private string _singleVariable;
-    partial void OnSingleVariableChanged(string value) => OnPropertyChanged(nameof(IsOkEnabled));
 
     [ObservableProperty]
     private string _transparency;
@@ -143,6 +145,65 @@ public partial class BoxplotViewModel : ObservableObject
     [ObservableProperty]
     private string _widthExtra;
 
+    partial void OnColumnNamesChanged(List<string> value) => UpdateUndoRedoSnapshots();
+    partial void OnCommentChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnDataFrameChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnFacetByChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnFacetByTypeChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnFacetByTypesChanged(List<string> value) => UpdateUndoRedoSnapshots();
+    partial void OnFactorChanged(string value)
+    {
+        UpdateUndoRedoSnapshots();
+        OnPropertyChanged(nameof(IsWidthEnabled));
+    }
+    partial void OnGroupToConnectSummariesChanged(List<string> value) => UpdateUndoRedoSnapshots();
+    partial void OnGroupToConnectSummaryChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnIsAddPointsChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsBoxPlotChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsBoxPlotExtraChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsCommentChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsGroupToConnectChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsHorizontalBoxPlotChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsJitterChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsLegendChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsSaveGraphChanged(bool value)
+    {
+        UpdateUndoRedoSnapshots();
+        OnPropertyChanged(nameof(IsOkEnabled));
+    }
+    partial void OnIsSingleChanged(bool value)
+    {
+        UpdateUndoRedoSnapshots();
+        OnPropertyChanged(nameof(IsOkEnabled));
+    }
+    partial void OnIsTufteChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsVarWidthChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsViolinChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnIsWidthChanged(bool value) => UpdateUndoRedoSnapshots();
+    partial void OnJitterExtraChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnLegendPositionChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnLegendPositionsChanged(List<string> value) => UpdateUndoRedoSnapshots();
+    partial void OnMultipleVariablesChanged(string value)
+    {
+        UpdateUndoRedoSnapshots();
+        OnPropertyChanged(nameof(IsOkEnabled));
+    }
+    partial void OnSaveNameChanged(string value)
+    {
+        UpdateUndoRedoSnapshots();
+        OnPropertyChanged(nameof(IsOkEnabled));
+    }
+    partial void OnSaveNamesChanged(List<string> value) => UpdateUndoRedoSnapshots();
+    partial void OnSecondFactorChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnSelectedTabIndexChanged(int value) => UpdateUndoRedoSnapshots();
+    partial void OnSingleVariableChanged(string value)
+    {
+        UpdateUndoRedoSnapshots();
+        OnPropertyChanged(nameof(IsOkEnabled));
+    }
+    partial void OnTransparencyChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnWidthChanged(string value) => UpdateUndoRedoSnapshots();
+    partial void OnWidthExtraChanged(string value) => UpdateUndoRedoSnapshots();
 
     private MenuItem _addAllOption;
     private ListBox _columnsListBox;
@@ -153,6 +214,10 @@ public partial class BoxplotViewModel : ObservableObject
     private TextBox _secondFactorTextBox;
     private SelectorMediator _selectorMediator;
     private TextBox _singleVariableTextBox;
+
+    private bool isSnapshotActive = false;
+    private Stack<BoxplotDataTransfer> redoStack = new();
+    private Stack<BoxplotDataTransfer> undoStack = new();
 
     // Disable the warning 'non-nullable field must contain a non-null value when exiting
     // constructor'. We need to disable because otherwise many incorrect warnings are generated
@@ -225,8 +290,10 @@ public partial class BoxplotViewModel : ObservableObject
         // initialize other command controls
         OnDataOptionsClickCommand = new RelayCommand(OnDataOptionsClick);
         OnMainTabRightClickCommand = new RelayCommand<int>(OnMainTabRightClick);
-        OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
+        OnRedoClickCommand = new RelayCommand(OnRedoClick);
         OnResetClickCommand = new RelayCommand(OnResetClick);
+        OnToScriptClickCommand = new RelayCommand(OnToScriptClick);
+        OnUndoClickCommand = new RelayCommand(OnUndoClick);
 
         // initialize one-way data bindings (set only once here and never changed)
         FacetByTypes = new List<string> { "Facet Wrap", "Facet Row", "Facet Column", "None" };
@@ -247,6 +314,9 @@ public partial class BoxplotViewModel : ObservableObject
 
     private void DuplicateBoxplot(BoxplotViewModel boxplotToDuplicate)
     {
+        // suspend data snapshots during duplication (snapshots are used for undo and redo)
+        isSnapshotActive = false;
+
         Comment = boxplotToDuplicate.Comment;
         DataFrame = boxplotToDuplicate.DataFrame;
         FacetBy = boxplotToDuplicate.FacetBy;
@@ -277,6 +347,10 @@ public partial class BoxplotViewModel : ObservableObject
         Transparency = boxplotToDuplicate.Transparency;
         Width = boxplotToDuplicate.Width;
         WidthExtra = boxplotToDuplicate.WidthExtra;
+
+        // resume data snapshots and ensure this duplication is stored in a snaphot
+        isSnapshotActive = true;
+        UpdateUndoRedoSnapshots();
     }
 
     private bool GetIsFactorFactor()
@@ -329,14 +403,20 @@ public partial class BoxplotViewModel : ObservableObject
         List<string> ColumnNamesFactor = new() { "village", "variety", "fertgrp" };
         List<string> ColumnNamesNonFactor = new() { "field", "size", "fert", "yield" };
 
+        // note: We only change ColumnNames when it is essential.
+        //       This is to avoid triggering unnecessary undo/redo snapshots
         _selectorMediator.SetFocus(receiver);
         if (receiver == _factorTextBox)
         {
-            ColumnNames = ColumnNamesAll;
+            if (!ColumnNames.SequenceEqual(ColumnNamesAll))
+                ColumnNames = ColumnNamesAll;
         }
         else if (receiver == _secondFactorTextBox || receiver == _facetByTextBox)
-            ColumnNames = ColumnNamesFactor;
-        else
+        {
+            if (!ColumnNames.SequenceEqual(ColumnNamesFactor))
+                ColumnNames = ColumnNamesFactor;
+        }
+        else if (!ColumnNames.SequenceEqual(ColumnNamesNonFactor))
             ColumnNames = ColumnNamesNonFactor;
 
         _columnsListBox.SelectionMode = SelectionMode.AlwaysSelected | SelectionMode.Toggle;
@@ -363,38 +443,42 @@ public partial class BoxplotViewModel : ObservableObject
         }
     }
 
+    private void OnRedoClick()
+    {
+        if (redoStack.Count < 1)
+            return;
+
+        // find the state that we want to redo to
+        BoxplotDataTransfer boxplotData = redoStack.Peek();
+
+        // move this state to the undo stack (so we can undo it later)
+        undoStack.Push(redoStack.Pop());
+        IsRedoEnabled = redoStack.Count > 0;
+        IsUndoEnabled = undoStack.Count > 1;
+
+
+        // suspend data snapshots during redo
+        isSnapshotActive = false;
+
+        SetStateFromTransferObject(boxplotData);
+
+        isSnapshotActive = true;
+    }
+
     private void OnResetClick()
     {
-        Comment = "Dialog: Boxplot Options";
-        DataFrame = "survey"; // todo hard coded for testing
-        FacetBy = "";
-        FacetByType = FacetByTypes[0];
-        Factor = "";
-        GroupToConnectSummary = GroupToConnectSummaries[0];
-        IsAddPoints = false;
-        IsBoxPlot = true;
-        IsBoxPlotExtra = false;
-        IsComment = true;
-        IsGroupToConnect = false;
-        IsHorizontalBoxPlot = false;
-        IsJitter = false;
-        IsLegend = false;
-        IsSaveGraph = false;
-        IsSingle = true;
-        IsTufte = false;
-        IsVarWidth = false;
-        IsViolin = false;
-        IsWidth = false;
-        JitterExtra = "0.20";
-        LegendPosition = LegendPositions[0];
-        MultipleVariables = "";
-        SaveName = "plot1";
-        SecondFactor = "";
-        SelectedTabIndex = 0;
-        SingleVariable = "";
-        Transparency = "1.00";
-        Width = "0.25";
-        WidthExtra = "0.5";
+        // suspend data snapshots during reset (snapshots are used for undo and redo)
+        isSnapshotActive = false;
+
+        BoxplotDataTransfer boxplotData = new BoxplotDataTransfer();
+        boxplotData.GroupToConnectSummary = GroupToConnectSummaries[0];
+        boxplotData.FacetByType = FacetByTypes[0];
+        boxplotData.LegendPosition = LegendPositions[0];
+        SetStateFromTransferObject(boxplotData);
+
+        // resume data snapshots and ensure this reset is stored in a snaphot
+        isSnapshotActive = true;
+        UpdateUndoRedoSnapshots();
     }
 
     private void OnSelectorAddAllClick()
@@ -489,5 +573,111 @@ public partial class BoxplotViewModel : ObservableObject
             File.WriteAllText(strFilePath, rScript);
         }
         //todo end -------
+    }
+
+    private void OnUndoClick()
+    {
+        if (undoStack.Count < 2)
+            return;
+
+        // move the current state from the undo stack to the redo stack
+        redoStack.Push(undoStack.Pop());
+        IsRedoEnabled = true;
+        IsUndoEnabled = undoStack.Count > 1;
+
+        // find the state that we want to undo to
+        BoxplotDataTransfer boxplotData = undoStack.Peek();
+
+        // suspend data snapshots during undo
+        isSnapshotActive = false;
+
+        SetStateFromTransferObject(boxplotData);
+
+        isSnapshotActive = true;
+    }
+
+    private void SetStateFromTransferObject(BoxplotDataTransfer boxplotData)
+    {
+        Comment = boxplotData.Comment;
+        DataFrame = boxplotData.DataFrame;
+        FacetBy = boxplotData.FacetBy;
+        FacetByType = boxplotData.FacetByType;
+        Factor = boxplotData.Factor;
+        GroupToConnectSummary = boxplotData.GroupToConnectSummary;
+        IsAddPoints = boxplotData.IsAddPoints;
+        IsBoxPlot = boxplotData.IsBoxPlot;
+        IsBoxPlotExtra = boxplotData.IsBoxPlotExtra;
+        IsComment = boxplotData.IsComment;
+        IsGroupToConnect = boxplotData.IsGroupToConnect;
+        IsHorizontalBoxPlot = boxplotData.IsHorizontalBoxPlot;
+        IsJitter = boxplotData.IsJitter;
+        IsLegend = boxplotData.IsLegend;
+        IsSaveGraph = boxplotData.IsSaveGraph;
+        IsSingle = boxplotData.IsSingle;
+        IsTufte = boxplotData.IsTufte;
+        IsVarWidth = boxplotData.IsVarWidth;
+        IsViolin = boxplotData.IsViolin;
+        IsWidth = boxplotData.IsWidth;
+        JitterExtra = boxplotData.JitterExtra;
+        LegendPosition = boxplotData.LegendPosition;
+        MultipleVariables = boxplotData.MultipleVariables;
+        SaveName = boxplotData.SaveName;
+        SecondFactor = boxplotData.SecondFactor;
+        SelectedTabIndex = boxplotData.SelectedTabIndex;
+        SingleVariable = boxplotData.SingleVariable;
+        Transparency = boxplotData.Transparency;
+        Width = boxplotData.Width;
+        WidthExtra = boxplotData.WidthExtra;
+    }
+
+    private void UpdateUndoRedoSnapshots()
+    {
+        // if undo snapshots suspended, then do nothing
+        if (!isSnapshotActive)
+            return;
+
+        // create a new boxplot data transfer object
+        BoxplotDataTransfer boxplotData = new BoxplotDataTransfer(this);
+
+        // if current state is the same as the last snapshot, then do nothing
+        if (undoStack.Count > 0 && boxplotData.Equals(undoStack.Peek()))
+            return;
+
+        // if we are halfway through a radio button change, then do nothing
+        // (radio button changes trigger 2 events: one to set the current radio button to false
+        //  and the second to set the new radio button to true)
+        if (!IsBoxPlot && !IsJitter && !IsViolin)
+            return;
+
+        // if the undo stack is at its maximum size, remove the oldest snapshot
+        // todo use config item for max undo stack size
+        if (undoStack.Count >= 20)
+        {
+            // use a temporary stack to reverse the order
+            Stack<BoxplotDataTransfer> tempStack = new Stack<BoxplotDataTransfer>();
+
+            // transfer all but the undo items (except the oldest item) to the temporary stack
+            while (undoStack.Count > 1)
+            {
+                tempStack.Push(undoStack.Pop());
+            }
+
+            // remove the oldest undo item
+            undoStack.Pop();
+
+            // transfer the remaining items back to the original undo stack
+            while (tempStack.Count > 0)
+            {
+                undoStack.Push(tempStack.Pop());
+            }
+        }
+
+        // add the new object to the undo stack
+        undoStack.Push(boxplotData);
+        IsUndoEnabled = undoStack.Count > 1;
+
+        // clear the redo stack
+        redoStack.Clear();
+        IsRedoEnabled = false;
     }
 }
