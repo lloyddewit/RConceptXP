@@ -56,11 +56,26 @@
             </Grid>
             <TabControl Grid.Column="2">
                 <TabItem Header="Log">
-                    <TextBox
-                        FontFamily="Courier New"
-                        Text="Sample log text..."
-                        />
-                </TabItem>
+                    <ScrollViewer 
+                        HorizontalScrollBarVisibility="Auto" 
+                        VerticalScrollBarVisibility="Auto"
+                        Name="logScrollViewer"
+                        >
+                        <TextBox 
+                            FontFamily="Courier New"
+                            IsReadOnly="True"
+                            Name="logTextBox" 
+                            >
+                            <TextBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem 
+                                        Header="Reset dialog from log"
+                                        Command="{Binding ResetDialogFromLogCommand}"
+                                        />
+                                </ContextMenu>
+                            </TextBox.ContextMenu>
+                        </TextBox>
+                    </ScrollViewer>                </TabItem>
             </TabControl>
         </Grid>
 

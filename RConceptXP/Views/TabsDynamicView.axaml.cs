@@ -9,6 +9,7 @@ namespace RConceptXP.Views;
 
 public partial class TabsDynamicView : UserControl
 {
+    public MainView? MainView = null;
     public MainViewModel? MainViewModel = null;
 
     public event EventHandler? TabDeleted;
@@ -69,13 +70,17 @@ public partial class TabsDynamicView : UserControl
 
     public BoxplotView GetNewBoxplotView(BoxplotViewModel? boxplotToDuplicate = null)
     {
-        // if MainViewModel is null, throw an exception
+        if (MainView is null)
+        {
+            throw new Exception("MainView is null");
+        }
+
         if (MainViewModel is null)
         {
             throw new Exception("MainViewModel is null");
         }
 
-        var newBoxplotView = new BoxplotView(MainViewModel, boxplotToDuplicate);
+        var newBoxplotView = new BoxplotView(MainView, MainViewModel, boxplotToDuplicate);
         var newBoxplotViewModel = newBoxplotView.DataContext as BoxplotViewModel;
         if (newBoxplotViewModel is null)
         {

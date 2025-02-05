@@ -10,23 +10,31 @@ public partial class MainViewModel : ViewModelBase
 {
     public IRelayCommand OpenBoxplotCommand { get; }
     public IRelayCommand OpenDataOptionsCommand { get; }
+    public IRelayCommand ResetDialogFromLogCommand { get; }
 
     private TabsDynamicView _dialogTabs;
 
     [ObservableProperty]
     private bool _dataOptionsTabExists;
 
+    private TextBox _logTextBox;
+
     public MainViewModel(MainView mainView)
     {
         OpenBoxplotCommand = new RelayCommand(OpenBoxplot);
         OpenDataOptionsCommand = new RelayCommand(OpenDataOptions);
+        ResetDialogFromLogCommand = new RelayCommand(ResetDialogFromLog);
 
         _dialogTabs = mainView.FindControl<TabsDynamicView>("tabsForDialogs") ??
             throw new Exception("Cannot find tabsForDialogs by name");
 
+        _dialogTabs.MainView = mainView;
         _dialogTabs.MainViewModel = this;
 
         _dialogTabs.TabDeleted += OnTabDeleted;
+
+        _logTextBox = mainView.FindControl<TextBox>("logTextBox") ??
+            throw new Exception("Cannot find logTextBox by name");
 
         DataOptionsTabExists = false;
     }
@@ -64,5 +72,11 @@ public partial class MainViewModel : ViewModelBase
         _dialogTabs.AddNewTab(newDataOptionsView, "DataOptions", true);
 
         DataOptionsTabExists = true;
+    }
+
+    //todo
+    private void ResetDialogFromLog()
+    {
+        var textPosition = _logTextBox.SelectionStart;
     }
 }

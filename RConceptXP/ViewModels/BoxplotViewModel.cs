@@ -209,8 +209,10 @@ public partial class BoxplotViewModel : ObservableObject
     private ListBox _columnsListBox;
     private TextBox _facetByTextBox;
     private TextBox _factorTextBox;
+    private TextBox _logTextBox;
     private MainViewModel _mainViewModel;
     private TextBox _multipleVariableTextBox;
+    private ScrollViewer _logScrollViewer;
     private TextBox _secondFactorTextBox;
     private SelectorMediator _selectorMediator;
     private TextBox _singleVariableTextBox;
@@ -224,7 +226,7 @@ public partial class BoxplotViewModel : ObservableObject
     // for the observable properties that are initialised in the constructor via the
     // 'OnResetClick' method.
 #pragma warning disable CS8618
-    public BoxplotViewModel(MainViewModel mainViewModel, BoxplotMainTabView boxplotMainTabView, BoxplotViewModel? boxplotToDuplicate)
+    public BoxplotViewModel(MainView mainView, MainViewModel mainViewModel, BoxplotMainTabView boxplotMainTabView, BoxplotViewModel? boxplotToDuplicate)
 #pragma warning restore CS8618
     {
         _mainViewModel = mainViewModel;
@@ -250,6 +252,11 @@ public partial class BoxplotViewModel : ObservableObject
             throw new Exception("Cannot find factor textBox by name");
         _secondFactorTextBox = boxplotMainTabView.FindControl<TextBox>("secondFactorTextBox") ??
             throw new Exception("Cannot find secondFactorTextBox by name");
+
+        _logScrollViewer = mainView.FindControl<ScrollViewer>("logScrollViewer") ??
+            throw new Exception("Cannot find factor logScrollViewer by name");
+        _logTextBox = mainView.FindControl<TextBox>("logTextBox") ??
+            throw new Exception("Cannot find logTextBox by name");
 
         var graphLegendFacetSaveView = boxplotMainTabView.FindControl<GraphLegendFacetSaveView>("graphLegendFacetSaveView") ??
             throw new Exception("Cannot find graphLegendFacetSaveView by name");
@@ -531,7 +538,13 @@ public partial class BoxplotViewModel : ObservableObject
             {"y", SingleVariable}
         };
 
+
+
         string rScript = TransformationUtilities.GetRScript("BoxPlot", dataBindings);
+
+        _logTextBox.Text += rScript 
+            + Environment.NewLine + Environment.NewLine + Environment.NewLine;
+        _logScrollViewer.ScrollToEnd();
 
         //todo write dict and script to file for debugging -------
         string dataBindingsSummary = "";
