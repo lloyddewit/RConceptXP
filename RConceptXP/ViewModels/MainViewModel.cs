@@ -97,8 +97,7 @@ public partial class MainViewModel : ViewModelBase
 
         TabsDynamicViewModel? openTabViewModel = _dialogTabs.GetCurrentOpenTab();
         BoxplotViewModel? boxplotViewModel = openTabViewModel?.GetBoxplotViewModel();
-        BoxplotDataTransfer boxplotDataTransfer = dialogStates[closestKey];
-        boxplotViewModel?.SetStateFromTransferObject(boxplotDataTransfer);
+        boxplotViewModel?.SetStateFromTransferObject(dialogStates[closestKey]);
     }
 
     //todo
