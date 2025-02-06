@@ -68,6 +68,15 @@ public partial class TabsDynamicView : UserControl
         tabControl.SelectedIndex = _tabViewModels.Count - 1;
     }
 
+    //todo
+    public TabsDynamicViewModel? GetCurrentOpenTab()
+    {
+        var tabControl = this.FindControl<TabControl>("tabs") ??
+            throw new Exception("Cannot find tabs by name");
+
+        return tabControl.SelectedItem as TabsDynamicViewModel;
+    }
+
     public BoxplotView GetNewBoxplotView(BoxplotViewModel? boxplotToDuplicate = null)
     {
         if (MainView is null)

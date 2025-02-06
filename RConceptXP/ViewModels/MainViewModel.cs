@@ -2,7 +2,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using RConceptXP.Views;
+using RInsightF461;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RConceptXP.ViewModels;
 
@@ -18,6 +21,10 @@ public partial class MainViewModel : ViewModelBase
     private bool _dataOptionsTabExists;
 
     private TextBox _logTextBox;
+    private ScrollViewer _logScrollViewer;
+
+    // note: considered using an OrderedDictionary but on balance chose a Dictionary
+    private Dictionary<int, BoxplotDataTransfer> dialogStates;
 
     public MainViewModel(MainView mainView)
     {
@@ -35,6 +42,10 @@ public partial class MainViewModel : ViewModelBase
 
         _logTextBox = mainView.FindControl<TextBox>("logTextBox") ??
             throw new Exception("Cannot find logTextBox by name");
+        _logScrollViewer = mainView.FindControl<ScrollViewer>("logScrollViewer") ??
+            throw new Exception("Cannot find factor logScrollViewer by name");
+
+        dialogStates = new Dictionary<int, BoxplotDataTransfer>();
 
         DataOptionsTabExists = false;
     }
@@ -77,6 +88,27 @@ public partial class MainViewModel : ViewModelBase
     //todo
     private void ResetDialogFromLog()
     {
-        var textPosition = _logTextBox.SelectionStart;
+        int textPosition = _logTextBox.SelectionStart;
+
+        // Find the largest key that is less than or equal to textPosition
+        int closestKey = dialogStates.Keys.Where(key => key <= textPosition).DefaultIfEmpty(-1).Max();
+        if (closestKey == -1)
+            return;
+
+        TabsDynamicViewModel? openTabViewModel = _dialogTabs.GetCurrentOpenTab();
+        BoxplotViewModel? boxplotViewModel = openTabViewModel?.GetBoxplotViewModel();
+        BoxplotDataTransfer boxplotDataTransfer = dialogStates[closestKey];
+        boxplotViewModel?.SetStateFromTransferObject(boxplotDataTransfer);
+    }
+
+    //todo
+    internal void WriteToLog(string message, BoxplotDataTransfer boxplotData)
+    {
+        int textLength = _logTextBox.Text == null ? 0 : _logTextBox.Text.Length;
+        dialogStates[textLength] = boxplotData;
+
+        _logTextBox.Text += message
+            + Environment.NewLine + Environment.NewLine + Environment.NewLine;
+        _logScrollViewer.ScrollToEnd();
     }
 }

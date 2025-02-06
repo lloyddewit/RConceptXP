@@ -209,10 +209,8 @@ public partial class BoxplotViewModel : ObservableObject
     private ListBox _columnsListBox;
     private TextBox _facetByTextBox;
     private TextBox _factorTextBox;
-    private TextBox _logTextBox;
     private MainViewModel _mainViewModel;
     private TextBox _multipleVariableTextBox;
-    private ScrollViewer _logScrollViewer;
     private TextBox _secondFactorTextBox;
     private SelectorMediator _selectorMediator;
     private TextBox _singleVariableTextBox;
@@ -252,11 +250,6 @@ public partial class BoxplotViewModel : ObservableObject
             throw new Exception("Cannot find factor textBox by name");
         _secondFactorTextBox = boxplotMainTabView.FindControl<TextBox>("secondFactorTextBox") ??
             throw new Exception("Cannot find secondFactorTextBox by name");
-
-        _logScrollViewer = mainView.FindControl<ScrollViewer>("logScrollViewer") ??
-            throw new Exception("Cannot find factor logScrollViewer by name");
-        _logTextBox = mainView.FindControl<TextBox>("logTextBox") ??
-            throw new Exception("Cannot find logTextBox by name");
 
         var graphLegendFacetSaveView = boxplotMainTabView.FindControl<GraphLegendFacetSaveView>("graphLegendFacetSaveView") ??
             throw new Exception("Cannot find graphLegendFacetSaveView by name");
@@ -542,9 +535,8 @@ public partial class BoxplotViewModel : ObservableObject
 
         string rScript = TransformationUtilities.GetRScript("BoxPlot", dataBindings);
 
-        _logTextBox.Text += rScript 
-            + Environment.NewLine + Environment.NewLine + Environment.NewLine;
-        _logScrollViewer.ScrollToEnd();
+        BoxplotDataTransfer boxplotData = new BoxplotDataTransfer(this);
+        _mainViewModel.WriteToLog(rScript, boxplotData);
 
         //todo write dict and script to file for debugging -------
         string dataBindingsSummary = "";
@@ -609,7 +601,8 @@ public partial class BoxplotViewModel : ObservableObject
         isSnapshotActive = true;
     }
 
-    private void SetStateFromTransferObject(BoxplotDataTransfer boxplotData)
+    //todo move to after public functions
+    internal void SetStateFromTransferObject(BoxplotDataTransfer boxplotData)
     {
         Comment = boxplotData.Comment;
         DataFrame = boxplotData.DataFrame;
