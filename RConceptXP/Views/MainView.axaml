@@ -39,15 +39,44 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="410"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="540"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <views:TabsDynamicView 
-                Grid.Row="0" 
-                Grid.Column="1" 
-                Name="tabsForDialogs" />
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="540"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Rectangle Grid.Row="0"/>
+                <views:TabsDynamicView
+                    Grid.Row="0"
+                    Name="tabsForDialogs" />
+            </Grid>
+            <TabControl Grid.Column="2">
+                <TabItem Header="Log">
+                    <ScrollViewer 
+                        HorizontalScrollBarVisibility="Auto" 
+                        VerticalScrollBarVisibility="Auto"
+                        Name="logScrollViewer"
+                        >
+                        <TextBox 
+                            FontFamily="Courier New"
+                            IsReadOnly="True"
+                            Name="logTextBox" 
+                            >
+                            <TextBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem 
+                                        Header="Reset dialog from log"
+                                        Command="{Binding ResetDialogFromLogCommand}"
+                                        />
+                                </ContextMenu>
+                            </TextBox.ContextMenu>
+                        </TextBox>
+                    </ScrollViewer>                </TabItem>
+            </TabControl>
         </Grid>
 
         <!-- Status bar -->

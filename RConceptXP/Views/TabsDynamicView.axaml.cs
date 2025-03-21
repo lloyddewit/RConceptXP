@@ -9,6 +9,7 @@ namespace RConceptXP.Views;
 
 public partial class TabsDynamicView : UserControl
 {
+    public MainView? MainView = null;
     public MainViewModel? MainViewModel = null;
 
     public event EventHandler? TabDeleted;
@@ -67,15 +68,27 @@ public partial class TabsDynamicView : UserControl
         tabControl.SelectedIndex = _tabViewModels.Count - 1;
     }
 
+    public TabsDynamicViewModel? GetCurrentOpenTab()
+    {
+        var tabControl = this.FindControl<TabControl>("tabs") ??
+            throw new Exception("Cannot find tabs by name");
+
+        return tabControl.SelectedItem as TabsDynamicViewModel;
+    }
+
     public BoxplotView GetNewBoxplotView(BoxplotViewModel? boxplotToDuplicate = null)
     {
-        // if MainViewModel is null, throw an exception
+        if (MainView is null)
+        {
+            throw new Exception("MainView is null");
+        }
+
         if (MainViewModel is null)
         {
             throw new Exception("MainViewModel is null");
         }
 
-        var newBoxplotView = new BoxplotView(MainViewModel, boxplotToDuplicate);
+        var newBoxplotView = new BoxplotView(MainView, MainViewModel, boxplotToDuplicate);
         var newBoxplotViewModel = newBoxplotView.DataContext as BoxplotViewModel;
         if (newBoxplotViewModel is null)
         {

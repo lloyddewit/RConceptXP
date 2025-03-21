@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Linq;
-using System.Collections;
 
 namespace RConceptXP.ViewModels;
 
@@ -224,7 +223,7 @@ public partial class BoxplotViewModel : ObservableObject
     // for the observable properties that are initialised in the constructor via the
     // 'OnResetClick' method.
 #pragma warning disable CS8618
-    public BoxplotViewModel(MainViewModel mainViewModel, BoxplotMainTabView boxplotMainTabView, BoxplotViewModel? boxplotToDuplicate)
+    public BoxplotViewModel(MainView mainView, MainViewModel mainViewModel, BoxplotMainTabView boxplotMainTabView, BoxplotViewModel? boxplotToDuplicate)
 #pragma warning restore CS8618
     {
         _mainViewModel = mainViewModel;
@@ -305,6 +304,40 @@ public partial class BoxplotViewModel : ObservableObject
             OnResetClick();
         else
             DuplicateBoxplot(boxplotToDuplicate);
+    }
+
+    internal void SetStateFromTransferObject(BoxplotDataTransfer boxplotData)
+    {
+        Comment = boxplotData.Comment;
+        DataFrame = boxplotData.DataFrame;
+        FacetBy = boxplotData.FacetBy;
+        FacetByType = boxplotData.FacetByType;
+        Factor = boxplotData.Factor;
+        GroupToConnectSummary = boxplotData.GroupToConnectSummary;
+        IsAddPoints = boxplotData.IsAddPoints;
+        IsBoxPlot = boxplotData.IsBoxPlot;
+        IsBoxPlotExtra = boxplotData.IsBoxPlotExtra;
+        IsComment = boxplotData.IsComment;
+        IsGroupToConnect = boxplotData.IsGroupToConnect;
+        IsHorizontalBoxPlot = boxplotData.IsHorizontalBoxPlot;
+        IsJitter = boxplotData.IsJitter;
+        IsLegend = boxplotData.IsLegend;
+        IsSaveGraph = boxplotData.IsSaveGraph;
+        IsSingle = boxplotData.IsSingle;
+        IsTufte = boxplotData.IsTufte;
+        IsVarWidth = boxplotData.IsVarWidth;
+        IsViolin = boxplotData.IsViolin;
+        IsWidth = boxplotData.IsWidth;
+        JitterExtra = boxplotData.JitterExtra;
+        LegendPosition = boxplotData.LegendPosition;
+        MultipleVariables = boxplotData.MultipleVariables;
+        SaveName = boxplotData.SaveName;
+        SecondFactor = boxplotData.SecondFactor;
+        SelectedTabIndex = boxplotData.SelectedTabIndex;
+        SingleVariable = boxplotData.SingleVariable;
+        Transparency = boxplotData.Transparency;
+        Width = boxplotData.Width;
+        WidthExtra = boxplotData.WidthExtra;
     }
 
     private string BoolToUpperCaseString(bool value)
@@ -533,6 +566,9 @@ public partial class BoxplotViewModel : ObservableObject
 
         string rScript = TransformationUtilities.GetRScript("BoxPlot", dataBindings);
 
+        BoxplotDataTransfer boxplotData = new BoxplotDataTransfer(this);
+        _mainViewModel.WriteToLog(rScript, boxplotData);
+
         //todo write dict and script to file for debugging -------
         string dataBindingsSummary = "";
         foreach (var kvp in dataBindings)
@@ -594,40 +630,6 @@ public partial class BoxplotViewModel : ObservableObject
         SetStateFromTransferObject(boxplotData);
 
         isSnapshotActive = true;
-    }
-
-    private void SetStateFromTransferObject(BoxplotDataTransfer boxplotData)
-    {
-        Comment = boxplotData.Comment;
-        DataFrame = boxplotData.DataFrame;
-        FacetBy = boxplotData.FacetBy;
-        FacetByType = boxplotData.FacetByType;
-        Factor = boxplotData.Factor;
-        GroupToConnectSummary = boxplotData.GroupToConnectSummary;
-        IsAddPoints = boxplotData.IsAddPoints;
-        IsBoxPlot = boxplotData.IsBoxPlot;
-        IsBoxPlotExtra = boxplotData.IsBoxPlotExtra;
-        IsComment = boxplotData.IsComment;
-        IsGroupToConnect = boxplotData.IsGroupToConnect;
-        IsHorizontalBoxPlot = boxplotData.IsHorizontalBoxPlot;
-        IsJitter = boxplotData.IsJitter;
-        IsLegend = boxplotData.IsLegend;
-        IsSaveGraph = boxplotData.IsSaveGraph;
-        IsSingle = boxplotData.IsSingle;
-        IsTufte = boxplotData.IsTufte;
-        IsVarWidth = boxplotData.IsVarWidth;
-        IsViolin = boxplotData.IsViolin;
-        IsWidth = boxplotData.IsWidth;
-        JitterExtra = boxplotData.JitterExtra;
-        LegendPosition = boxplotData.LegendPosition;
-        MultipleVariables = boxplotData.MultipleVariables;
-        SaveName = boxplotData.SaveName;
-        SecondFactor = boxplotData.SecondFactor;
-        SelectedTabIndex = boxplotData.SelectedTabIndex;
-        SingleVariable = boxplotData.SingleVariable;
-        Transparency = boxplotData.Transparency;
-        Width = boxplotData.Width;
-        WidthExtra = boxplotData.WidthExtra;
     }
 
     private void UpdateUndoRedoSnapshots()
