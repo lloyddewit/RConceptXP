@@ -68,7 +68,6 @@ public partial class TabsDynamicView : UserControl
         tabControl.SelectedIndex = _tabViewModels.Count - 1;
     }
 
-    //todo
     public TabsDynamicViewModel? GetCurrentOpenTab()
     {
         var tabControl = this.FindControl<TabControl>("tabs") ??

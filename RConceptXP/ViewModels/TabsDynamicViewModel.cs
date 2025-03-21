@@ -39,7 +39,6 @@ public partial class TabsDynamicViewModel : ObservableObject
         OnDuplicateTabCommand = new RelayCommand(DuplicateTab);
     }
 
-    //todo
     internal BoxplotViewModel? GetBoxplotViewModel()
     {
         return TabViewModel as BoxplotViewModel;

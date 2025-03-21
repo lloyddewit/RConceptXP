@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using System.Linq;
-using System.Collections;
 
 namespace RConceptXP.ViewModels;
 
@@ -307,6 +306,40 @@ public partial class BoxplotViewModel : ObservableObject
             DuplicateBoxplot(boxplotToDuplicate);
     }
 
+    internal void SetStateFromTransferObject(BoxplotDataTransfer boxplotData)
+    {
+        Comment = boxplotData.Comment;
+        DataFrame = boxplotData.DataFrame;
+        FacetBy = boxplotData.FacetBy;
+        FacetByType = boxplotData.FacetByType;
+        Factor = boxplotData.Factor;
+        GroupToConnectSummary = boxplotData.GroupToConnectSummary;
+        IsAddPoints = boxplotData.IsAddPoints;
+        IsBoxPlot = boxplotData.IsBoxPlot;
+        IsBoxPlotExtra = boxplotData.IsBoxPlotExtra;
+        IsComment = boxplotData.IsComment;
+        IsGroupToConnect = boxplotData.IsGroupToConnect;
+        IsHorizontalBoxPlot = boxplotData.IsHorizontalBoxPlot;
+        IsJitter = boxplotData.IsJitter;
+        IsLegend = boxplotData.IsLegend;
+        IsSaveGraph = boxplotData.IsSaveGraph;
+        IsSingle = boxplotData.IsSingle;
+        IsTufte = boxplotData.IsTufte;
+        IsVarWidth = boxplotData.IsVarWidth;
+        IsViolin = boxplotData.IsViolin;
+        IsWidth = boxplotData.IsWidth;
+        JitterExtra = boxplotData.JitterExtra;
+        LegendPosition = boxplotData.LegendPosition;
+        MultipleVariables = boxplotData.MultipleVariables;
+        SaveName = boxplotData.SaveName;
+        SecondFactor = boxplotData.SecondFactor;
+        SelectedTabIndex = boxplotData.SelectedTabIndex;
+        SingleVariable = boxplotData.SingleVariable;
+        Transparency = boxplotData.Transparency;
+        Width = boxplotData.Width;
+        WidthExtra = boxplotData.WidthExtra;
+    }
+
     private string BoolToUpperCaseString(bool value)
     {
         return value ? "TRUE" : "FALSE";
@@ -531,8 +564,6 @@ public partial class BoxplotViewModel : ObservableObject
             {"y", SingleVariable}
         };
 
-
-
         string rScript = TransformationUtilities.GetRScript("BoxPlot", dataBindings);
 
         BoxplotDataTransfer boxplotData = new BoxplotDataTransfer(this);
@@ -599,41 +630,6 @@ public partial class BoxplotViewModel : ObservableObject
         SetStateFromTransferObject(boxplotData);
 
         isSnapshotActive = true;
-    }
-
-    //todo move to after public functions
-    internal void SetStateFromTransferObject(BoxplotDataTransfer boxplotData)
-    {
-        Comment = boxplotData.Comment;
-        DataFrame = boxplotData.DataFrame;
-        FacetBy = boxplotData.FacetBy;
-        FacetByType = boxplotData.FacetByType;
-        Factor = boxplotData.Factor;
-        GroupToConnectSummary = boxplotData.GroupToConnectSummary;
-        IsAddPoints = boxplotData.IsAddPoints;
-        IsBoxPlot = boxplotData.IsBoxPlot;
-        IsBoxPlotExtra = boxplotData.IsBoxPlotExtra;
-        IsComment = boxplotData.IsComment;
-        IsGroupToConnect = boxplotData.IsGroupToConnect;
-        IsHorizontalBoxPlot = boxplotData.IsHorizontalBoxPlot;
-        IsJitter = boxplotData.IsJitter;
-        IsLegend = boxplotData.IsLegend;
-        IsSaveGraph = boxplotData.IsSaveGraph;
-        IsSingle = boxplotData.IsSingle;
-        IsTufte = boxplotData.IsTufte;
-        IsVarWidth = boxplotData.IsVarWidth;
-        IsViolin = boxplotData.IsViolin;
-        IsWidth = boxplotData.IsWidth;
-        JitterExtra = boxplotData.JitterExtra;
-        LegendPosition = boxplotData.LegendPosition;
-        MultipleVariables = boxplotData.MultipleVariables;
-        SaveName = boxplotData.SaveName;
-        SecondFactor = boxplotData.SecondFactor;
-        SelectedTabIndex = boxplotData.SelectedTabIndex;
-        SingleVariable = boxplotData.SingleVariable;
-        Transparency = boxplotData.Transparency;
-        Width = boxplotData.Width;
-        WidthExtra = boxplotData.WidthExtra;
     }
 
     private void UpdateUndoRedoSnapshots()

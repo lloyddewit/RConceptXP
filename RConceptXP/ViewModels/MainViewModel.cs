@@ -50,6 +50,16 @@ public partial class MainViewModel : ViewModelBase
         DataOptionsTabExists = false;
     }
 
+    internal void WriteToLog(string message, BoxplotDataTransfer boxplotData)
+    {
+        int textLength = _logTextBox.Text == null ? 0 : _logTextBox.Text.Length;
+        dialogStates[textLength] = boxplotData;
+
+        _logTextBox.Text += message
+            + Environment.NewLine + Environment.NewLine + Environment.NewLine;
+        _logScrollViewer.ScrollToEnd();
+    }
+
     private void OnDataOptionsOpened(object? sender, EventArgs e)
     {
         OpenDataOptions();        
@@ -85,7 +95,6 @@ public partial class MainViewModel : ViewModelBase
         DataOptionsTabExists = true;
     }
 
-    //todo
     private void ResetDialogFromLog()
     {
         int textPosition = _logTextBox.SelectionStart;
@@ -98,16 +107,5 @@ public partial class MainViewModel : ViewModelBase
         TabsDynamicViewModel? openTabViewModel = _dialogTabs.GetCurrentOpenTab();
         BoxplotViewModel? boxplotViewModel = openTabViewModel?.GetBoxplotViewModel();
         boxplotViewModel?.SetStateFromTransferObject(dialogStates[closestKey]);
-    }
-
-    //todo
-    internal void WriteToLog(string message, BoxplotDataTransfer boxplotData)
-    {
-        int textLength = _logTextBox.Text == null ? 0 : _logTextBox.Text.Length;
-        dialogStates[textLength] = boxplotData;
-
-        _logTextBox.Text += message
-            + Environment.NewLine + Environment.NewLine + Environment.NewLine;
-        _logScrollViewer.ScrollToEnd();
     }
 }
